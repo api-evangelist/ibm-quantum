@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/ibm-quantum/ibm-quantum-backend-schema.json",
+  "title": "IBM Quantum Backend",
+  "description": "Schema for an IBM Quantum backend (QPU or simulator) as returned by the Qiskit Runtime REST API endpoint GET /v1/backends/{id}/configuration. Reflects the OpenQASM-based backend configuration model.",
+  "type": "object",
+  "required": ["name", "n_qubits", "basis_gates"],
+  "properties": {
+    "name": { "type": "string", "description": "Backend identifier (e.g. ibm_kingston, ibm_marrakesh, ibm_pittsburgh)." },
+    "version": { "type": "string", "description": "Backend version string." },
+    "n_qubits": { "type": "integer", "description": "Number of qubits exposed by the backend.", "minimum": 1 },
+    "basis_gates": {
+      "type": "array",
+      "description": "Native gates supported by the backend (e.g. cz, sx, x, rz, id, ecr).",
+      "items": { "type": "string" }
+    },
+    "coupling_map": {
+      "type": "array",
+      "description": "Connectivity graph as a list of [control, target] qubit-index pairs.",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "simulator": { "type": "boolean", "description": "True if the backend is a classical simulator." },
+    "operational": { "type": "boolean", "description": "True if the backend is currently online." },
+    "pending_jobs": { "type": "integer", "description": "Approximate length of the backend queue." },
+    "processor_type": {
+      "type": "object",
+      "description": "Processor family metadata, e.g. Heron, Eagle, Condor.",
+      "properties": {
+        "family": { "type": "string" },
+        "revision": { "type": "string" },
+        "segment": { "type": "string" }
+      }
+    },
+    "max_shots": { "type": "integer", "description": "Maximum number of shots accepted per circuit." },
+    "max_experiments": { "type": "integer", "description": "Maximum number of circuits accepted per primitive call." },
+    "dt": { "type": "number", "description": "Device time resolution in seconds." },
+    "dtm": { "type": "number", "description": "Measurement time resolution in seconds." },
+    "open_pulse": { "type": "boolean", "description": "Whether OpenPulse is supported on this backend." },
+    "supported_instructions": {
+      "type": "array",
+      "description": "All instructions accepted by the backend.",
+      "items": { "type": "string" }
+    },
+    "credits_required": { "type": "boolean", "description": "Whether the backend requires plan credits." },
+    "n_uchannels": { "type": "integer" },
+    "input_allowed": {
+      "type": "array",
+      "description": "Allowed input formats.",
+      "items": { "type": "string", "enum": ["qasm2", "qasm3", "pulse"] }
+    }
+  }
+}

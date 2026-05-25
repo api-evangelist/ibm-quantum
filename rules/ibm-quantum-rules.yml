@@ -1,0 +1,59 @@
+extends:
+  - spectral:oas
+documentationUrl: https://github.com/api-evangelist/ibm-quantum
+overrides: []
+functionsDir: ./functions
+rules:
+  # Operation discipline
+  operation-operationId: error
+  operation-operationId-unique: error
+  operation-tag-defined: error
+  operation-summary: error
+  operation-description: warn
+  operation-tags: error
+
+  # IBM Quantum naming conventions
+  ibm-quantum-path-prefix:
+    description: All Qiskit Runtime REST endpoints are versioned under /v1.
+    given: $.paths
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          patternProperties:
+            "^/v1/.*$": true
+          additionalProperties: false
+
+  ibm-quantum-snake-case-fields:
+    description: IBM Quantum REST responses use snake_case property names.
+    given: $.components.schemas.*.properties.*~
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-z0-9_]*$"
+
+  # Security scheme presence
+  ibm-quantum-bearer-required:
+    description: All operations require IBM Cloud IAM bearer authentication.
+    given: $.paths.*[get,post,put,patch,delete]
+    severity: error
+    then:
+      field: security
+      function: truthy
+
+  ibm-quantum-version-header:
+    description: Operations should accept the IBM-API-Version header.
+    given: $.paths.*[get,post,put,patch,delete].parameters[?(@.in == 'header' && @.name == 'IBM-API-Version')]
+    severity: warn
+    then:
+      function: truthy
+
+  # OpenAPI quality bar
+  no-empty-servers: error
+  contact-properties: warn
+  info-license: warn
+  oas3-api-servers: error
+  oas3-server-not-example.com: error

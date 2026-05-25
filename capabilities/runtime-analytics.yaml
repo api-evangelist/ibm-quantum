@@ -1,0 +1,491 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "IBM Qiskit Runtime \u2014 Analytics"
+  description: "IBM Qiskit Runtime \u2014 Analytics. 5 operations across the IBM Qiskit Runtime REST API. Self-contained Naftiko capability covering one IBM Quantum business surface."
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit
+  - Analytics
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    IBM_CLOUD_API_KEY: IBM_CLOUD_API_KEY
+    IBM_QUANTUM_CRN: IBM_QUANTUM_CRN
+    IBM_QUANTUM_API_VERSION: IBM_QUANTUM_API_VERSION
+capability:
+  consumes:
+  - type: http
+    namespace: runtime-analytics
+    baseUri: https://quantum.cloud.ibm.com/api
+    description: "IBM Qiskit Runtime \u2014 Analytics business capability. Self-contained, no shared references."
+    resources:
+    - name: v1-workloads
+      path: /v1/workloads
+      operations:
+      - name: find-instance-workloads
+        method: GET
+        description: List User Instance Workloads
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user
+          in: query
+          type: string
+          description: User identifier. For now it can only be "me".
+          required: false
+        - name: sort
+          in: query
+          type: string
+          description: Field to sort the workloads by. A `-` prefix indicates descending sort order.
+          required: false
+        - name: limit
+          in: query
+          type: number
+          description: Number of workloads to return at a time
+          required: false
+        - name: previous
+          in: query
+          type: string
+          description: Cursor to previous workloads result page
+          required: false
+        - name: next
+          in: query
+          type: string
+          description: Cursor to next workloads result page
+          required: false
+        - name: backend
+          in: query
+          type: string
+          description: Backend name
+          required: false
+        - name: search
+          in: query
+          type: string
+          description: Optional search string, used to filter workloads by id or tags
+          required: false
+        - name: status
+          in: query
+          type: array
+          description: Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled.
+          required: false
+        - name: mode
+          in: query
+          type: string
+          description: 'Workload mode: job, session or batch'
+          required: false
+        - name: created_after
+          in: query
+          type: string
+          description: Filter jobs and session created after this date
+          required: false
+        - name: created_before
+          in: query
+          type: string
+          description: Filter jobs and session created before this date
+          required: false
+        - name: tags
+          in: query
+          type: array
+          description: Optional array of tags for the workloads
+          required: false
+    - name: v1-analytics-usage
+      path: /v1/analytics/usage
+      operations:
+      - name: analytics-usage
+        method: GET
+        description: Get Usage Analytics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: instance
+          in: query
+          type: array
+          description: instance parameter.
+          required: false
+        - name: interval_start
+          in: query
+          type: string
+          description: interval_start parameter.
+          required: false
+        - name: interval_end
+          in: query
+          type: string
+          description: interval_end parameter.
+          required: false
+        - name: backend
+          in: query
+          type: array
+          description: backend parameter.
+          required: false
+        - name: user_id
+          in: query
+          type: array
+          description: user_id parameter.
+          required: false
+        - name: simulators
+          in: query
+          type: boolean
+          description: Include simulators
+          required: false
+        - name: plan
+          in: query
+          type: array
+          description: plan parameter.
+          required: false
+        - name: subscription_id
+          in: query
+          type: array
+          description: The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.
+          required: false
+    - name: v1-analytics-usage-grouped
+      path: /v1/analytics/usage_grouped
+      operations:
+      - name: get-usage-analytics-grouped
+        method: GET
+        description: Get Usage Analytics Grouped
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: group_by
+          in: query
+          type: string
+          description: key to group usage by
+          required: true
+        - name: instance
+          in: query
+          type: array
+          description: instance parameter.
+          required: false
+        - name: interval_start
+          in: query
+          type: string
+          description: start date
+          required: false
+        - name: interval_end
+          in: query
+          type: string
+          description: end date
+          required: false
+        - name: backend
+          in: query
+          type: array
+          description: backend to filter by
+          required: false
+        - name: user_id
+          in: query
+          type: array
+          description: user_id parameter.
+          required: false
+        - name: simulators
+          in: query
+          type: boolean
+          description: Include simulators
+          required: false
+        - name: plan
+          in: query
+          type: array
+          description: plan parameter.
+          required: false
+        - name: subscription_id
+          in: query
+          type: array
+          description: The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.
+          required: false
+    - name: v1-analytics-usage-grouped-by-date
+      path: /v1/analytics/usage_grouped_by_date
+      operations:
+      - name: get-usage-analytics-grouped-by-date
+        method: GET
+        description: Get Usage Analytics Grouped by Date
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: group_by
+          in: query
+          type: string
+          description: key to group usage by
+          required: true
+        - name: instance
+          in: query
+          type: array
+          description: instance parameter.
+          required: false
+        - name: interval_start
+          in: query
+          type: string
+          description: interval_start parameter.
+          required: false
+        - name: interval_end
+          in: query
+          type: string
+          description: interval_end parameter.
+          required: false
+        - name: backend
+          in: query
+          type: array
+          description: backend parameter.
+          required: false
+        - name: user_id
+          in: query
+          type: array
+          description: user_id parameter.
+          required: false
+        - name: simulators
+          in: query
+          type: boolean
+          description: Include simulators
+          required: false
+        - name: plan
+          in: query
+          type: array
+          description: plan parameter.
+          required: false
+        - name: subscription_id
+          in: query
+          type: array
+          description: The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.
+          required: false
+    - name: v1-analytics-filters
+      path: /v1/analytics/filters
+      operations:
+      - name: analytics-filters
+        method: GET
+        description: Get Analytics Filters
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: instance
+          in: query
+          type: array
+          description: instance parameter.
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.IBM_CLOUD_API_KEY}}'
+      placement: header
+    defaultHeaders:
+      Service-CRN: '{{env.IBM_QUANTUM_CRN}}'
+      IBM-API-Version: '{{env.IBM_QUANTUM_API_VERSION}}'
+  exposes:
+  - type: rest
+    namespace: runtime-analytics-rest
+    port: 8080
+    description: "REST adapter for IBM Qiskit Runtime \u2014 Analytics. Spectral-compliant resources, prefixed with /v1."
+    resources:
+    - path: /v1/v1/workloads
+      name: v1-workloads
+      description: REST surface for v1-workloads.
+      operations:
+      - method: GET
+        name: find-instance-workloads
+        description: List User Instance Workloads
+        call: runtime-analytics.find-instance-workloads
+        with:
+          user: rest.user
+          sort: rest.sort
+          limit: rest.limit
+          previous: rest.previous
+          next: rest.next
+          backend: rest.backend
+          search: rest.search
+          status: rest.status
+          mode: rest.mode
+          created_after: rest.created_after
+          created_before: rest.created_before
+          tags: rest.tags
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/analytics/usage
+      name: v1-analytics-usage
+      description: REST surface for v1-analytics-usage.
+      operations:
+      - method: GET
+        name: analytics-usage
+        description: Get Usage Analytics
+        call: runtime-analytics.analytics-usage
+        with:
+          instance: rest.instance
+          interval_start: rest.interval_start
+          interval_end: rest.interval_end
+          backend: rest.backend
+          user_id: rest.user_id
+          simulators: rest.simulators
+          plan: rest.plan
+          subscription_id: rest.subscription_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/analytics/usage_grouped
+      name: v1-analytics-usage-grouped
+      description: REST surface for v1-analytics-usage-grouped.
+      operations:
+      - method: GET
+        name: get-usage-analytics-grouped
+        description: Get Usage Analytics Grouped
+        call: runtime-analytics.get-usage-analytics-grouped
+        with:
+          group_by: rest.group_by
+          instance: rest.instance
+          interval_start: rest.interval_start
+          interval_end: rest.interval_end
+          backend: rest.backend
+          user_id: rest.user_id
+          simulators: rest.simulators
+          plan: rest.plan
+          subscription_id: rest.subscription_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/analytics/usage_grouped_by_date
+      name: v1-analytics-usage-grouped-by-date
+      description: REST surface for v1-analytics-usage-grouped-by-date.
+      operations:
+      - method: GET
+        name: get-usage-analytics-grouped-by-date
+        description: Get Usage Analytics Grouped by Date
+        call: runtime-analytics.get-usage-analytics-grouped-by-date
+        with:
+          group_by: rest.group_by
+          instance: rest.instance
+          interval_start: rest.interval_start
+          interval_end: rest.interval_end
+          backend: rest.backend
+          user_id: rest.user_id
+          simulators: rest.simulators
+          plan: rest.plan
+          subscription_id: rest.subscription_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/analytics/filters
+      name: v1-analytics-filters
+      description: REST surface for v1-analytics-filters.
+      operations:
+      - method: GET
+        name: analytics-filters
+        description: Get Analytics Filters
+        call: runtime-analytics.analytics-filters
+        with:
+          instance: rest.instance
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: runtime-analytics-mcp
+    port: 9090
+    transport: http
+    description: "MCP adapter for IBM Qiskit Runtime \u2014 Analytics. One tool per consumed operation."
+    tools:
+    - name: ibm-quantum-find-instance-workloads
+      description: List User Instance Workloads
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-analytics.find-instance-workloads
+      with:
+        user: tools.user
+        sort: tools.sort
+        limit: tools.limit
+        previous: tools.previous
+        next: tools.next
+        backend: tools.backend
+        search: tools.search
+        status: tools.status
+        mode: tools.mode
+        created_after: tools.created_after
+        created_before: tools.created_before
+        tags: tools.tags
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-analytics-usage
+      description: Get Usage Analytics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-analytics.analytics-usage
+      with:
+        instance: tools.instance
+        interval_start: tools.interval_start
+        interval_end: tools.interval_end
+        backend: tools.backend
+        user_id: tools.user_id
+        simulators: tools.simulators
+        plan: tools.plan
+        subscription_id: tools.subscription_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-get-usage-analytics-grouped
+      description: Get Usage Analytics Grouped
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-analytics.get-usage-analytics-grouped
+      with:
+        group_by: tools.group_by
+        instance: tools.instance
+        interval_start: tools.interval_start
+        interval_end: tools.interval_end
+        backend: tools.backend
+        user_id: tools.user_id
+        simulators: tools.simulators
+        plan: tools.plan
+        subscription_id: tools.subscription_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-get-usage-analytics-grouped-by-date
+      description: Get Usage Analytics Grouped by Date
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-analytics.get-usage-analytics-grouped-by-date
+      with:
+        group_by: tools.group_by
+        instance: tools.instance
+        interval_start: tools.interval_start
+        interval_end: tools.interval_end
+        backend: tools.backend
+        user_id: tools.user_id
+        simulators: tools.simulators
+        plan: tools.plan
+        subscription_id: tools.subscription_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-analytics-filters
+      description: Get Analytics Filters
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-analytics.analytics-filters
+      with:
+        instance: tools.instance
+      outputParameters:
+      - type: object
+        mapping: $.

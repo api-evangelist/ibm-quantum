@@ -1,0 +1,84 @@
+specification: API Commons FinOps
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/FinOps
+provider: IBM Quantum
+providerId: ibm-quantum
+created: '2026-05-25'
+modified: '2026-05-25'
+description: FinOps view of IBM Quantum Platform billing surface, aligned with the FinOps Foundation framework and FOCUS data spec. Maps the platform's plan structure (Open / Pay-As-You-Go / Flex / Premium / On-Premises) and the Qiskit Runtime Analytics API onto FinOps capabilities.
+sources:
+  - https://quantum.cloud.ibm.com/docs/en/guides/plans-overview
+  - https://quantum.cloud.ibm.com/api/openapi.json
+  - https://focus.finops.org/
+domains:
+  - id: understand-usage-and-cost
+    name: Understand Usage and Cost
+    capabilities:
+      - id: data-ingestion
+        name: Data ingestion
+        artifacts:
+          - GET /v1/analytics/usage — per-instance usage analytics (Qiskit Runtime REST API)
+          - GET /v1/workloads — active workloads per instance
+          - GET /v1/jobs/{id}/metrics — per-job execution metrics
+          - IBM Cloud billing exports (via IBM Cloud Billing service)
+        focus_columns:
+          - BilledCost
+          - EffectiveCost
+          - UsageQuantity
+          - UsageUnit
+          - ChargePeriodStart
+          - ChargePeriodEnd
+          - ServiceName
+          - SkuId
+      - id: allocation
+        name: Cost allocation
+        artifacts:
+          - Service-CRN per Qiskit Runtime instance is the natural cost-allocation key
+          - Tags on jobs (PUT /v1/jobs/{id}/tags) for project- or workload-level tagging
+          - IBM Cloud resource groups for org-level grouping
+      - id: anomaly-management
+        name: Anomaly management
+        artifacts:
+          - Job-level metrics and analytics endpoints surface unusual minute consumption
+          - Instance configuration limits enforce hard caps
+  - id: quantify-business-value
+    name: Quantify Business Value
+    capabilities:
+      - id: forecasting
+        name: Forecasting
+        notes: Premium subscriptions have a known annual minute floor; Flex plans pre-purchase a fixed minute pool; PAYG forecasts use historical seconds-of-quantum-time from /v1/analytics/usage.
+      - id: budgeting
+        name: Budgeting
+        notes: Best modeled by allocating per-instance minute or second budgets and enforcing them at the instance-configuration level.
+  - id: optimize-usage-and-cost
+    name: Optimize Usage and Cost
+    capabilities:
+      - id: workload-optimization
+        name: Workload optimization
+        artifacts:
+          - Qiskit Transpiler as a Service (Premium / Flex)
+          - Session API (POST /v1/sessions) for grouping primitive jobs and reducing queue time
+          - Error mitigation choice (dynamical decoupling, ZNE, PEC) trades shots for cost
+      - id: rate-optimization
+        name: Rate optimization
+        notes: Choose between PAYG ($/second), Flex ($72/min, $30k floor), or Premium ($48/min, annual commitment) based on annualized minute usage. Reuse sessions to reduce overhead.
+      - id: licensing-saas
+        name: Licensing & SaaS
+        notes: Premium and Flex include Qiskit Functions and Qiskit Transpiler as a Service. On-Premises is a dedicated system contract.
+  - id: manage-finops-practice
+    name: Manage the FinOps Practice
+    capabilities:
+      - id: education-enablement
+        name: Education & enablement
+        artifacts:
+          - docs.quantum.ibm.com plans overview
+          - IBM Quantum learning courses on plan selection
+billing_model:
+  unit_of_value: quantum compute time (seconds for PAYG, minutes for Flex/Premium)
+  granularity_of_billing: per-second (PAYG), per-minute pool drawdown (Flex/Premium)
+  primary_dimensions:
+    - plan (open | payg | flex | premium | on-premises)
+    - instance (Service-CRN)
+    - region (global vs eu-de)
+    - QPU / backend
+    - primitive (sampler | estimator)

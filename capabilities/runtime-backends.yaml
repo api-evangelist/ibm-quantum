@@ -1,0 +1,274 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "IBM Qiskit Runtime \u2014 Backends"
+  description: "IBM Qiskit Runtime \u2014 Backends. 5 operations across the IBM Qiskit Runtime REST API. Self-contained Naftiko capability covering one IBM Quantum business surface."
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit
+  - Backends
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    IBM_CLOUD_API_KEY: IBM_CLOUD_API_KEY
+    IBM_QUANTUM_CRN: IBM_QUANTUM_CRN
+    IBM_QUANTUM_API_VERSION: IBM_QUANTUM_API_VERSION
+capability:
+  consumes:
+  - type: http
+    namespace: runtime-backends
+    baseUri: https://quantum.cloud.ibm.com/api
+    description: "IBM Qiskit Runtime \u2014 Backends business capability. Self-contained, no shared references."
+    resources:
+    - name: v1-backends
+      path: /v1/backends
+      operations:
+      - name: list-backends
+        method: GET
+        description: List Your Backends
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fields
+          in: query
+          type: string
+          description: fields parameter.
+          required: false
+    - name: v1-backends-id-properties
+      path: /v1/backends/{id}/properties
+      operations:
+      - name: get-backend-properties
+        method: GET
+        description: Get Backend Properties
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Identifier of an available backend
+          required: true
+        - name: updated_before
+          in: query
+          type: string
+          description: Returns properties with last_update_date before the given time.
+          required: false
+        - name: calibration_id
+          in: query
+          type: string
+          description: Returns properties associated with the given calibration ID.
+          required: false
+    - name: v1-backends-id-configuration
+      path: /v1/backends/{id}/configuration
+      operations:
+      - name: get-backend-configuration
+        method: GET
+        description: Get Backend Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Identifier of an available backend
+          required: true
+        - name: calibration_id
+          in: query
+          type: string
+          description: Returns configuration associated with the given calibration ID.
+          required: false
+    - name: v1-backends-id-status
+      path: /v1/backends/{id}/status
+      operations:
+      - name: get-backend-status
+        method: GET
+        description: Get Backend Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Identifier of an available backend
+          required: true
+    - name: v1-backends-id-defaults
+      path: /v1/backends/{id}/defaults
+      operations:
+      - name: get-backend-defaults
+        method: GET
+        description: Get Backend Default Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Identifier of an available backend
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.IBM_CLOUD_API_KEY}}'
+      placement: header
+    defaultHeaders:
+      Service-CRN: '{{env.IBM_QUANTUM_CRN}}'
+      IBM-API-Version: '{{env.IBM_QUANTUM_API_VERSION}}'
+  exposes:
+  - type: rest
+    namespace: runtime-backends-rest
+    port: 8080
+    description: "REST adapter for IBM Qiskit Runtime \u2014 Backends. Spectral-compliant resources, prefixed with /v1."
+    resources:
+    - path: /v1/v1/backends
+      name: v1-backends
+      description: REST surface for v1-backends.
+      operations:
+      - method: GET
+        name: list-backends
+        description: List Your Backends
+        call: runtime-backends.list-backends
+        with:
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/backends/{id}/properties
+      name: v1-backends-id-properties
+      description: REST surface for v1-backends-id-properties.
+      operations:
+      - method: GET
+        name: get-backend-properties
+        description: Get Backend Properties
+        call: runtime-backends.get-backend-properties
+        with:
+          id: rest.id
+          updated_before: rest.updated_before
+          calibration_id: rest.calibration_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/backends/{id}/configuration
+      name: v1-backends-id-configuration
+      description: REST surface for v1-backends-id-configuration.
+      operations:
+      - method: GET
+        name: get-backend-configuration
+        description: Get Backend Configuration
+        call: runtime-backends.get-backend-configuration
+        with:
+          id: rest.id
+          calibration_id: rest.calibration_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/backends/{id}/status
+      name: v1-backends-id-status
+      description: REST surface for v1-backends-id-status.
+      operations:
+      - method: GET
+        name: get-backend-status
+        description: Get Backend Status
+        call: runtime-backends.get-backend-status
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/backends/{id}/defaults
+      name: v1-backends-id-defaults
+      description: REST surface for v1-backends-id-defaults.
+      operations:
+      - method: GET
+        name: get-backend-defaults
+        description: Get Backend Default Settings
+        call: runtime-backends.get-backend-defaults
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: runtime-backends-mcp
+    port: 9090
+    transport: http
+    description: "MCP adapter for IBM Qiskit Runtime \u2014 Backends. One tool per consumed operation."
+    tools:
+    - name: ibm-quantum-list-backends
+      description: List Your Backends
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-backends.list-backends
+      with:
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-get-backend-properties
+      description: Get Backend Properties
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-backends.get-backend-properties
+      with:
+        id: tools.id
+        updated_before: tools.updated_before
+        calibration_id: tools.calibration_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-get-backend-configuration
+      description: Get Backend Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-backends.get-backend-configuration
+      with:
+        id: tools.id
+        calibration_id: tools.calibration_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-get-backend-status
+      description: Get Backend Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-backends.get-backend-status
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-quantum-get-backend-defaults
+      description: Get Backend Default Settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-backends.get-backend-defaults
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

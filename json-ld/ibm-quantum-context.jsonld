@@ -1,0 +1,101 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "ibmq": "https://quantum.cloud.ibm.com/api/v1/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Job": {
+      "@id": "ibmq:Job",
+      "@context": {
+        "id": { "@id": "ibmq:Job/id", "@type": "xsd:string" },
+        "backend": { "@id": "ibmq:Job/backend", "@type": "xsd:string" },
+        "program": { "@id": "ibmq:Job/program", "@type": "xsd:string" },
+        "status": { "@id": "ibmq:Job/status", "@type": "xsd:string" },
+        "created": { "@id": "dcterms:created", "@type": "xsd:dateTime" },
+        "ended": { "@id": "ibmq:Job/ended", "@type": "xsd:dateTime" },
+        "params": { "@id": "ibmq:Job/params" },
+        "tags": { "@id": "ibmq:Job/tags", "@container": "@list" },
+        "session_id": { "@id": "ibmq:Job/sessionId", "@type": "xsd:string" },
+        "usage": { "@id": "ibmq:Job/usage", "@type": "ibmq:Usage" }
+      }
+    },
+
+    "Backend": {
+      "@id": "ibmq:Backend",
+      "@context": {
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "version": { "@id": "ibmq:Backend/version", "@type": "xsd:string" },
+        "n_qubits": { "@id": "ibmq:Backend/nQubits", "@type": "xsd:integer" },
+        "basis_gates": { "@id": "ibmq:Backend/basisGates", "@container": "@list" },
+        "coupling_map": { "@id": "ibmq:Backend/couplingMap" },
+        "simulator": { "@id": "ibmq:Backend/simulator", "@type": "xsd:boolean" },
+        "operational": { "@id": "ibmq:Backend/operational", "@type": "xsd:boolean" },
+        "pending_jobs": { "@id": "ibmq:Backend/pendingJobs", "@type": "xsd:integer" },
+        "processor_type": { "@id": "ibmq:Backend/processorType" }
+      }
+    },
+
+    "BackendProperties": {
+      "@id": "ibmq:BackendProperties",
+      "@context": {
+        "last_update_date": { "@id": "dcterms:modified", "@type": "xsd:dateTime" },
+        "qubits": { "@id": "ibmq:BackendProperties/qubits", "@container": "@list" },
+        "gates": { "@id": "ibmq:BackendProperties/gates", "@container": "@list" }
+      }
+    },
+
+    "Session": {
+      "@id": "ibmq:Session",
+      "@context": {
+        "id": { "@id": "ibmq:Session/id", "@type": "xsd:string" },
+        "backend_name": { "@id": "ibmq:Session/backendName", "@type": "xsd:string" },
+        "mode": { "@id": "ibmq:Session/mode", "@type": "xsd:string" },
+        "max_time": { "@id": "ibmq:Session/maxTime", "@type": "xsd:integer" },
+        "state": { "@id": "ibmq:Session/state", "@type": "xsd:string" },
+        "active_at": { "@id": "ibmq:Session/activeAt", "@type": "xsd:dateTime" }
+      }
+    },
+
+    "Instance": {
+      "@id": "ibmq:Instance",
+      "@context": {
+        "crn": { "@id": "ibmq:Instance/crn", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "plan": { "@id": "ibmq:Instance/plan", "@type": "xsd:string" },
+        "region": { "@id": "ibmq:Instance/region", "@type": "xsd:string" },
+        "max_qpu_seconds_per_window": { "@id": "ibmq:Instance/maxQpuSecondsPerWindow", "@type": "xsd:integer" }
+      }
+    },
+
+    "Usage": {
+      "@id": "ibmq:Usage",
+      "@context": {
+        "seconds": { "@id": "ibmq:Usage/seconds", "@type": "xsd:number" },
+        "minutes": { "@id": "ibmq:Usage/minutes", "@type": "xsd:number" },
+        "executions": { "@id": "ibmq:Usage/executions", "@type": "xsd:integer" },
+        "billed_units": { "@id": "ibmq:Usage/billedUnits", "@type": "xsd:string" }
+      }
+    },
+
+    "Primitive": {
+      "@id": "ibmq:Primitive",
+      "@context": {
+        "type": { "@id": "ibmq:Primitive/type", "@type": "xsd:string" },
+        "circuits": { "@id": "ibmq:Primitive/circuits", "@container": "@list" },
+        "observables": { "@id": "ibmq:Primitive/observables", "@container": "@list" },
+        "options": { "@id": "ibmq:Primitive/options" }
+      }
+    },
+
+    "ErrorResponse": {
+      "@id": "ibmq:ErrorResponse",
+      "@context": {
+        "errors": { "@id": "ibmq:ErrorResponse/errors", "@container": "@list" },
+        "trace": { "@id": "ibmq:ErrorResponse/trace", "@type": "xsd:string" }
+      }
+    }
+  }
+}

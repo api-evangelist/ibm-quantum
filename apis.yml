@@ -1,0 +1,300 @@
+aid: ibm-quantum
+url: https://raw.githubusercontent.com/api-evangelist/ibm-quantum/refs/heads/main/apis.yml
+apis:
+- aid: ibm-quantum:qiskit-runtime-jobs-api
+  name: Qiskit Runtime Jobs API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Runtime
+  - Jobs
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+    type: Documentation
+  - url: https://quantum.cloud.ibm.com/api/openapi.json
+    type: OpenAPI
+  - url: openapi/ibm-quantum-runtime-jobs-openapi.yml
+    type: OpenAPI
+  - url: json-schema/ibm-quantum-job-schema.json
+    type: JSONSchema
+  - url: json-ld/ibm-quantum-context.jsonld
+    type: JSONLD
+  - url: capabilities/runtime-jobs.yaml
+    type: NaftikoCapability
+  - url: examples/ibm-quantum-create-sampler-job-example.json
+    type: Example
+  description: Submit Qiskit Runtime primitive jobs (Sampler and Estimator) to IBM Quantum hardware over the REST
+    API. Includes job creation, listing, retrieval, deletion, cancellation, results, logs, metrics, and tag
+    management. Job submission is rate-limited to 5 requests per minute per IAM token.
+- aid: ibm-quantum:qiskit-runtime-backends-api
+  name: Qiskit Runtime Backends API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Runtime
+  - Backends
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+    type: Documentation
+  - url: openapi/ibm-quantum-runtime-backends-openapi.yml
+    type: OpenAPI
+  - url: json-schema/ibm-quantum-backend-schema.json
+    type: JSONSchema
+  - url: capabilities/runtime-backends.yaml
+    type: NaftikoCapability
+  - url: examples/ibm-quantum-list-backends-example.json
+    type: Example
+  description: Discover available IBM Quantum backends (Heron, Eagle, and other QPUs plus simulators). Read backend
+    configuration, calibrated properties, defaults, and live status for circuit transpilation and scheduling.
+- aid: ibm-quantum:qiskit-runtime-sessions-api
+  name: Qiskit Runtime Sessions API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Runtime
+  - Sessions
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+    type: Documentation
+  - url: openapi/ibm-quantum-runtime-sessions-openapi.yml
+    type: OpenAPI
+  - url: json-schema/ibm-quantum-session-schema.json
+    type: JSONSchema
+  - url: capabilities/runtime-sessions.yaml
+    type: NaftikoCapability
+  - url: examples/ibm-quantum-create-session-example.json
+    type: Example
+  description: Create, inspect, update, and close Qiskit Runtime sessions for grouping primitive jobs against a
+    target backend with priority access. Supports dedicated and batch session modes with configurable max time
+    and interactive timeouts.
+- aid: ibm-quantum:qiskit-runtime-instances-api
+  name: Qiskit Runtime Instances API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Runtime
+  - Instances
+  - Accounts
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+    type: Documentation
+  - url: openapi/ibm-quantum-runtime-instances-openapi.yml
+    type: OpenAPI
+  - url: capabilities/runtime-instances.yaml
+    type: NaftikoCapability
+  description: Inspect the current Qiskit Runtime instance, view instance limits and configuration, and read
+    per-account configuration. Each Qiskit Runtime instance is identified by an IBM Cloud Service-CRN and
+    governs plan, allocation, region, and access.
+- aid: ibm-quantum:qiskit-runtime-analytics-api
+  name: Qiskit Runtime Analytics API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Runtime
+  - Analytics
+  - FinOps
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+    type: Documentation
+  - url: openapi/ibm-quantum-runtime-analytics-openapi.yml
+    type: OpenAPI
+  - url: capabilities/runtime-analytics.yaml
+    type: NaftikoCapability
+  description: Usage analytics and active-workload reporting for a Qiskit Runtime instance. Powers FinOps and
+    plan-utilization tracking against Open, Pay-As-You-Go, Flex, and Premium minute pools.
+- aid: ibm-quantum:qiskit-runtime-versions-api
+  name: Qiskit Runtime Versions API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Runtime
+  - Versions
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+    type: Documentation
+  - url: openapi/ibm-quantum-runtime-versions-openapi.yml
+    type: OpenAPI
+  - url: capabilities/runtime-versions.yaml
+    type: NaftikoCapability
+  description: Discover supported versions of the Qiskit Runtime REST API and negotiate the date-based
+    IBM-API-Version header value.
+- aid: ibm-quantum:qiskit-functions-catalog-api
+  name: Qiskit Functions Catalog API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Functions
+  humanURL: https://github.com/Qiskit/qiskit-ibm-catalog
+  properties:
+  - url: https://github.com/Qiskit/qiskit-ibm-catalog
+    type: Documentation
+  - url: https://github.com/Qiskit/qiskit-ibm-catalog
+    type: SourceCode
+  description: Premium / Flex-tier service for discovering and invoking abstracted Qiskit Functions — pre-packaged
+    quantum-classical workflows (e.g. circuit cutting, error-mitigation pipelines) callable through the
+    qiskit-ibm-catalog Python client. Accessible via the QiskitFunctionsCatalog object (catalog.list / load,
+    function.run).
+- aid: ibm-quantum:qiskit-transpiler-as-a-service-api
+  name: Qiskit Transpiler as a Service API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Transpiler
+  humanURL: https://quantum.cloud.ibm.com/docs/
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/
+    type: Documentation
+  description: Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates
+    and backend topology. Bundled with Flex and Premium plans.
+common:
+- url: https://www.ibm.com/quantum
+  type: Portal
+- url: https://quantum.cloud.ibm.com/
+  type: Portal
+- url: https://quantum.cloud.ibm.com/docs
+  type: Documentation
+- url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  type: Documentation
+- url: https://quantum.cloud.ibm.com/api/openapi.json
+  name: Qiskit Runtime OpenAPI specification
+  type: OpenAPI
+- url: https://quantum.cloud.ibm.com/docs/en/guides/plans-overview
+  name: Plans overview
+  type: Pricing
+- url: https://www.ibm.com/quantum/pricing
+  type: Pricing
+- url: https://docs.quantum.ibm.com/start
+  name: Get Started
+  type: GettingStarted
+- url: https://quantum.cloud.ibm.com/composer
+  name: IBM Quantum Composer
+  type: Sandbox
+- url: https://quantum.cloud.ibm.com/learning
+  name: IBM Quantum Learning
+  type: Training
+- url: https://www.ibm.com/quantum/network
+  name: IBM Quantum Network
+  type: Community
+- url: https://www.ibm.com/quantum/blog
+  type: Blog
+- url: https://research.ibm.com/quantum-computing
+  type: Research
+- url: https://cloud.ibm.com/status
+  type: StatusPage
+- url: https://cloud.ibm.com/registration
+  type: SignUp
+- url: https://www.ibm.com/cloud/iam
+  name: IBM Cloud IAM
+  type: Authentication
+- url: https://www.ibm.com/legal
+  type: TermsOfService
+- url: https://www.ibm.com/privacy
+  type: PrivacyPolicy
+- url: https://www.ibm.com/trust
+  type: TrustCenter
+- url: https://github.com/Qiskit
+  type: GitHubOrganization
+- url: https://github.com/qiskit-community
+  name: Qiskit Community GitHub
+  type: GitHubOrganization
+- url: https://github.com/Qiskit/qiskit
+  name: Qiskit SDK (Python + Rust)
+  type: SDK
+- url: https://github.com/Qiskit/qiskit-ibm-runtime
+  name: qiskit-ibm-runtime — Python client
+  type: SDK
+- url: https://github.com/Qiskit/qiskit-ibm-runtime-c
+  name: qiskit-ibm-runtime-c — C / Rust client
+  type: SDK
+- url: https://github.com/Qiskit/qiskit-ibm-catalog
+  name: qiskit-ibm-catalog — Qiskit Functions client
+  type: SDK
+- url: https://github.com/Qiskit/qiskit-aer
+  name: Qiskit Aer — high-performance simulator
+  type: SDK
+- url: https://github.com/Qiskit/qiskit-serverless
+  name: Qiskit Serverless
+  type: Tool
+- url: https://github.com/Qiskit/qiskit-fermions
+  name: Qiskit Fermions
+  type: Tool
+- url: https://github.com/Qiskit/ecosystem
+  name: Qiskit Ecosystem registry
+  type: CodeExamples
+- url: https://github.com/Qiskit/documentation
+  name: Qiskit Documentation source
+  type: Documentation
+- url: https://pypi.org/project/qiskit/
+  name: qiskit on PyPI
+  type: Package
+- url: https://pypi.org/project/qiskit-ibm-runtime/
+  name: qiskit-ibm-runtime on PyPI
+  type: Package
+- url: https://qisk.it/join-slack
+  name: Qiskit Slack
+  type: Forum
+- url: https://stackoverflow.com/questions/tagged/qiskit
+  name: Qiskit on Stack Overflow
+  type: Forum
+- url: plans/ibm-quantum-plans-pricing.yml
+  type: Plans
+- url: rate-limits/ibm-quantum-rate-limits.yml
+  type: RateLimits
+- url: finops/ibm-quantum-finops.yml
+  type: FinOps
+- url: rules/ibm-quantum-rules.yml
+  type: SpectralRuleset
+- url: vocabulary/ibm-quantum-vocabulary.yml
+  type: Vocabulary
+- type: Features
+  data:
+  - 100+ qubit IBM Quantum processing units (Heron r2 generation) accessible via Qiskit Runtime
+  - Sampler primitive — circuit sampling for distribution-level results
+  - Estimator primitive — expectation value evaluation for observables
+  - Sessions for grouping primitive jobs with priority backend access
+  - Error suppression and mitigation (dynamical decoupling, ZNE, PEC, readout mitigation, noise-aware compilation)
+  - Qiskit SDK 2.x — open-source Python + Rust + C quantum circuit framework
+  - qiskit-ibm-runtime Python client for the REST API
+  - Qiskit C API for low-level integration in C/Rust applications
+  - Qiskit Functions — pre-packaged quantum-classical workflows on Flex and Premium
+  - Qiskit Transpiler as a Service — AI-augmented cloud transpilation
+  - Qiskit Serverless — distributed quantum + classical execution
+  - Qiskit Aer — high-performance noisy simulator
+  - IBM Quantum Composer — drag-and-drop circuit builder
+  - OpenQASM 2 and OpenQASM 3 program input
+  - Date-based API versioning via the IBM-API-Version header
+  - Global and EU-DE regional endpoints
+  - IBM Cloud IAM bearer authentication, Service-CRN per instance
+  - Five access plans — Open (free), Pay-As-You-Go, Flex, Premium, On-Premises
+  - 10 free minutes / 28-day rolling window on Open Plan, with an opt-in 180-minute / 12-month bonus
+  - Analytics endpoints for FinOps reporting per instance
+  - Apache 2.0 license across Qiskit core, qiskit-ibm-runtime, qiskit-ibm-catalog, ecosystem repos
+  - Active ecosystem registry of community Qiskit-compatible projects
+  sources:
+  - https://quantum.cloud.ibm.com/
+  - https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - https://quantum.cloud.ibm.com/docs/en/guides/plans-overview
+  - https://github.com/Qiskit
+  - https://www.ibm.com/quantum/blog/flex-plan
+  updated: '2026-05-25'
+created: '2026-05-25'
+modified: '2026-05-25'
+position: Producing
+description: IBM Quantum is IBM's quantum computing program — the operator of the IBM Quantum Platform
+  (quantum.cloud.ibm.com), the publisher of the open-source Qiskit SDK, and the provider of the Qiskit Runtime
+  REST API for submitting Sampler and Estimator primitive jobs to 100+ qubit Heron-generation QPUs and managed
+  simulators. The platform combines an Apache-2.0 software stack (Qiskit, qiskit-ibm-runtime, qiskit-ibm-catalog,
+  Qiskit Aer, Qiskit Serverless, Qiskit Functions) with a tiered access model (Open / Pay-As-You-Go / Flex /
+  Premium / On-Premises) and is the longest-running commercial quantum computing API surface in the industry.
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
+  X: apievangelist
+  url: https://apievangelist.com
+specificationVersion: '0.16'

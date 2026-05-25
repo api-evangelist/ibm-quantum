@@ -1,0 +1,153 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: IBM Quantum
+providerId: ibm-quantum
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - Quantum Computing
+  - IBM Quantum
+  - Qiskit
+  - Qiskit Runtime
+description: 'Reconciled IBM Quantum Platform access plans. Sources: quantum.cloud.ibm.com plan overview, ibm.com/quantum/pricing, IBM Quantum Flex Plan announcement.'
+sources:
+  - https://quantum.cloud.ibm.com/docs/en/guides/plans-overview
+  - https://www.ibm.com/quantum/pricing
+  - https://www.ibm.com/quantum/blog/flex-plan
+plans:
+  - id: ibm-quantum-open
+    name: Open Plan
+    type: free
+    description: Free access for those learning quantum computing and exploring IBM quantum technology.
+    entries:
+      - label: Free quantum compute minutes
+        name: open_minutes
+        type: metered
+        metric: minutes
+        limit: 10
+        timeFrame: 28-day rolling window
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Promotional bonus minutes
+        name: open_promo_minutes
+        type: metered
+        metric: minutes
+        limit: 180
+        timeFrame: 12 months
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Access to IBM Quantum hardware (100+ qubit QPUs)
+      - name: Qiskit SDK and Qiskit Runtime primitives
+      - name: Qiskit Composer graphical circuit builder
+      - name: Documentation, tutorials, learning resources
+      - name: Up to 10 execution minutes per 28-day rolling window
+  - id: ibm-quantum-pay-as-you-go
+    name: Pay-As-You-Go
+    type: usage-based
+    description: Per-second metered access for quantum utility research projects and business model testing.
+    entries:
+      - label: Quantum compute time
+        name: payg_seconds
+        type: metered
+        metric: seconds
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '1.60'
+        userMultiplied: false
+    elements:
+      - name: Per-second billing in arrears
+      - name: No minimum commitment
+      - name: Access to IBM Quantum QPUs and simulators
+      - name: Qiskit Runtime Sampler and Estimator primitives
+      - name: Standard error mitigation features
+  - id: ibm-quantum-flex
+    name: Flex Plan
+    type: prepaid
+    description: Pre-purchased minutes giving Premium-level access without a full Premium subscription. Designed for project-based research between Pay-As-You-Go and Premium scale.
+    entries:
+      - label: Pre-purchased compute minute
+        name: flex_minute
+        type: metered
+        metric: minutes
+        limit: -1
+        timeFrame: 12 months
+        geo: global
+        unit: 1
+        price: '72.00'
+        userMultiplied: false
+      - label: Minimum purchase commitment
+        name: flex_minimum
+        type: one-time
+        metric: USD
+        limit: -1
+        timeFrame: 12 months
+        geo: global
+        unit: 1
+        price: '30000.00'
+        userMultiplied: false
+    elements:
+      - name: Pre-purchased minutes usable within one year
+      - name: Premium-level access to IBM Quantum systems
+      - name: Allocate minutes across instances
+      - name: Qiskit Functions and Qiskit Transpiler as a Service access
+      - name: Minimum $30,000 commitment, $72 per compute minute
+  - id: ibm-quantum-premium
+    name: Premium Plan
+    type: subscription
+    description: Annual enterprise subscription for executing a strategic quantum roadmap at scale.
+    entries:
+      - label: Premium minute
+        name: premium_minute
+        type: metered
+        metric: minutes
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '48.00'
+        userMultiplied: false
+      - label: Annual subscription floor
+        name: premium_floor
+        type: subscription
+        metric: minutes
+        limit: 5200
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: 'Call'
+        userMultiplied: false
+    elements:
+      - name: Largest reserved access to IBM Quantum systems
+      - name: Qiskit Functions
+      - name: Qiskit Transpiler as a Service
+      - name: Priority queueing and reserved capacity
+      - name: Multi-instance and multi-team allocation
+  - id: ibm-quantum-on-premises
+    name: On-Premises
+    type: enterprise
+    description: Dedicated on-premises IBM Quantum system serviced and maintained by IBM Quantum, for organizations needing maximum control over resources and data.
+    entries:
+      - label: Dedicated on-premises system
+        name: on_premises
+        type: enterprise
+        metric: system
+        limit: -1
+        timeFrame: contract
+        geo: customer-site
+        unit: 1
+        price: 'Call'
+        userMultiplied: false
+    elements:
+      - name: Fully dedicated quantum system on customer premises
+      - name: IBM-managed installation and maintenance
+      - name: Full data sovereignty
+      - name: Tailored hardware roadmap

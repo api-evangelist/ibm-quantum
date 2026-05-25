@@ -1,0 +1,79 @@
+vocabulary: IBM Quantum
+provider: IBM Quantum
+providerId: ibm-quantum
+created: '2026-05-25'
+modified: '2026-05-25'
+description: Operational and capability vocabulary for IBM Quantum — terms surfaced by Qiskit, IBM Quantum Platform, and the Qiskit Runtime REST API. Use this taxonomy to align IBM Quantum artifacts with the API Evangelist API Commons schema.
+dimensions:
+  domain:
+    - Quantum Computing
+    - High Performance Computing
+    - Scientific Computing
+    - Optimization
+    - Quantum Chemistry
+    - Materials Science
+    - Finance
+    - Machine Learning
+  capability:
+    - Quantum Circuit Execution
+    - Quantum Circuit Simulation
+    - Quantum Primitives — Sampler
+    - Quantum Primitives — Estimator
+    - Error Suppression
+    - Error Mitigation
+    - Quantum Compilation
+    - Transpilation
+    - Session Management
+    - Workload Analytics
+    - Job Lifecycle Management
+  surface:
+    - Qiskit SDK (Python)
+    - Qiskit C API
+    - Qiskit Runtime REST API
+    - Qiskit Runtime Python Client
+    - Qiskit Functions Catalog
+    - IBM Quantum Platform Web UI
+    - IBM Quantum Composer
+  primitives:
+    - Sampler
+    - Estimator
+  hardware:
+    - Heron processor family
+    - Eagle processor family
+    - Condor processor family
+    - Hummingbird processor family
+  software_concepts:
+    - Quantum Circuit
+    - OpenQASM 2
+    - OpenQASM 3
+    - Pulse Schedule
+    - Backend
+    - Coupling Map
+    - Basis Gates
+    - Shots
+    - Observables
+    - Sampler Pubs
+    - Estimator Pubs
+    - Quantum Primitive Unified Bloc (PUB)
+  business_concepts:
+    - Open Plan
+    - Pay-As-You-Go Plan
+    - Flex Plan
+    - Premium Plan
+    - On-Premises Plan
+    - Qiskit Functions
+    - Qiskit Transpiler as a Service
+    - Quantum compute time (QPU seconds, QPU minutes)
+    - Service-CRN (instance identifier)
+    - IBM Cloud IAM
+  governance:
+    - Apache 2.0 license (Qiskit, Qiskit Runtime, ecosystem)
+    - IBM-API-Version header (date-based version pin)
+    - Regional endpoints (Global, EU-DE)
+    - Private jobs (encrypted results)
+  ecosystem:
+    - Qiskit Ecosystem registry
+    - Qiskit Advocate Program
+    - IBM Quantum Network
+    - Qiskit Slack
+    - Qiskit GitHub organization

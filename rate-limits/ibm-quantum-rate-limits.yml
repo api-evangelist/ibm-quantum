@@ -1,0 +1,66 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: IBM Quantum
+providerId: ibm-quantum
+created: '2026-05-25'
+modified: '2026-05-25'
+description: Documented rate limits for the IBM Quantum Platform (Qiskit Runtime REST API). Per-IAM-token request rate caps and per-instance quantum compute minute quotas pulled from the platform documentation and OpenAPI description.
+sources:
+  - https://quantum.cloud.ibm.com/docs/en/guides/plans-overview
+  - https://quantum.cloud.ibm.com/api/openapi.json
+  - https://www.ibm.com/quantum/blog/flex-plan
+policies:
+  - id: jobs-create-rate
+    name: Job submission rate
+    appliesTo:
+      - POST /v1/jobs
+    scope: per IBM Cloud IAM token
+    type: request-rate
+    limit: 5
+    window: 1m
+    description: The Qiskit Runtime REST API limits job creation (POST /v1/jobs) to 5 requests per minute per IAM token. Documented directly in the OpenAPI description for the create-jobs operation.
+  - id: open-plan-quantum-minutes
+    name: Open Plan quantum compute minutes
+    appliesTo:
+      - all primitive jobs submitted via the Open Plan
+    scope: per IBM Quantum account
+    type: quota
+    limit: 10
+    window: 28d-rolling
+    description: Open Plan users receive up to 10 quantum compute minutes per 28-day rolling window. Active Open Plan users could also opt in (as of March 2026) for an additional 180 minutes over 12 months.
+  - id: open-plan-promo-minutes
+    name: Open Plan promotional minutes
+    appliesTo:
+      - all primitive jobs submitted via the Open Plan
+    scope: per IBM Quantum account (opt-in)
+    type: quota
+    limit: 180
+    window: 12m
+    description: Promotional bonus of 180 additional quantum compute minutes available to active Open Plan users over 12 months.
+  - id: instance-allocation
+    name: Instance allocation
+    appliesTo:
+      - all Qiskit Runtime instances
+    scope: per instance
+    type: quota
+    limit: configurable
+    window: per instance configuration
+    description: Each Qiskit Runtime instance carries an allocation that bounds total minute consumption and concurrency. Inspect via GET /v1/instance and GET /v1/instances/configuration.
+  - id: regional-endpoints
+    name: Regional endpoint selection
+    appliesTo:
+      - all endpoints
+    scope: per-request
+    type: regional
+    limit: -1
+    window: per request
+    description: Choose between the global endpoint (quantum.cloud.ibm.com) and the EU-DE regional endpoint (eu-de.quantum.cloud.ibm.com) at request time. Some instances and QPUs are region-bound.
+headers:
+  - name: IBM-API-Version
+    description: Required date-based API version (e.g. 2026-03-15). Acts as a contract pin and may affect available endpoints.
+  - name: Service-CRN
+    description: Identifies the Qiskit Runtime instance the request is billed against; required for all data-plane calls.
+notes:
+  - All authenticated requests are scoped by IBM Cloud IAM token + Service-CRN; quota and concurrency apply at the instance level.
+  - Pay-As-You-Go and Flex usage is metered in seconds (PAYG) and minutes (Flex/Premium) of quantum time.

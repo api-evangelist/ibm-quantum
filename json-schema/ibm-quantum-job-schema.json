@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/ibm-quantum/ibm-quantum-job-schema.json",
+  "title": "IBM Quantum Runtime Job",
+  "description": "Schema for an IBM Qiskit Runtime job — the unit of execution submitted via POST /v1/jobs and inspected via GET /v1/jobs/{id} on the Qiskit Runtime REST API.",
+  "type": "object",
+  "definitions": {
+    "JobCreateRequest": {
+      "type": "object",
+      "description": "Request body for POST /v1/jobs to submit a Qiskit Runtime primitive job (sampler or estimator).",
+      "required": ["program_id", "backend", "params"],
+      "properties": {
+        "program_id": {
+          "type": "string",
+          "description": "The Qiskit Runtime primitive to invoke.",
+          "enum": ["sampler", "estimator"]
+        },
+        "backend": {
+          "type": "string",
+          "description": "Name of the IBM Quantum backend (QPU or simulator) on which to execute."
+        },
+        "hub": { "type": "string", "description": "Legacy hub identifier (deprecated)." },
+        "group": { "type": "string", "description": "Legacy group identifier (deprecated)." },
+        "project": { "type": "string", "description": "Legacy project identifier (deprecated)." },
+        "session_id": { "type": "string", "description": "Optional Qiskit Runtime session to attach the job to." },
+        "tags": {
+          "type": "array",
+          "description": "User tags applied to the job for filtering and cost-allocation.",
+          "items": { "type": "string" }
+        },
+        "params": {
+          "type": "object",
+          "description": "Primitive-specific input. For sampler: circuits + shots. For estimator: circuits + observables + parameters.",
+          "additionalProperties": true
+        },
+        "private": {
+          "type": "boolean",
+          "description": "When true, results are stored encrypted and not accessible via shared analytics."
+        }
+      }
+    },
+    "Job": {
+      "type": "object",
+      "description": "A Qiskit Runtime job record returned by the REST API.",
+      "required": ["id", "backend", "program", "status", "created"],
+      "properties": {
+        "id": { "type": "string", "description": "Job identifier (e.g. ch1g5sgsf...)." },
+        "backend": { "type": "string", "description": "Backend on which the job ran." },
+        "program": {
+          "type": "string",
+          "description": "Primitive that was executed.",
+          "enum": ["sampler", "estimator"]
+        },
+        "status": {
+          "type": "string",
+          "description": "Lifecycle state of the job.",
+          "enum": [
+            "Initializing",
+            "Queued",
+            "Validating",
+            "Running",
+            "Completed",
+            "Cancelled",
+            "Failed",
+            "CancelledMaxExecutionTimeReached"
+          ]
+        },
+        "created": { "type": "string", "format": "date-time" },
+        "ended": { "type": "string", "format": "date-time" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "session_id": { "type": "string" },
+        "private": { "type": "boolean" },
+        "usage": { "$ref": "#/definitions/Usage" }
+      }
+    },
+    "Usage": {
+      "type": "object",
+      "description": "Quantum compute time consumed by the job.",
+      "properties": {
+        "quantum_seconds": { "type": "number", "minimum": 0 },
+        "seconds": { "type": "number", "minimum": 0 }
+      }
+    },
+    "JobResult": {
+      "type": "object",
+      "description": "Result envelope returned by GET /v1/jobs/{id}/results.",
+      "properties": {
+        "results": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "metadata": { "type": "object", "additionalProperties": true }
+      }
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/definitions/JobCreateRequest" },
+    { "$ref": "#/definitions/Job" },
+    { "$ref": "#/definitions/JobResult" }
+  ]
+}

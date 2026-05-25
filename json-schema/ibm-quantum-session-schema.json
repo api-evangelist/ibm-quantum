@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/ibm-quantum/ibm-quantum-session-schema.json",
+  "title": "IBM Quantum Runtime Session",
+  "description": "Schema for a Qiskit Runtime session returned by GET /v1/sessions/{id} on the Qiskit Runtime REST API. A session reserves priority access to a backend for a group of primitive jobs.",
+  "type": "object",
+  "required": ["id", "backend_name", "state"],
+  "properties": {
+    "id": { "type": "string", "description": "Session identifier." },
+    "backend_name": { "type": "string", "description": "Backend the session is reserved against." },
+    "mode": {
+      "type": "string",
+      "description": "Execution mode for the session.",
+      "enum": ["dedicated", "batch"]
+    },
+    "max_time": { "type": "integer", "description": "Maximum total session wall-clock time in seconds." },
+    "max_session_ttl": { "type": "integer", "description": "Maximum idle TTL for the session in seconds." },
+    "state": {
+      "type": "string",
+      "description": "Lifecycle state of the session.",
+      "enum": ["open", "active", "inactive", "closed"]
+    },
+    "interactive_timeout": { "type": "integer" },
+    "active_at": { "type": "string", "format": "date-time" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "closed_at": { "type": "string", "format": "date-time" },
+    "instance": { "type": "string", "description": "Service-CRN of the owning instance." },
+    "accepting_jobs": { "type": "boolean" },
+    "elapsed_time": { "type": "number", "description": "Elapsed quantum compute time in seconds." }
+  }
+}

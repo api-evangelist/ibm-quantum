@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://quantum.cloud.ibm.com/api/v1/sessions",
+    "headers": {
+      "Authorization": "Bearer <IAM_BEARER_TOKEN>",
+      "Service-CRN": "crn:v1:bluemix:public:quantum-computing:us-east:a/<account>:<instance>::",
+      "IBM-API-Version": "2026-03-15",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "backend_name": "ibm_kingston",
+      "mode": "dedicated",
+      "max_time": 7200
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "cs2g5sgsf3qf8e8d6a0g",
+      "backend_name": "ibm_kingston",
+      "mode": "dedicated",
+      "state": "open",
+      "max_time": 7200,
+      "accepting_jobs": true,
+      "created_at": "2026-05-25T15:34:22.000Z"
+    }
+  }
+}

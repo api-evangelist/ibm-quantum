@@ -1,0 +1,38 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://quantum.cloud.ibm.com/api/v1/jobs",
+    "headers": {
+      "Authorization": "Bearer <IAM_BEARER_TOKEN>",
+      "Service-CRN": "crn:v1:bluemix:public:quantum-computing:us-east:a/<account>:<instance>::",
+      "IBM-API-Version": "2026-03-15",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "program_id": "sampler",
+      "backend": "ibm_kingston",
+      "tags": ["bell-pair", "demo"],
+      "params": {
+        "pubs": [
+          {
+            "circuit": "OPENQASM 3.0; include \"stdgates.inc\"; qubit[2] q; bit[2] c; h q[0]; cx q[0], q[1]; c = measure q;",
+            "shots": 1024
+          }
+        ],
+        "version": 2
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "ch1g5sgsf3qf8e8d6a0g",
+      "backend": "ibm_kingston",
+      "program": "sampler",
+      "status": "Queued",
+      "created": "2026-05-25T15:32:11.000Z",
+      "tags": ["bell-pair", "demo"],
+      "private": false
+    }
+  }
+}

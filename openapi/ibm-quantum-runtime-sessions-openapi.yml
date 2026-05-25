@@ -1,0 +1,420 @@
+openapi: 3.0.0
+info:
+  title: Qiskit Runtime Sessions API
+  version: 0.45.3
+  description: Create, inspect, update, and close Qiskit Runtime sessions for grouping primitive jobs together with priority access to a target backend.
+  contact:
+    name: IBM Quantum
+    url: https://quantum.cloud.ibm.com
+  license:
+    name: IBM
+    url: https://www.ibm.com/legal
+servers:
+- url: https://quantum.cloud.ibm.com/api
+  description: Global region
+- url: https://eu-de.quantum.cloud.ibm.com/api
+  description: EU-DE region
+tags:
+- name: Sessions
+paths:
+  /v1/sessions:
+    post:
+      tags:
+      - Sessions
+      summary: Create a Session
+      description: Create a session
+      operationId: create_session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSession'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.session.create
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.session.create
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+  /v1/sessions/{id}:
+    get:
+      tags:
+      - Sessions
+      summary: Get a Session
+      description: Get a session
+      operationId: get_session
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSession'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.session.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.session.read
+    patch:
+      tags:
+      - Sessions
+      summary: Update a Session
+      description: Update a session
+      operationId: update_session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSessionRequest'
+      responses:
+        '204':
+          description: Successfully updated session
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.session.update
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.session.update
+    parameters:
+    - schema:
+        type: string
+      name: id
+      description: Job Session ID
+      in: path
+      required: true
+    - $ref: '#/components/parameters/IBM-API-Version'
+  /v1/sessions/{id}/close:
+    delete:
+      tags:
+      - Sessions
+      summary: Close Job Session
+      operationId: delete_session_close
+      parameters:
+      - schema:
+          type: string
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 500
+        name: id
+        description: Session Id
+        in: path
+        required: true
+      responses:
+        '204':
+          description: Successfully closed runtime session
+      description: 'Closes the runtime session. The session stops accepting new jobs and queued jobs will not run.
+
+        Existing running jobs will run to completion. This is analogous to the `cancel()` function in Qiskit.
+
+        '
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.session.update
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.session.update
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+components:
+  schemas:
+    AcceptingJobs:
+      type: boolean
+      description: If true, the session is actively accepting new jobs to be queued. If false, jobs will be rejected on create and the session will be immediately closed when there are no more jobs to run in the session.
+    BaseCreateSessionRequest:
+      type: object
+      description: Base request schema to create a session.
+      properties:
+        max_ttl:
+          type: integer
+          description: The maximum time (in seconds) for the session to run, subject to plan limits.
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          default: 28800
+        mode:
+          $ref: '#/components/schemas/ExecutionMode'
+        backend:
+          type: string
+          description: Backend name
+        backend_name:
+          type: string
+          description: Backend name (fallback)
+      required:
+      - mode
+    CreateSessionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateSessionRequestCloud'
+      - $ref: '#/components/schemas/CreateSessionRequestChannelPartner'
+    CreateSessionRequestChannelPartner:
+      allOf:
+      - $ref: '#/components/schemas/BaseCreateSessionRequest'
+      type: object
+      description: Request to create a session. Only for use by channel partner.
+      properties:
+        interactive_ttl:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The maximum time (in seconds) between jobs to keep the session active. Must be less than or equal to `active_ttl`.
+        active_ttl:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The remaining time (in seconds) for the session to be in the active state while jobs are running. Must be less than or equal to `max_ttl`. Defaults to `max_ttl`.
+      required:
+      - interactive_ttl
+      example:
+        interactive_ttl: 1
+        max_ttl: 28800
+        active_ttl: 28800
+        mode: batch
+        backend: ibm_backend
+    CreateSessionRequestCloud:
+      allOf:
+      - $ref: '#/components/schemas/BaseCreateSessionRequest'
+      - description: Request to create a session. Only for use with IBM Cloud Channel.
+      example:
+        mode: dedicated
+        max_ttl: 28800
+        backend: ibm_backend
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    ExecutionMode:
+      type: string
+      description: Execution mode to run the session in
+      enum:
+      - batch
+      - dedicated
+    JobSession:
+      type: object
+      description: Job session
+      properties:
+        id:
+          type: string
+          description: Job ID
+        backend_name:
+          type: string
+          description: Backend name. May not be set when in the "open" state.
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the session was started
+        activated_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the session state was changed to active
+        closed_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the session was closed
+        last_job_started:
+          type: string
+          format: date-time
+          description: Timestamp of when the last job in the session started
+        last_job_completed:
+          type: string
+          format: date-time
+          description: Timestamp of when the last job in the session completed
+        interactive_ttl:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The maximum time (in seconds) between jobs to keep the session active
+        max_ttl:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The maximum time (in seconds) for session to run, subject to plan limits
+        active_ttl:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The remaining time (in seconds) for the session to be in the active state while jobs are running.
+        state:
+          $ref: '#/components/schemas/SessionState'
+        state_reason:
+          $ref: '#/components/schemas/SessionStateReason'
+        accepting_jobs:
+          $ref: '#/components/schemas/AcceptingJobs'
+        mode:
+          $ref: '#/components/schemas/ExecutionMode'
+        timestamps:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionTimestamp'
+        user_id:
+          type: string
+          description: The id of the user who created the session.
+        elapsed_time:
+          type: number
+          description: Usage in seconds. Can be null for ongoing sessions.
+          example: 1.432
+      required:
+      - id
+      - backend_name
+      - mode
+    SessionState:
+      type: string
+      enum:
+      - open
+      - active
+      - inactive
+      - closed
+      description: 'The state of the session.
+
+        - open: The session is waiting to run jobs.
+
+        - active: The session has priority to run jobs on the backend and is running jobs or is waiting for more jobs to run.
+
+        - inactive: The session does not have priority and is not running any jobs.
+
+        - closed: The session is not running any jobs and will not accept/run new jobs.
+
+        '
+    SessionStateReason:
+      type: string
+      description: The reason for the state change.
+    SessionTimestamp:
+      type: object
+      description: Contains information about the time a specific status transition happened
+      properties:
+        status:
+          $ref: '#/components/schemas/SessionState'
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of when the session transitioned into the given status
+      required:
+      - status
+      - timestamp
+    UpdateSessionRequest:
+      type: object
+      properties:
+        accepting_jobs:
+          $ref: '#/components/schemas/AcceptingJobs'
+      required:
+      - accepting_jobs
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: IBM Cloud IAM bearer token
+    ServiceCRN:
+      type: apiKey
+      in: header
+      name: Service-CRN
+      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
+    ApiVersion:
+      type: apiKey
+      in: header
+      name: IBM-API-Version
+      description: API version, e.g. 2026-03-15
+security:
+- BearerAuth: []
+  ServiceCRN: []
+  ApiVersion: []

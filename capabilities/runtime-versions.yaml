@@ -1,0 +1,77 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: "IBM Qiskit Runtime \u2014 Versions"
+  description: "IBM Qiskit Runtime \u2014 Versions. 1 operations across the IBM Qiskit Runtime REST API. Self-contained Naftiko capability covering one IBM Quantum business surface."
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit
+  - Versions
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    IBM_CLOUD_API_KEY: IBM_CLOUD_API_KEY
+    IBM_QUANTUM_CRN: IBM_QUANTUM_CRN
+    IBM_QUANTUM_API_VERSION: IBM_QUANTUM_API_VERSION
+capability:
+  consumes:
+  - type: http
+    namespace: runtime-versions
+    baseUri: https://quantum.cloud.ibm.com/api
+    description: "IBM Qiskit Runtime \u2014 Versions business capability. Self-contained, no shared references."
+    resources:
+    - name: v1-versions
+      path: /v1/versions
+      operations:
+      - name: get-versions
+        method: GET
+        description: Get Versions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      value: '{{env.IBM_CLOUD_API_KEY}}'
+      placement: header
+    defaultHeaders:
+      Service-CRN: '{{env.IBM_QUANTUM_CRN}}'
+      IBM-API-Version: '{{env.IBM_QUANTUM_API_VERSION}}'
+  exposes:
+  - type: rest
+    namespace: runtime-versions-rest
+    port: 8080
+    description: "REST adapter for IBM Qiskit Runtime \u2014 Versions. Spectral-compliant resources, prefixed with /v1."
+    resources:
+    - path: /v1/v1/versions
+      name: v1-versions
+      description: REST surface for v1-versions.
+      operations:
+      - method: GET
+        name: get-versions
+        description: Get Versions
+        call: runtime-versions.get-versions
+        with: {}
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: runtime-versions-mcp
+    port: 9090
+    transport: http
+    description: "MCP adapter for IBM Qiskit Runtime \u2014 Versions. One tool per consumed operation."
+    tools:
+    - name: ibm-quantum-get-versions
+      description: Get Versions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: runtime-versions.get-versions
+      with: {}
+      outputParameters:
+      - type: object
+        mapping: $.

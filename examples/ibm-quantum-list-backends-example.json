@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://quantum.cloud.ibm.com/api/v1/backends",
+    "headers": {
+      "Authorization": "Bearer <IAM_BEARER_TOKEN>",
+      "Service-CRN": "crn:v1:bluemix:public:quantum-computing:us-east:a/<account>:<instance>::",
+      "IBM-API-Version": "2026-03-15"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "devices": [
+        {
+          "name": "ibm_kingston",
+          "n_qubits": 156,
+          "simulator": false,
+          "operational": true,
+          "pending_jobs": 42,
+          "processor_type": { "family": "Heron", "revision": "r2" },
+          "basis_gates": ["cz", "sx", "x", "rz", "id"]
+        },
+        {
+          "name": "ibm_marrakesh",
+          "n_qubits": 156,
+          "simulator": false,
+          "operational": true,
+          "pending_jobs": 18,
+          "processor_type": { "family": "Heron", "revision": "r2" },
+          "basis_gates": ["cz", "sx", "x", "rz", "id"]
+        }
+      ]
+    }
+  }
+}
