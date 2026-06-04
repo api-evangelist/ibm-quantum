@@ -1,0 +1,169 @@
+arazzo: 1.0.1
+info:
+  title: IBM Quantum Submit Job and Poll Results
+  summary: Submit a Qiskit Runtime primitive job, poll until it reaches a terminal state, and fetch the final result.
+  description: >-
+    The canonical end-to-end Qiskit Runtime execution flow. The workflow first
+    confirms the target backend is online and reports its queue depth, then
+    invokes a Sampler or Estimator primitive with the supplied program id and
+    PUBs, polls the job status until it reaches a terminal Completed, Failed, or
+    Cancelled state, and finally retrieves the job's result payload. Every step
+    spells out its request inline — including the bearer token, Service-CRN, and
+    IBM-API-Version headers — so the flow can be read and executed without
+    opening the underlying OpenAPI descriptions.
+  version: 1.0.0
+sourceDescriptions:
+- name: jobsApi
+  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  type: openapi
+- name: backendsApi
+  url: ../openapi/ibm-quantum-runtime-backends-openapi.yml
+  type: openapi
+workflows:
+- workflowId: submit-job-and-poll-results
+  summary: Run a Qiskit Runtime primitive job on a backend and retrieve its results.
+  description: >-
+    Checks the backend status, submits a primitive job, polls the job until it
+    terminates, and returns the result payload.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - serviceCrn
+    - apiVersion
+    - backend
+    - programId
+    - params
+    properties:
+      accessToken:
+        type: string
+        description: IBM Cloud IAM bearer token used in the Authorization header.
+      serviceCrn:
+        type: string
+        description: IBM Cloud Service CRN identifying the Qiskit Runtime instance.
+      apiVersion:
+        type: string
+        description: API version date sent in the IBM-API-Version header (e.g. 2026-03-15).
+      backend:
+        type: string
+        description: Name of the backend on which to run the program (e.g. ibm_brisbane).
+      programId:
+        type: string
+        description: ID of the primitive program to execute (e.g. sampler or estimator).
+      params:
+        type: object
+        description: The primitive input params object (e.g. Sampler pubs).
+  steps:
+  - stepId: checkBackendStatus
+    description: >-
+      Confirm the target backend is reachable and report its operational state
+      and queue length before submitting work to it.
+    operationId: get_backend_status
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.backend
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      backendState: $response.body#/state
+      queueLength: $response.body#/length_queue
+  - stepId: submitJob
+    description: >-
+      Invoke the Qiskit Runtime primitive with the supplied program id, backend,
+      and params. The returned job id is used to poll status and fetch results.
+    operationId: create_job
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        program_id: $inputs.programId
+        backend: $inputs.backend
+        params: $inputs.params
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      jobId: $response.body#/id
+      assignedBackend: $response.body#/backend
+  - stepId: pollJobStatus
+    description: >-
+      Read the job details and branch on its status. A terminal status ends the
+      poll loop and routes to the result fetch; any non-terminal status loops
+      back to poll again.
+    operationId: get_job
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $steps.submitJob.outputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      jobStatus: $response.body#/status
+    onSuccess:
+    - name: jobCompleted
+      type: goto
+      stepId: fetchResults
+      criteria:
+      - context: $response.body
+        condition: $.status == "Completed"
+        type: jsonpath
+    - name: jobStillRunning
+      type: goto
+      stepId: pollJobStatus
+      criteria:
+      - context: $response.body
+        condition: $.status == "Queued" || $.status == "Running"
+        type: jsonpath
+  - stepId: fetchResults
+    description: >-
+      Retrieve the job's final result payload once the job has completed
+      successfully.
+    operationId: get_job_results_jid
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $steps.submitJob.outputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      results: $response.body
+  outputs:
+    jobId: $steps.submitJob.outputs.jobId
+    jobStatus: $steps.pollJobStatus.outputs.jobStatus
+    results: $steps.fetchResults.outputs.results

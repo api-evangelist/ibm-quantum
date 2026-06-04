@@ -1,0 +1,128 @@
+arazzo: 1.0.1
+info:
+  title: IBM Quantum Job Results and Logs
+  summary: Poll a job to completion, then retrieve both its result payload and its execution logs.
+  description: >-
+    A diagnostics flow for a known job. The workflow polls a job by id until it
+    reaches a terminal state, branches on whether it completed or failed, and on
+    completion pulls both the final result payload and the plain-text execution
+    logs so a user can reconcile output against runtime messages. Each request
+    inlines its bearer token, Service-CRN, and IBM-API-Version headers so the
+    flow can be read and executed without opening the underlying OpenAPI
+    descriptions.
+  version: 1.0.0
+sourceDescriptions:
+- name: jobsApi
+  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  type: openapi
+workflows:
+- workflowId: job-results-and-logs
+  summary: Poll a job to a terminal state, then collect its results and logs.
+  description: >-
+    Polls a job until it terminates and, on success, fetches the result payload
+    and the execution logs.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - serviceCrn
+    - apiVersion
+    - jobId
+    properties:
+      accessToken:
+        type: string
+        description: IBM Cloud IAM bearer token used in the Authorization header.
+      serviceCrn:
+        type: string
+        description: IBM Cloud Service CRN identifying the Qiskit Runtime instance.
+      apiVersion:
+        type: string
+        description: API version date sent in the IBM-API-Version header (e.g. 2026-03-15).
+      jobId:
+        type: string
+        description: Identifier of the job to poll and collect output from.
+  steps:
+  - stepId: pollJob
+    description: >-
+      Read the job and loop until it reaches a terminal status. A Completed
+      status routes to the result fetch; Queued or Running loops back.
+    operationId: get_job
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      jobStatus: $response.body#/status
+    onSuccess:
+    - name: completed
+      type: goto
+      stepId: fetchResults
+      criteria:
+      - context: $response.body
+        condition: $.status == "Completed"
+        type: jsonpath
+    - name: stillRunning
+      type: goto
+      stepId: pollJob
+      criteria:
+      - context: $response.body
+        condition: $.status == "Queued" || $.status == "Running"
+        type: jsonpath
+  - stepId: fetchResults
+    description: >-
+      Retrieve the completed job's final result payload.
+    operationId: get_job_results_jid
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      results: $response.body
+  - stepId: fetchLogs
+    description: >-
+      Retrieve the plain-text execution logs for the job to accompany the
+      results.
+    operationId: get_jog_logs_jid
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      logs: $response.body
+  outputs:
+    jobStatus: $steps.pollJob.outputs.jobStatus
+    results: $steps.fetchResults.outputs.results
+    logs: $steps.fetchLogs.outputs.logs

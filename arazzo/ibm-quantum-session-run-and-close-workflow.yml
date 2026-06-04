@@ -1,0 +1,133 @@
+arazzo: 1.0.1
+info:
+  title: IBM Quantum Session Run and Close
+  summary: Open a Qiskit Runtime session, run a job inside it, then close the session.
+  description: >-
+    The session lifecycle pattern for iterative workloads. The workflow opens a
+    runtime session bound to a backend, submits a primitive job that references
+    the session id so it inherits the session's priority, confirms the job was
+    accepted, and finally closes the session so it stops accepting new jobs.
+    Each request inlines its bearer token, Service-CRN, and IBM-API-Version
+    headers so the flow can be read and executed without opening the underlying
+    OpenAPI descriptions.
+  version: 1.0.0
+sourceDescriptions:
+- name: sessionsApi
+  url: ../openapi/ibm-quantum-runtime-sessions-openapi.yml
+  type: openapi
+- name: jobsApi
+  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  type: openapi
+workflows:
+- workflowId: session-run-and-close
+  summary: Create a session, run a job within it, and close it when done.
+  description: >-
+    Opens a session, submits a job bound to the session, and closes the session
+    once the job is queued.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - serviceCrn
+    - apiVersion
+    - backend
+    - mode
+    - programId
+    - params
+    properties:
+      accessToken:
+        type: string
+        description: IBM Cloud IAM bearer token used in the Authorization header.
+      serviceCrn:
+        type: string
+        description: IBM Cloud Service CRN identifying the Qiskit Runtime instance.
+      apiVersion:
+        type: string
+        description: API version date sent in the IBM-API-Version header (e.g. 2026-03-15).
+      backend:
+        type: string
+        description: Name of the backend the session will run on.
+      mode:
+        type: string
+        description: Execution mode for the session, either batch or dedicated.
+      programId:
+        type: string
+        description: ID of the primitive program to execute in the session.
+      params:
+        type: object
+        description: The primitive input params object.
+  steps:
+  - stepId: createSession
+    description: >-
+      Open a runtime session bound to the chosen backend and execution mode, and
+      capture the new session id.
+    operationId: create_session
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        backend: $inputs.backend
+        mode: $inputs.mode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sessionId: $response.body#/id
+      sessionState: $response.body#/state
+  - stepId: runJobInSession
+    description: >-
+      Submit a primitive job that references the session id so it runs with the
+      session's priority on the backend.
+    operationId: create_job
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        program_id: $inputs.programId
+        backend: $inputs.backend
+        session_id: $steps.createSession.outputs.sessionId
+        params: $inputs.params
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      jobId: $response.body#/id
+  - stepId: closeSession
+    description: >-
+      Close the runtime session so it stops accepting new jobs; any running jobs
+      run to completion.
+    operationId: delete_session_close
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $steps.createSession.outputs.sessionId
+    successCriteria:
+    - condition: $statusCode == 204
+  outputs:
+    sessionId: $steps.createSession.outputs.sessionId
+    jobId: $steps.runJobInSession.outputs.jobId

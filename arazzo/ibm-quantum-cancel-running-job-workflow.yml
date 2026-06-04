@@ -1,0 +1,124 @@
+arazzo: 1.0.1
+info:
+  title: IBM Quantum Cancel Running Job
+  summary: Check a job's status and cancel it only if it is still queued or running.
+  description: >-
+    A guarded cancellation flow. The workflow reads a job's current status and
+    branches: if the job is still Queued or Running it issues a cancel request
+    and then re-reads the job to confirm the new status; if the job has already
+    reached a terminal state it ends without attempting a cancel that the API
+    would reject. Each request inlines its bearer token, Service-CRN, and
+    IBM-API-Version headers so the flow can be read and executed without opening
+    the underlying OpenAPI descriptions.
+  version: 1.0.0
+sourceDescriptions:
+- name: jobsApi
+  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  type: openapi
+workflows:
+- workflowId: cancel-running-job
+  summary: Cancel a job if it is still cancellable, then confirm the outcome.
+  description: >-
+    Reads a job's status, cancels it when it is queued or running, and re-reads
+    the job to confirm the cancellation.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - serviceCrn
+    - apiVersion
+    - jobId
+    properties:
+      accessToken:
+        type: string
+        description: IBM Cloud IAM bearer token used in the Authorization header.
+      serviceCrn:
+        type: string
+        description: IBM Cloud Service CRN identifying the Qiskit Runtime instance.
+      apiVersion:
+        type: string
+        description: API version date sent in the IBM-API-Version header (e.g. 2026-03-15).
+      jobId:
+        type: string
+        description: Identifier of the job to inspect and cancel.
+  steps:
+  - stepId: getJobStatus
+    description: >-
+      Read the job's current status and branch on whether it is still in a
+      cancellable Queued or Running state.
+    operationId: get_job
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      jobStatus: $response.body#/status
+    onSuccess:
+    - name: cancellable
+      type: goto
+      stepId: cancelJob
+      criteria:
+      - context: $response.body
+        condition: $.status == "Queued" || $.status == "Running"
+        type: jsonpath
+    - name: alreadyTerminal
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "Completed" || $.status == "Failed" || $.status == "Cancelled"
+        type: jsonpath
+  - stepId: cancelJob
+    description: >-
+      Issue a cancel request for the still-running job. A 204 confirms the
+      cancellation was accepted.
+    operationId: cancel_job_jid
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    successCriteria:
+    - condition: $statusCode == 204
+  - stepId: confirmCancelled
+    description: >-
+      Re-read the job to confirm its status transitioned out of the running
+      state after the cancel request.
+    operationId: get_job
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalStatus: $response.body#/status
+  outputs:
+    finalStatus: $steps.confirmCancelled.outputs.finalStatus

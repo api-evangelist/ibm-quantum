@@ -1,0 +1,130 @@
+arazzo: 1.0.1
+info:
+  title: IBM Quantum Backend Readiness Preflight
+  summary: Verify a backend is online, then gather its calibration properties and pulse defaults for circuit transpilation.
+  description: >-
+    A pre-submission calibration flow. The workflow reads a backend's status and
+    branches: only when the backend reports an online, operational state does it
+    fetch the backend's latest calibration properties and its pulse-level
+    defaults, the two artifacts a client needs to transpile and schedule an ISA
+    circuit. If the backend is not operational it ends early. Each request
+    inlines its bearer token, Service-CRN, and IBM-API-Version headers so the
+    flow can be read and executed without opening the underlying OpenAPI
+    descriptions.
+  version: 1.0.0
+sourceDescriptions:
+- name: backendsApi
+  url: ../openapi/ibm-quantum-runtime-backends-openapi.yml
+  type: openapi
+workflows:
+- workflowId: backend-readiness-preflight
+  summary: Confirm a backend is online, then collect its properties and defaults.
+  description: >-
+    Reads a backend's status and, when it is operational, fetches its
+    calibration properties and pulse defaults.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - serviceCrn
+    - apiVersion
+    - backend
+    properties:
+      accessToken:
+        type: string
+        description: IBM Cloud IAM bearer token used in the Authorization header.
+      serviceCrn:
+        type: string
+        description: IBM Cloud Service CRN identifying the Qiskit Runtime instance.
+      apiVersion:
+        type: string
+        description: API version date sent in the IBM-API-Version header (e.g. 2026-03-15).
+      backend:
+        type: string
+        description: Name of the backend to preflight.
+  steps:
+  - stepId: getBackendStatus
+    description: >-
+      Read the backend status and branch on whether the backend is in an
+      operational (true) state before pulling calibration data.
+    operationId: get_backend_status
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.backend
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      backendState: $response.body#/state
+      queueLength: $response.body#/length_queue
+    onSuccess:
+    - name: operational
+      type: goto
+      stepId: getBackendProperties
+      criteria:
+      - context: $response.body
+        condition: $.state == true
+        type: jsonpath
+    - name: notOperational
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.state == false
+        type: jsonpath
+  - stepId: getBackendProperties
+    description: >-
+      Fetch the backend's latest calibration properties used to transpile an ISA
+      circuit.
+    operationId: get_backend_properties
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.backend
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      properties: $response.body
+  - stepId: getBackendDefaults
+    description: >-
+      Fetch the backend's pulse-level defaults used to schedule the transpiled
+      circuit.
+    operationId: get_backend_defaults
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.backend
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      defaults: $response.body
+  outputs:
+    backendState: $steps.getBackendStatus.outputs.backendState
+    properties: $steps.getBackendProperties.outputs.properties
+    defaults: $steps.getBackendDefaults.outputs.defaults

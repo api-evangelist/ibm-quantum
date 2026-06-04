@@ -153,6 +153,45 @@ apis:
   description: Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates
     and backend topology. Bundled with Flex and Premium plans.
 common:
+- type: ArazzoWorkflows
+  url: arazzo/
+  workflows:
+  - url: arazzo/ibm-quantum-audit-workloads-and-drill-into-job-workflow.yml
+    name: IBM Quantum Audit Workloads and Drill Into Job
+    summary: List recent job-mode workloads from analytics, then pull the full job record and metrics for the most recent one.
+  - url: arazzo/ibm-quantum-backend-readiness-preflight-workflow.yml
+    name: IBM Quantum Backend Readiness Preflight
+    summary: Verify a backend is online, then gather its calibration properties and pulse defaults for circuit transpilation.
+  - url: arazzo/ibm-quantum-cancel-running-job-workflow.yml
+    name: IBM Quantum Cancel Running Job
+    summary: Check a job's status and cancel it only if it is still queued or running.
+  - url: arazzo/ibm-quantum-job-results-and-logs-workflow.yml
+    name: IBM Quantum Job Results and Logs
+    summary: Poll a job to completion, then retrieve both its result payload and its execution logs.
+  - url: arazzo/ibm-quantum-list-jobs-and-inspect-workflow.yml
+    name: IBM Quantum List Jobs and Inspect
+    summary: List recent jobs, then pull the full details and execution metrics for the most recent one.
+  - url: arazzo/ibm-quantum-negotiate-version-and-list-backends-workflow.yml
+    name: IBM Quantum Negotiate Version and List Backends
+    summary: Discover the live API version, then list accessible backends and check one backend's status using that version.
+  - url: arazzo/ibm-quantum-pause-session-and-confirm-workflow.yml
+    name: IBM Quantum Pause Session and Confirm
+    summary: Read a session's state, toggle whether it accepts new jobs, and confirm the change.
+  - url: arazzo/ibm-quantum-select-backend-and-submit-job-workflow.yml
+    name: IBM Quantum Select Backend and Submit Job
+    summary: List accessible backends, inspect a chosen backend's configuration, and submit a job to it.
+  - url: arazzo/ibm-quantum-session-run-and-close-workflow.yml
+    name: IBM Quantum Session Run and Close
+    summary: Open a Qiskit Runtime session, run a job inside it, then close the session.
+  - url: arazzo/ibm-quantum-submit-job-and-poll-results-workflow.yml
+    name: IBM Quantum Submit Job and Poll Results
+    summary: Submit a Qiskit Runtime primitive job, poll until it reaches a terminal state, and fetch the final result.
+  - url: arazzo/ibm-quantum-tag-job-and-verify-workflow.yml
+    name: IBM Quantum Tag Job and Verify
+    summary: Replace a job's tags, confirm the change on the job, and search the tag catalog for one of them.
+  - url: arazzo/ibm-quantum-usage-aware-job-submission-workflow.yml
+    name: IBM Quantum Usage-Aware Job Submission
+    summary: Check instance usage and remaining limit before submitting a job, skipping submission when the limit is reached.
 - url: https://www.ibm.com/quantum
   type: Portal
 - url: https://quantum.cloud.ibm.com/

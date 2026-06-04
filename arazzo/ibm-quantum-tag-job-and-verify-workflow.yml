@@ -1,0 +1,126 @@
+arazzo: 1.0.1
+info:
+  title: IBM Quantum Tag Job and Verify
+  summary: Replace a job's tags, confirm the change on the job, and search the tag catalog for one of them.
+  description: >-
+    A job-organization flow. The workflow replaces the full set of tags on a
+    job, re-reads the job to confirm the new tags were applied, and then
+    searches the instance-wide tag catalog to verify one of the supplied tags is
+    now discoverable. Each request inlines its bearer token, Service-CRN, and
+    IBM-API-Version headers so the flow can be read and executed without opening
+    the underlying OpenAPI descriptions.
+  version: 1.0.0
+sourceDescriptions:
+- name: jobsApi
+  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  type: openapi
+workflows:
+- workflowId: tag-job-and-verify
+  summary: Replace a job's tags, confirm them on the job, and find one in the tag catalog.
+  description: >-
+    Replaces job tags, reads the job back to confirm, and searches the tag
+    catalog for one of the new tags.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - serviceCrn
+    - apiVersion
+    - jobId
+    - tags
+    - searchTag
+    properties:
+      accessToken:
+        type: string
+        description: IBM Cloud IAM bearer token used in the Authorization header.
+      serviceCrn:
+        type: string
+        description: IBM Cloud Service CRN identifying the Qiskit Runtime instance.
+      apiVersion:
+        type: string
+        description: API version date sent in the IBM-API-Version header (e.g. 2026-03-15).
+      jobId:
+        type: string
+        description: Identifier of the job whose tags will be replaced.
+      tags:
+        type: array
+        description: The full array of tag strings to set on the job.
+        items:
+          type: string
+      searchTag:
+        type: string
+        description: A tag substring (>=3 chars) to look up in the tag catalog.
+  steps:
+  - stepId: replaceTags
+    description: >-
+      Replace the complete set of tags on the job with the supplied array. A 204
+      confirms the replacement.
+    operationId: replace_job_tags
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    requestBody:
+      contentType: application/json
+      payload:
+        tags: $inputs.tags
+    successCriteria:
+    - condition: $statusCode == 204
+  - stepId: confirmJobTags
+    description: >-
+      Re-read the job to confirm the new tags are now present on it.
+    operationId: get_job
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: id
+      in: path
+      value: $inputs.jobId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      jobTags: $response.body#/tags
+  - stepId: searchTagCatalog
+    description: >-
+      Search the instance-wide job tag catalog to verify the supplied tag is now
+      discoverable.
+    operationId: list_tags
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: Service-CRN
+      in: header
+      value: $inputs.serviceCrn
+    - name: IBM-API-Version
+      in: header
+      value: $inputs.apiVersion
+    - name: type
+      in: query
+      value: job
+    - name: search
+      in: query
+      value: $inputs.searchTag
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      matchedTags: $response.body
+  outputs:
+    jobTags: $steps.confirmJobTags.outputs.jobTags
+    matchedTags: $steps.searchTagCatalog.outputs.matchedTags
