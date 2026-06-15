@@ -1,0 +1,123 @@
+{
+  "info": {
+    "_postman_id": "58aae9fe-34ae-47ea-be37-887b0a3843a7",
+    "name": "Qiskit Runtime Versions API",
+    "description": "Discover the supported versions of the Qiskit Runtime REST API and negotiate the IBM-API-Version header value.\n\nContact Support:\n Name: IBM Quantum",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:10:05.000Z",
+    "updatedAt": "2026-06-05T15:10:05.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-58aae9fe-34ae-47ea-be37-887b0a3843a7"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "versions",
+          "item": [
+            {
+              "name": "Get Versions",
+              "id": "c2477d7d-0779-435e-a162-d2b9a87a818a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/versions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "versions"
+                  ]
+                },
+                "description": "Get a list of available API versions"
+              },
+              "response": [
+                {
+                  "id": "9b939c43-4d21-429e-9e99-1dfb90b19a83",
+                  "name": "response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/versions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "versions"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"versions\": [\n    {\n      \"version\": \"2991-84-94\",\n      \"status\": \"live\",\n      \"sunset_date\": \"3484-46-20\"\n    },\n    {\n      \"version\": \"5104-15-26\",\n      \"status\": \"live\",\n      \"sunset_date\": \"1430-45-45\"\n    }\n  ]\n}",
+                  "createdAt": "2026-06-05T15:10:05.000Z",
+                  "updatedAt": "2026-06-05T15:10:05.000Z",
+                  "uid": "35240-9b939c43-4d21-429e-9e99-1dfb90b19a83"
+                }
+              ],
+              "createdAt": "2026-06-05T15:10:05.000Z",
+              "updatedAt": "2026-06-05T15:10:05.000Z",
+              "uid": "35240-c2477d7d-0779-435e-a162-d2b9a87a818a"
+            }
+          ],
+          "id": "ff60ab36-898f-4b4d-a995-ba064bc2e47b",
+          "createdAt": "2026-06-05T15:10:05.000Z",
+          "updatedAt": "2026-06-05T15:10:05.000Z",
+          "uid": "35240-ff60ab36-898f-4b4d-a995-ba064bc2e47b"
+        }
+      ],
+      "id": "57e43087-d76d-4e19-8dac-968e66817d65",
+      "createdAt": "2026-06-05T15:10:05.000Z",
+      "updatedAt": "2026-06-05T15:10:05.000Z",
+      "uid": "35240-57e43087-d76d-4e19-8dac-968e66817d65"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://quantum.cloud.ibm.com/api"
+    }
+  ]
+}

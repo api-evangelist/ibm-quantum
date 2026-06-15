@@ -1,0 +1,1033 @@
+{
+  "info": {
+    "_postman_id": "c5cbdde7-58f7-49e6-b740-9006059f121d",
+    "name": "Qiskit Runtime Sessions API",
+    "description": "Create, inspect, update, and close Qiskit Runtime sessions for grouping primitive jobs together with priority access to a target backend.\n\nContact Support:\n Name: IBM Quantum",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:09:56.000Z",
+    "updatedAt": "2026-06-05T15:09:57.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c5cbdde7-58f7-49e6-b740-9006059f121d"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "sessions",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "close",
+                  "item": [
+                    {
+                      "name": "Close Job Session",
+                      "id": "e3bbf43c-349b-41a4-9972-3593dc4cf0a8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Service-CRN",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id/close",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id",
+                            "close"
+                          ],
+                          "variable": [
+                            {
+                              "id": "f7afa27c-8433-4cd1-bb03-135652e6c527",
+                              "key": "id",
+                              "value": "0-m\\b<z;",
+                              "description": "(Required) Session Id"
+                            }
+                          ]
+                        },
+                        "description": "Closes the runtime session. The session stops accepting new jobs and queued jobs will not run.\nExisting running jobs will run to completion. This is analogous to the `cancel()` function in Qiskit.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "3e5f0655-30af-4228-94ed-0fd33a27b90d",
+                          "name": "Successfully closed runtime session",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Service-CRN",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/sessions/:id/close",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "sessions",
+                                ":id",
+                                "close"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:09:57.000Z",
+                          "updatedAt": "2026-06-05T15:09:57.000Z",
+                          "uid": "35240-3e5f0655-30af-4228-94ed-0fd33a27b90d"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-e3bbf43c-349b-41a4-9972-3593dc4cf0a8"
+                    }
+                  ],
+                  "id": "e9f3b266-e95d-4097-ac6e-1630e8c22018",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-e9f3b266-e95d-4097-ac6e-1630e8c22018"
+                },
+                {
+                  "name": "Get a Session",
+                  "id": "55cd000e-4b8e-48c1-87da-7047789f7271",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Service-CRN",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/sessions/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "sessions",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f8a5c90c-3ae1-4905-aadd-bb0bdb307ff5",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) Job Session ID"
+                        }
+                      ]
+                    },
+                    "description": "Get a session"
+                  },
+                  "response": [
+                    {
+                      "id": "8ae51f72-b889-45ba-a81a-1b01b79149b3",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"backend_name\": \"<string>\",\n  \"mode\": \"dedicated\",\n  \"started_at\": \"<dateTime>\",\n  \"activated_at\": \"<dateTime>\",\n  \"closed_at\": \"<dateTime>\",\n  \"last_job_started\": \"<dateTime>\",\n  \"last_job_completed\": \"<dateTime>\",\n  \"interactive_ttl\": \"<integer>\",\n  \"max_ttl\": \"<integer>\",\n  \"active_ttl\": \"<integer>\",\n  \"state\": \"open\",\n  \"state_reason\": \"<string>\",\n  \"accepting_jobs\": \"<boolean>\",\n  \"timestamps\": [\n    {\n      \"status\": \"closed\",\n      \"timestamp\": \"<dateTime>\"\n    },\n    {\n      \"status\": \"closed\",\n      \"timestamp\": \"<dateTime>\"\n    }\n  ],\n  \"user_id\": \"<string>\",\n  \"elapsed_time\": \"<number>\"\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-8ae51f72-b889-45ba-a81a-1b01b79149b3"
+                    },
+                    {
+                      "id": "f0854735-972a-4a62-be41-2a6dcf3776f5",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-f0854735-972a-4a62-be41-2a6dcf3776f5"
+                    },
+                    {
+                      "id": "847d69ce-a694-48c8-b84e-decdb9125f7c",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-847d69ce-a694-48c8-b84e-decdb9125f7c"
+                    },
+                    {
+                      "id": "ea4ea404-e1c0-4369-9642-9c6320aaa0bf",
+                      "name": "Internal error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-ea4ea404-e1c0-4369-9642-9c6320aaa0bf"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-55cd000e-4b8e-48c1-87da-7047789f7271"
+                },
+                {
+                  "name": "Update a Session",
+                  "id": "0bfc4783-86fb-4204-84ba-3b9030851a1f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Service-CRN",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"accepting_jobs\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/sessions/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "sessions",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "dffad092-d5bc-4efe-8b71-726f9c513fda",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) Job Session ID"
+                        }
+                      ]
+                    },
+                    "description": "Update a session"
+                  },
+                  "response": [
+                    {
+                      "id": "c854b62b-c7d2-475d-84b4-1fa1609f4b6c",
+                      "name": "Successfully updated session",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"accepting_jobs\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-c854b62b-c7d2-475d-84b4-1fa1609f4b6c"
+                    },
+                    {
+                      "id": "b1ce3454-daa8-40f2-a4d8-73abc8827ed9",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"accepting_jobs\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-b1ce3454-daa8-40f2-a4d8-73abc8827ed9"
+                    },
+                    {
+                      "id": "9263dc43-b510-4115-82b2-76edd994ff3f",
+                      "name": "Not Found",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"accepting_jobs\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-9263dc43-b510-4115-82b2-76edd994ff3f"
+                    },
+                    {
+                      "id": "e455ebeb-f0ea-4030-8a1b-e004f0d48ee1",
+                      "name": "Internal error",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"accepting_jobs\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/sessions/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "sessions",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:09:57.000Z",
+                      "updatedAt": "2026-06-05T15:09:57.000Z",
+                      "uid": "35240-e455ebeb-f0ea-4030-8a1b-e004f0d48ee1"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-0bfc4783-86fb-4204-84ba-3b9030851a1f"
+                }
+              ],
+              "id": "42e8779c-ef03-4332-8e1e-0d2fb14e2180",
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-42e8779c-ef03-4332-8e1e-0d2fb14e2180"
+            },
+            {
+              "name": "Create a Session",
+              "id": "4c34cda4-e3e0-4e4b-b59d-64c2c96729de",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "Service-CRN",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{apiKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"dedicated\",\n  \"max_ttl\": 28800,\n  \"backend\": \"<string>\",\n  \"backend_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/sessions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "sessions"
+                  ]
+                },
+                "description": "Create a session"
+              },
+              "response": [
+                {
+                  "id": "c8bbe81b-0a85-44b6-8043-cc05bacb7861",
+                  "name": "Ok",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"dedicated\",\n  \"max_ttl\": 28800,\n  \"backend\": \"<string>\",\n  \"backend_name\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/sessions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "sessions"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"backend_name\": \"<string>\",\n  \"mode\": \"dedicated\",\n  \"started_at\": \"<dateTime>\",\n  \"activated_at\": \"<dateTime>\",\n  \"closed_at\": \"<dateTime>\",\n  \"last_job_started\": \"<dateTime>\",\n  \"last_job_completed\": \"<dateTime>\",\n  \"interactive_ttl\": \"<integer>\",\n  \"max_ttl\": \"<integer>\",\n  \"active_ttl\": \"<integer>\",\n  \"state\": \"open\",\n  \"state_reason\": \"<string>\",\n  \"accepting_jobs\": \"<boolean>\",\n  \"timestamps\": [\n    {\n      \"status\": \"closed\",\n      \"timestamp\": \"<dateTime>\"\n    },\n    {\n      \"status\": \"closed\",\n      \"timestamp\": \"<dateTime>\"\n    }\n  ],\n  \"user_id\": \"<string>\",\n  \"elapsed_time\": \"<number>\"\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-c8bbe81b-0a85-44b6-8043-cc05bacb7861"
+                },
+                {
+                  "id": "d3f27b73-f8ba-4b66-8d67-2c865dc16a0b",
+                  "name": "Bad Request",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"dedicated\",\n  \"max_ttl\": 28800,\n  \"backend\": \"<string>\",\n  \"backend_name\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/sessions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "sessions"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-d3f27b73-f8ba-4b66-8d67-2c865dc16a0b"
+                },
+                {
+                  "id": "b5c05b01-5570-42ce-a283-ed18aa2c1dcd",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"dedicated\",\n  \"max_ttl\": 28800,\n  \"backend\": \"<string>\",\n  \"backend_name\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/sessions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "sessions"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-b5c05b01-5570-42ce-a283-ed18aa2c1dcd"
+                },
+                {
+                  "id": "bed7f0c5-e843-4c33-bb01-4d3987572c5d",
+                  "name": "Internal error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"dedicated\",\n  \"max_ttl\": 28800,\n  \"backend\": \"<string>\",\n  \"backend_name\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/sessions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "sessions"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"trace\": \"<string>\",\n  \"errors\": [\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"message\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-06-05T15:09:57.000Z",
+                  "updatedAt": "2026-06-05T15:09:57.000Z",
+                  "uid": "35240-bed7f0c5-e843-4c33-bb01-4d3987572c5d"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:57.000Z",
+              "updatedAt": "2026-06-05T15:09:57.000Z",
+              "uid": "35240-4c34cda4-e3e0-4e4b-b59d-64c2c96729de"
+            }
+          ],
+          "id": "a8140516-3f8e-4cc0-b278-2b431e11c2f3",
+          "createdAt": "2026-06-05T15:09:57.000Z",
+          "updatedAt": "2026-06-05T15:09:57.000Z",
+          "uid": "35240-a8140516-3f8e-4cc0-b278-2b431e11c2f3"
+        }
+      ],
+      "id": "09d43a4e-4eaa-4d97-abcb-809c61fe598f",
+      "createdAt": "2026-06-05T15:09:57.000Z",
+      "updatedAt": "2026-06-05T15:09:57.000Z",
+      "uid": "35240-09d43a4e-4eaa-4d97-abcb-809c61fe598f"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://quantum.cloud.ibm.com/api"
+    }
+  ]
+}

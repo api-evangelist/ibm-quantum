@@ -1,0 +1,120 @@
+{
+  "item": [
+    {
+      "id": "29600146-1fc0-4528-906e-eb7a07d92444",
+      "name": "Versions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a55322b9-27c9-4264-87b7-b37631873985",
+          "name": "Get Versions",
+          "request": {
+            "name": "Get Versions",
+            "description": {
+              "content": "Get a list of available API versions",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f08e9db-5d67-4205-be3d-b02506417799",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"versions\": [\n    {\n      \"version\": \"2024-01-01\",\n      \"sunset_date\": \"2027-01-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2025-01-01\",\n      \"sunset_date\": \"2027-01-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2025-05-01\",\n      \"sunset_date\": \"2027-01-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2026-02-01\",\n      \"sunset_date\": \"2027-02-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2026-02-15\",\n      \"sunset_date\": \"2027-02-15\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2026-03-15\",\n      \"status\": \"live\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://quantum.cloud.ibm.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4974dc7d-5e3f-444f-945e-9da2fa8f78fe",
+    "name": "Qiskit Runtime Versions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Discover the supported versions of the Qiskit Runtime REST API and negotiate the IBM-API-Version header value.\n\nContact Support:\n Name: IBM Quantum",
+      "type": "text/plain"
+    }
+  }
+}

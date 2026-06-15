@@ -1,0 +1,136 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qiskit Runtime Backends API",
+    "version": "0.45.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Backends",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Your Backends",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/backends",
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of all the backends your service instance has access to.\n"
+        },
+        {
+          "info": {
+            "name": "Get Backend Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/backends/:id/properties",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of an available backend"
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "Returns properties with last_update_date before the given time."
+              },
+              {
+                "name": "calibration_id",
+                "value": "",
+                "type": "query",
+                "description": "Returns properties associated with the given calibration ID."
+              }
+            ]
+          },
+          "docs": "Returns the properties for the specified backend. Simulator backends may not support this."
+        },
+        {
+          "info": {
+            "name": "Get Backend Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/backends/:id/configuration",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of an available backend"
+              },
+              {
+                "name": "calibration_id",
+                "value": "",
+                "type": "query",
+                "description": "Returns configuration associated with the given calibration ID."
+              }
+            ]
+          },
+          "docs": "Returns the configuration for the specified backend."
+        },
+        {
+          "info": {
+            "name": "Get Backend Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/backends/:id/status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of an available backend"
+              }
+            ]
+          },
+          "docs": "Returns the status for the specified backend ID."
+        },
+        {
+          "info": {
+            "name": "Get Backend Default Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/backends/:id/defaults",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of an available backend"
+              }
+            ]
+          },
+          "docs": "Returns the defaults for the specified backend. Simulator backends may not support this."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,315 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qiskit Runtime Analytics API",
+    "version": "0.45.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workloads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List User Instance Workloads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/workloads",
+            "params": [
+              {
+                "name": "user",
+                "value": "",
+                "type": "query",
+                "description": "User identifier. For now it can only be \"me\"."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort the workloads by. A `-` prefix indicates descending sort order."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of workloads to return at a time"
+              },
+              {
+                "name": "previous",
+                "value": "",
+                "type": "query",
+                "description": "Cursor to previous workloads result page"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query",
+                "description": "Cursor to next workloads result page"
+              },
+              {
+                "name": "backend",
+                "value": "",
+                "type": "query",
+                "description": "Backend name"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Optional search string, used to filter workloads by id or tags"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled."
+              },
+              {
+                "name": "mode",
+                "value": "",
+                "type": "query",
+                "description": "Workload mode: job, session or batch"
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Filter jobs and session created after this date"
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Filter jobs and session created before this date"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Optional array of tags for the workloads"
+              }
+            ]
+          },
+          "docs": "List user instance workloads"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Usage Analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/analytics/usage",
+            "params": [
+              {
+                "name": "instance",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval_start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval_end",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "backend",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "simulators",
+                "value": "",
+                "type": "query",
+                "description": "Include simulators"
+              },
+              {
+                "name": "plan",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "subscription_id",
+                "value": "",
+                "type": "query",
+                "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs."
+              }
+            ]
+          },
+          "docs": "Get usage analytics"
+        },
+        {
+          "info": {
+            "name": "Get Usage Analytics Grouped",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/analytics/usage_grouped",
+            "params": [
+              {
+                "name": "group_by",
+                "value": "",
+                "type": "query",
+                "description": "key to group usage by"
+              },
+              {
+                "name": "instance",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval_start",
+                "value": "",
+                "type": "query",
+                "description": "start date"
+              },
+              {
+                "name": "interval_end",
+                "value": "",
+                "type": "query",
+                "description": "end date"
+              },
+              {
+                "name": "backend",
+                "value": "",
+                "type": "query",
+                "description": "backend to filter by"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "simulators",
+                "value": "",
+                "type": "query",
+                "description": "Include simulators"
+              },
+              {
+                "name": "plan",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "subscription_id",
+                "value": "",
+                "type": "query",
+                "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs."
+              }
+            ]
+          },
+          "docs": "Get usage analytics grouped"
+        },
+        {
+          "info": {
+            "name": "Get Usage Analytics Grouped by Date",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/analytics/usage_grouped_by_date",
+            "params": [
+              {
+                "name": "group_by",
+                "value": "",
+                "type": "query",
+                "description": "key to group usage by"
+              },
+              {
+                "name": "instance",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval_start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval_end",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "backend",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "simulators",
+                "value": "",
+                "type": "query",
+                "description": "Include simulators"
+              },
+              {
+                "name": "plan",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "subscription_id",
+                "value": "",
+                "type": "query",
+                "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs."
+              }
+            ]
+          },
+          "docs": "Get usage analytics grouped by date"
+        },
+        {
+          "info": {
+            "name": "Get Analytics Filters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/analytics/filters",
+            "params": [
+              {
+                "name": "instance",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get analytics filters"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

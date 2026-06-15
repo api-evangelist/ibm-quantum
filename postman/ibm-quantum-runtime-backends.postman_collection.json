@@ -1,0 +1,686 @@
+{
+  "info": {
+    "_postman_id": "84c29765-f3a2-44ef-84aa-67ed26665b35",
+    "name": "Qiskit Runtime Backends API",
+    "description": "Discover and inspect available IBM Quantum backends (QPUs and simulators). Returns backend list, properties (calibrations), configuration, defaults, and live status.\n\nContact Support:\n Name: IBM Quantum",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:09:55.000Z",
+    "updatedAt": "2026-06-05T15:09:56.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-84c29765-f3a2-44ef-84aa-67ed26665b35"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "backends",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "properties",
+                  "item": [
+                    {
+                      "name": "Get Backend Properties",
+                      "id": "5ddb2893-7c4d-40d7-8411-814f28e4c7dd",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Service-CRN",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/backends/:id/properties?updated_before=<dateTime>&calibration_id=%26`T",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "backends",
+                            ":id",
+                            "properties"
+                          ],
+                          "query": [
+                            {
+                              "description": "Returns properties with last_update_date before the given time.",
+                              "key": "updated_before",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Returns properties associated with the given calibration ID.",
+                              "key": "calibration_id",
+                              "value": "&`T"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "8f78d417-3863-4131-a906-e927a4862a6e",
+                              "key": "id",
+                              "value": "'o",
+                              "description": "(Required) Identifier of an available backend"
+                            }
+                          ]
+                        },
+                        "description": "Returns the properties for the specified backend. Simulator backends may not support this."
+                      },
+                      "response": [
+                        {
+                          "id": "ae6fb71d-9d60-4d83-a0e4-6e5fb4295287",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Service-CRN",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/backends/:id/properties?updated_before=<dateTime>&calibration_id=%26`T",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "backends",
+                                ":id",
+                                "properties"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Returns properties with last_update_date before the given time.",
+                                  "key": "updated_before",
+                                  "value": "<dateTime>"
+                                },
+                                {
+                                  "description": "Returns properties associated with the given calibration ID.",
+                                  "key": "calibration_id",
+                                  "value": "&`T"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"backend_name\": \"yZ2Z7sY\",\n  \"backend_version\": \"422628X529190711\",\n  \"gates\": [\n    {\n      \"gate\": \"q_8C6\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"Gtq\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"K\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"j1p5z\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"BvBz\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"mS\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"x\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"kJwLDJ0TE\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"P7EaaWxh2\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"LhD7RbyJ\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"Y3DW\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"nV\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"Esuv\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"_\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"DryxLR8fXo\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"fHJXlC0r6\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"PgCyzEdt\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"J4\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"CEnth6i4\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"gate\": \"Q5kog953b\",\n      \"parameters\": [\n        {\n          \"date\": \"<dateTime>\",\n          \"name\": \"<string>\",\n          \"unit\": \"<string>\",\n          \"value\": \"<number>\"\n        }\n      ],\n      \"qubits\": [\n        \"<string>\"\n      ]\n    }\n  ],\n  \"general\": [\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"last_update_date\": \"<dateTime>\",\n  \"qubits\": [\n    [\n      {\n        \"date\": \"<dateTime>\",\n        \"name\": \"<string>\",\n        \"unit\": \"<string>\",\n        \"value\": \"<number>\"\n      }\n    ],\n    [\n      {\n        \"date\": \"<dateTime>\",\n        \"name\": \"<string>\",\n        \"unit\": \"<string>\",\n        \"value\": \"<number>\"\n      }\n    ]\n  ]\n}",
+                          "createdAt": "2026-06-05T15:09:56.000Z",
+                          "updatedAt": "2026-06-05T15:09:56.000Z",
+                          "uid": "35240-ae6fb71d-9d60-4d83-a0e4-6e5fb4295287"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:09:56.000Z",
+                      "updatedAt": "2026-06-05T15:09:56.000Z",
+                      "uid": "35240-5ddb2893-7c4d-40d7-8411-814f28e4c7dd"
+                    }
+                  ],
+                  "id": "6172e67c-f64a-4f27-b7b3-10478ad77b5f",
+                  "createdAt": "2026-06-05T15:09:56.000Z",
+                  "updatedAt": "2026-06-05T15:09:56.000Z",
+                  "uid": "35240-6172e67c-f64a-4f27-b7b3-10478ad77b5f"
+                },
+                {
+                  "name": "configuration",
+                  "item": [
+                    {
+                      "name": "Get Backend Configuration",
+                      "id": "6c351e42-327d-4978-a37b-1a5d2c5c9b19",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Service-CRN",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/backends/:id/configuration?calibration_id=%26`T",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "backends",
+                            ":id",
+                            "configuration"
+                          ],
+                          "query": [
+                            {
+                              "description": "Returns configuration associated with the given calibration ID.",
+                              "key": "calibration_id",
+                              "value": "&`T"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "71203eca-a84f-422f-87dd-5a4bfa3a8bf1",
+                              "key": "id",
+                              "value": "'o",
+                              "description": "(Required) Identifier of an available backend"
+                            }
+                          ]
+                        },
+                        "description": "Returns the configuration for the specified backend."
+                      },
+                      "response": [
+                        {
+                          "id": "d71e2ce4-1048-41e7-b703-986c67ec6b56",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Service-CRN",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/backends/:id/configuration?calibration_id=%26`T",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "backends",
+                                ":id",
+                                "configuration"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Returns configuration associated with the given calibration ID.",
+                                  "key": "calibration_id",
+                                  "value": "&`T"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"backend_name\": \" \",\n  \"backend_version\": \"18.292368652.105\",\n  \"basis_gates\": [\n    \"<string>\"\n  ],\n  \"conditional\": false,\n  \"coords\": [\n    [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  ],\n  \"coupling_map\": [\n    [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  ],\n  \"gates\": [\n    {\n      \"name\": \"mBwod0fJBp\",\n      \"parameters\": [\n        \"Hs\",\n        \"AT0L\",\n        \"6oLBvvnSU\",\n        \"wqr8\",\n        \"70jH1Wfnh\",\n        \" \",\n        \"nIX\",\n        \"mDLTe\",\n        \"8CkasF8w\",\n        \"RUd2l\",\n        \"RwGetf5rPO\",\n        \"RtQRxn\",\n        \"J\",\n        \"pbo\",\n        \"gaerSC34B\",\n        \"JkNq8nXWFa\",\n        \"WiQj1E\",\n        \" \",\n        \"Kh\",\n        \"WZuMYji8r\"\n      ],\n      \"qasm_def\": \"chce\",\n      \"coupling_map\": [\n        [\n          \"<integer>\"\n        ]\n      ],\n      \"conditional\": false,\n      \"latency_map\": [\n        [\n          \"<integer>\"\n        ]\n      ],\n      \"description\": \"PQ\u180ejk\ufeff\u2006\"\n    }\n  ],\n  \"local\": \"<boolean>\",\n  \"memory\": false,\n  \"n_qubits\": 1,\n  \"online_date\": \"<dateTime>\",\n  \"u_channel_lo\": [\n    [\n      {\n        \"q\": \"<integer>\",\n        \"scale\": {\n          \"number\": [\n            \"<array>\",\n            \"<array>\"\n          ]\n        }\n      }\n    ],\n    [\n      {\n        \"q\": \"<integer>\",\n        \"scale\": {\n          \"number\": [\n            \"<array>\",\n            \"<array>\"\n          ]\n        }\n      }\n    ]\n  ],\n  \"acquisition_latency\": [\n    \"<array>\"\n  ],\n  \"clops\": {\n    \"type\": \"hardware\",\n    \"value\": \"<integer>\"\n  },\n  \"clops_h\": \"<integer>\",\n  \"clops_v\": \"<integer>\",\n  \"conditional_latency\": [\n    \"<array>\",\n    \"<array>\"\n  ],\n  \"configurable\": false,\n  \"credits_required\": false,\n  \"description\": \"+#u[Y-AFW\",\n  \"display_name\": \"EcCp\",\n  \"discriminators\": [\n    \"Ib1z47PGm\"\n  ],\n  \"dt\": \"<integer>\",\n  \"dtm\": \"<integer>\",\n  \"default_rep_delay\": \"<integer>\",\n  \"dynamic_reprate_enabled\": false,\n  \"hamiltonian\": {\n    \"h_latex\": \"l1\\\"\",\n    \"h_str\": [\n      \"NL8Vg\"\n    ],\n    \"vars\": {},\n    \"osc\": {}\n  },\n  \"max_experiments\": \"<long>\",\n  \"max_shots\": \"<long>\",\n  \"meas_levels\": [\n    \"<array>\"\n  ],\n  \"meas_lo_range\": [\n    \"<array>\"\n  ],\n  \"meas_map\": [\n    \"<array>\"\n  ],\n  \"measure_esp_enabled\": false,\n  \"n_registers\": 1,\n  \"n_uchannels\": \"<number>\",\n  \"open_pulse\": \"<boolean>\",\n  \"parametric_pulses\": [\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\",\n    \"<array>\"\n  ],\n  \"processor_type\": {\n    \"family\": \"3Ys6Cx\",\n    \"revision\": \"0604105'4279557\",\n    \"segment\": \"Nr2IJQwS\"\n  },\n  \"quantum_volume\": \"<number>\",\n  \"qubit_lo_range\": [\n    \"<array>\"\n  ],\n  \"register_map\": [\n    \"<array>\"\n  ],\n  \"rep_delay_range\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"rep_times\": [\n    \"<number>\"\n  ],\n  \"sample_name\": \":\u2002I Cp\",\n  \"simulator\": false,\n  \"supported_features\": [\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"supported_instructions\": [\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"timing_constraints\": {\n    \"granularity\": \"<long>\",\n    \"min_length\": \"<long>\",\n    \"pulse_alignment\": \"<long>\",\n    \"acquire_alignment\": \"<long>\"\n  }\n}",
+                          "createdAt": "2026-06-05T15:09:56.000Z",
+                          "updatedAt": "2026-06-05T15:09:56.000Z",
+                          "uid": "35240-d71e2ce4-1048-41e7-b703-986c67ec6b56"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:09:56.000Z",
+                      "updatedAt": "2026-06-05T15:09:56.000Z",
+                      "uid": "35240-6c351e42-327d-4978-a37b-1a5d2c5c9b19"
+                    }
+                  ],
+                  "id": "89524932-d969-4341-8f1b-e9be3024b9f2",
+                  "createdAt": "2026-06-05T15:09:56.000Z",
+                  "updatedAt": "2026-06-05T15:09:56.000Z",
+                  "uid": "35240-89524932-d969-4341-8f1b-e9be3024b9f2"
+                },
+                {
+                  "name": "status",
+                  "item": [
+                    {
+                      "name": "Get Backend Status",
+                      "id": "4c2973f7-8bdc-455c-94e2-bd0a69bcd07d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Service-CRN",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/backends/:id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "backends",
+                            ":id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7d2c9bd3-a6c1-406d-bfb5-caa53a0e56fe",
+                              "key": "id",
+                              "value": "'o",
+                              "description": "(Required) Identifier of an available backend"
+                            }
+                          ]
+                        },
+                        "description": "Returns the status for the specified backend ID."
+                      },
+                      "response": [
+                        {
+                          "id": "3058555e-30ad-41c0-b155-3da41af8928f",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Service-CRN",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/backends/:id/status",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "backends",
+                                ":id",
+                                "status"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"length_queue\": \"<integer>\",\n  \"state\": \"<boolean>\",\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"backend_version\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:09:56.000Z",
+                          "updatedAt": "2026-06-05T15:09:56.000Z",
+                          "uid": "35240-3058555e-30ad-41c0-b155-3da41af8928f"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:09:56.000Z",
+                      "updatedAt": "2026-06-05T15:09:56.000Z",
+                      "uid": "35240-4c2973f7-8bdc-455c-94e2-bd0a69bcd07d"
+                    }
+                  ],
+                  "id": "6cfa2e4c-7789-4ae2-838f-32f68ff56461",
+                  "createdAt": "2026-06-05T15:09:56.000Z",
+                  "updatedAt": "2026-06-05T15:09:56.000Z",
+                  "uid": "35240-6cfa2e4c-7789-4ae2-838f-32f68ff56461"
+                },
+                {
+                  "name": "defaults",
+                  "item": [
+                    {
+                      "name": "Get Backend Default Settings",
+                      "id": "bf79f4c9-78c6-4001-be0c-b2d4286ed4ce",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "apikey",
+                          "apikey": [
+                            {
+                              "key": "key",
+                              "value": "Service-CRN",
+                              "type": "string"
+                            },
+                            {
+                              "key": "value",
+                              "value": "{{apiKey}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "in",
+                              "value": "header",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/backends/:id/defaults",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "backends",
+                            ":id",
+                            "defaults"
+                          ],
+                          "variable": [
+                            {
+                              "id": "98e1dc64-efdf-4a63-bc01-c89df57825c8",
+                              "key": "id",
+                              "value": "'o",
+                              "description": "(Required) Identifier of an available backend"
+                            }
+                          ]
+                        },
+                        "description": "Returns the defaults for the specified backend. Simulator backends may not support this."
+                      },
+                      "response": [
+                        {
+                          "id": "dd736c4d-db1e-46f4-84c6-b6b88a744c37",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Service-CRN",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/backends/:id/defaults",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "backends",
+                                ":id",
+                                "defaults"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"laboris5\": -79424154,\n  \"occaecat6\": 43879149\n}",
+                          "createdAt": "2026-06-05T15:09:56.000Z",
+                          "updatedAt": "2026-06-05T15:09:56.000Z",
+                          "uid": "35240-dd736c4d-db1e-46f4-84c6-b6b88a744c37"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:09:56.000Z",
+                      "updatedAt": "2026-06-05T15:09:56.000Z",
+                      "uid": "35240-bf79f4c9-78c6-4001-be0c-b2d4286ed4ce"
+                    }
+                  ],
+                  "id": "1414f0eb-c925-4d29-8f0f-df64fad0663e",
+                  "createdAt": "2026-06-05T15:09:56.000Z",
+                  "updatedAt": "2026-06-05T15:09:56.000Z",
+                  "uid": "35240-1414f0eb-c925-4d29-8f0f-df64fad0663e"
+                }
+              ],
+              "id": "18b33027-7dac-4df2-a259-b91f909f39dc",
+              "createdAt": "2026-06-05T15:09:56.000Z",
+              "updatedAt": "2026-06-05T15:09:56.000Z",
+              "uid": "35240-18b33027-7dac-4df2-a259-b91f909f39dc"
+            },
+            {
+              "name": "List Your Backends",
+              "id": "f804264e-ce21-4e52-bf4b-51de3bd228fc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "Service-CRN",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{apiKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/backends?fields=",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "backends"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": ""
+                    }
+                  ]
+                },
+                "description": "Returns a list of all the backends your service instance has access to.\n"
+              },
+              "response": [
+                {
+                  "id": "e49afeeb-d052-474d-8e60-db9a07e8ec6a",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/backends?fields=",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "backends"
+                      ],
+                      "query": [
+                        {
+                          "key": "fields",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"devices\": [\n    {\n      \"name\": \"<string>\",\n      \"status\": {\n        \"name\": \"paused\",\n        \"reason\": \"<string>\"\n      },\n      \"queue_length\": \"<integer>\",\n      \"is_simulator\": \"<boolean>\",\n      \"qubits\": \"<integer>\",\n      \"clops\": {\n        \"type\": \"virtual\",\n        \"value\": \"<integer>\"\n      },\n      \"processor_type\": {\n        \"family\": \"<string>\",\n        \"revision\": \"<string>\",\n        \"segment\": \"<string>\"\n      },\n      \"performance_metrics\": {\n        \"two_q_error_best\": {\n          \"value\": \"<number>\",\n          \"gate\": \"<string>\",\n          \"qubits\": [\n            \"<number>\",\n            \"<number>\"\n          ],\n          \"unit\": \"<string>\"\n        },\n        \"two_q_error_layered\": {\n          \"value\": \"<number>\",\n          \"unit\": \"<string>\"\n        },\n        \"two_q_error_median\": {\n          \"value\": \"<number>\",\n          \"unit\": \"<string>\"\n        },\n        \"readout_error_median\": {\n          \"value\": \"<number>\",\n          \"unit\": \"<string>\"\n        }\n      },\n      \"wait_time_seconds\": {\n        \"average\": \"<integer>\",\n        \"p50\": \"<integer>\",\n        \"p95\": \"<integer>\"\n      }\n    }\n  ]\n}",
+                  "createdAt": "2026-06-05T15:09:56.000Z",
+                  "updatedAt": "2026-06-05T15:09:56.000Z",
+                  "uid": "35240-e49afeeb-d052-474d-8e60-db9a07e8ec6a"
+                }
+              ],
+              "createdAt": "2026-06-05T15:09:56.000Z",
+              "updatedAt": "2026-06-05T15:09:56.000Z",
+              "uid": "35240-f804264e-ce21-4e52-bf4b-51de3bd228fc"
+            }
+          ],
+          "id": "ecb698a6-fbd9-407c-86dd-c99c55fff7a7",
+          "createdAt": "2026-06-05T15:09:56.000Z",
+          "updatedAt": "2026-06-05T15:09:56.000Z",
+          "uid": "35240-ecb698a6-fbd9-407c-86dd-c99c55fff7a7"
+        }
+      ],
+      "id": "760c9e9f-98d7-40ac-9d67-dc42742fc55b",
+      "createdAt": "2026-06-05T15:09:56.000Z",
+      "updatedAt": "2026-06-05T15:09:56.000Z",
+      "uid": "35240-760c9e9f-98d7-40ac-9d67-dc42742fc55b"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://quantum.cloud.ibm.com/api"
+    }
+  ]
+}

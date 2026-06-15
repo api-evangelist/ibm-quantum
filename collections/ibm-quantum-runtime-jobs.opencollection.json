@@ -1,0 +1,306 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qiskit Runtime Jobs API",
+    "version": "0.45.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Job Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of an existing job"
+              },
+              {
+                "name": "exclude_params",
+                "value": "",
+                "type": "query",
+                "description": "Exclude job params from the response"
+              }
+            ]
+          },
+          "docs": "List the details about the specified quantum program job."
+        },
+        {
+          "info": {
+            "name": "Delete a Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of an existing job"
+              }
+            ]
+          },
+          "docs": "Delete the specified job and its associated data. Job must be in a terminal state."
+        },
+        {
+          "info": {
+            "name": "List Jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return at a time. If the provided value is outside of the viable range, no error occurs and the default value is used instead."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to offset when retrieving the list of jobs. If the provided value is outside of the viable range, no error occurs and the default value is used instead."
+              },
+              {
+                "name": "pending",
+                "value": "",
+                "type": "query",
+                "description": "Returns 'Queued' and 'Running' jobs if true.  Returns 'Completed', 'Cancelled', and 'Failed' jobs if false."
+              },
+              {
+                "name": "program",
+                "value": "",
+                "type": "query",
+                "description": "Program ID to filter jobs"
+              },
+              {
+                "name": "backend",
+                "value": "",
+                "type": "query",
+                "description": "Backend to filter jobs"
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Job created after filter"
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Job created before filter"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort jobs by created time ASC or DESC (default)"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Tags to filter jobs"
+              },
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "query",
+                "description": "Session ID to filter jobs"
+              },
+              {
+                "name": "exclude_params",
+                "value": "",
+                "type": "query",
+                "description": "Exclude job params from the response"
+              }
+            ]
+          },
+          "docs": "List the quantum program jobs you have run."
+        },
+        {
+          "info": {
+            "name": "Run a Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs",
+            "headers": [
+              {
+                "name": "Parent-Job-Id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke a Qiskit Runtime primitive. Note the returned job ID.  You will use it to check the job's status and review results. This request is rate limited to 5 jobs per minute per user."
+        },
+        {
+          "info": {
+            "name": "List Job Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs/:id/results",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A job ID"
+              }
+            ]
+          },
+          "docs": "Return the final result from this job."
+        },
+        {
+          "info": {
+            "name": "List Job Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs/:id/logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A job ID"
+              }
+            ]
+          },
+          "docs": "List all job logs for the specified job."
+        },
+        {
+          "info": {
+            "name": "Cancel a Job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs/:id/cancel",
+            "headers": [
+              {
+                "name": "Parent-Job-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A job ID"
+              }
+            ]
+          },
+          "docs": "Cancels the specified job."
+        },
+        {
+          "info": {
+            "name": "Get Job Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs/:id/metrics",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A job ID"
+              }
+            ]
+          },
+          "docs": "Gets metrics of specified job"
+        },
+        {
+          "info": {
+            "name": "Replace Job Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://quantum.cloud.ibm.com/api/v1/jobs/:id/tags",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A job ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace job tags"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/tags",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Searches for tags in the specified type."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Used for searching tags."
+              }
+            ]
+          },
+          "docs": "Search and list the tags of jobs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

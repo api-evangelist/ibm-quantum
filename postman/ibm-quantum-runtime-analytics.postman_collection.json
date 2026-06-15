@@ -1,0 +1,2524 @@
+{
+  "info": {
+    "_postman_id": "6a3ee7c6-0e88-4010-9b10-23203f28e292",
+    "name": "Qiskit Runtime Analytics API",
+    "description": "Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.\n\nContact Support:\n Name: IBM Quantum",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:10:03.000Z",
+    "updatedAt": "2026-06-05T15:10:04.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-6a3ee7c6-0e88-4010-9b10-23203f28e292"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "workloads",
+          "item": [
+            {
+              "name": "List User Instance Workloads",
+              "id": "553f3ec5-1a58-4d77-abaf-a2516230aea6",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "Service-CRN",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{apiKey}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "in",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/workloads?user=me&sort=createdAt&limit=10&previous=<string>&next=<string>&backend=<string>&search=<string>&status=pending&status=failed&mode=session&created_after=<dateTime>&created_before=<dateTime>&tags=<string>&tags=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "workloads"
+                  ],
+                  "query": [
+                    {
+                      "description": "User identifier. For now it can only be \"me\".",
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "description": "Field to sort the workloads by. A `-` prefix indicates descending sort order.",
+                      "key": "sort",
+                      "value": "createdAt"
+                    },
+                    {
+                      "description": "Number of workloads to return at a time",
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor to previous workloads result page",
+                      "key": "previous",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Cursor to next workloads result page",
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Backend name",
+                      "key": "backend",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional search string, used to filter workloads by id or tags",
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled.",
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled.",
+                      "key": "status",
+                      "value": "failed"
+                    },
+                    {
+                      "description": "Workload mode: job, session or batch",
+                      "key": "mode",
+                      "value": "session"
+                    },
+                    {
+                      "description": "Filter jobs and session created after this date",
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "description": "Filter jobs and session created before this date",
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "description": "Optional array of tags for the workloads",
+                      "key": "tags",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional array of tags for the workloads",
+                      "key": "tags",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "List user instance workloads"
+              },
+              "response": [
+                {
+                  "id": "9a5af1a3-74f8-4e26-b501-e40e6ec8f009",
+                  "name": "response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/workloads?user=me&sort=createdAt&limit=10&previous=<string>&next=<string>&backend=<string>&search=<string>&status=failed&mode=session&created_after=<dateTime>&created_before=<dateTime>&tags=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "workloads"
+                      ],
+                      "query": [
+                        {
+                          "description": "User identifier. For now it can only be \"me\".",
+                          "key": "user",
+                          "value": "me"
+                        },
+                        {
+                          "description": "Field to sort the workloads by. A `-` prefix indicates descending sort order.",
+                          "key": "sort",
+                          "value": "createdAt"
+                        },
+                        {
+                          "description": "Number of workloads to return at a time",
+                          "key": "limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor to previous workloads result page",
+                          "key": "previous",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Cursor to next workloads result page",
+                          "key": "next",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Backend name",
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Optional search string, used to filter workloads by id or tags",
+                          "key": "search",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled.",
+                          "key": "status",
+                          "value": "failed"
+                        },
+                        {
+                          "description": "Workload mode: job, session or batch",
+                          "key": "mode",
+                          "value": "session"
+                        },
+                        {
+                          "description": "Filter jobs and session created after this date",
+                          "key": "created_after",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Filter jobs and session created before this date",
+                          "key": "created_before",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Optional array of tags for the workloads",
+                          "key": "tags",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"workloads\": [\n    {\n      \"id\": \"<string>\",\n      \"created\": \"<string>\",\n      \"backend\": \"<string>\",\n      \"instance\": \"<string>\",\n      \"user_id\": \"<string>\",\n      \"mode\": \"batch\",\n      \"status\": \"in_progress\",\n      \"ended\": \"<string>\",\n      \"accepting_jobs\": \"<boolean>\",\n      \"status_reason\": \"<string>\",\n      \"tags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"usage_seconds\": \"<number>\",\n      \"usage\": {\n        \"qpu_charge_time_seconds\": \"<number>\",\n        \"status\": \"pending\"\n      },\n      \"estimated_running_time_seconds\": \"<number>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"created\": \"<string>\",\n      \"backend\": \"<string>\",\n      \"instance\": \"<string>\",\n      \"user_id\": \"<string>\",\n      \"mode\": \"job\",\n      \"status\": \"canceled\",\n      \"ended\": \"<string>\",\n      \"accepting_jobs\": \"<boolean>\",\n      \"status_reason\": \"<string>\",\n      \"tags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"usage_seconds\": \"<number>\",\n      \"usage\": {\n        \"qpu_charge_time_seconds\": \"<number>\",\n        \"status\": \"pending\"\n      },\n      \"estimated_running_time_seconds\": \"<number>\"\n    }\n  ],\n  \"total_count\": \"<number>\",\n  \"limit\": \"<number>\",\n  \"previous\": {\n    \"href\": \"<string>\"\n  },\n  \"next\": {\n    \"href\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T15:10:04.000Z",
+                  "updatedAt": "2026-06-05T15:10:04.000Z",
+                  "uid": "35240-9a5af1a3-74f8-4e26-b501-e40e6ec8f009"
+                },
+                {
+                  "id": "8e31911a-9fa2-402c-bcf5-8c6e17e8415d",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/workloads?user=me&sort=createdAt&limit=10&previous=<string>&next=<string>&backend=<string>&search=<string>&status=failed&mode=session&created_after=<dateTime>&created_before=<dateTime>&tags=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "workloads"
+                      ],
+                      "query": [
+                        {
+                          "description": "User identifier. For now it can only be \"me\".",
+                          "key": "user",
+                          "value": "me"
+                        },
+                        {
+                          "description": "Field to sort the workloads by. A `-` prefix indicates descending sort order.",
+                          "key": "sort",
+                          "value": "createdAt"
+                        },
+                        {
+                          "description": "Number of workloads to return at a time",
+                          "key": "limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor to previous workloads result page",
+                          "key": "previous",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Cursor to next workloads result page",
+                          "key": "next",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Backend name",
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Optional search string, used to filter workloads by id or tags",
+                          "key": "search",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled.",
+                          "key": "status",
+                          "value": "failed"
+                        },
+                        {
+                          "description": "Workload mode: job, session or batch",
+                          "key": "mode",
+                          "value": "session"
+                        },
+                        {
+                          "description": "Filter jobs and session created after this date",
+                          "key": "created_after",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Filter jobs and session created before this date",
+                          "key": "created_before",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Optional array of tags for the workloads",
+                          "key": "tags",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                  "createdAt": "2026-06-05T15:10:04.000Z",
+                  "updatedAt": "2026-06-05T15:10:04.000Z",
+                  "uid": "35240-8e31911a-9fa2-402c-bcf5-8c6e17e8415d"
+                },
+                {
+                  "id": "ca6b03d8-9c37-4814-96d5-e4c043d730bb",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Service-CRN",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/workloads?user=me&sort=createdAt&limit=10&previous=<string>&next=<string>&backend=<string>&search=<string>&status=failed&mode=session&created_after=<dateTime>&created_before=<dateTime>&tags=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "workloads"
+                      ],
+                      "query": [
+                        {
+                          "description": "User identifier. For now it can only be \"me\".",
+                          "key": "user",
+                          "value": "me"
+                        },
+                        {
+                          "description": "Field to sort the workloads by. A `-` prefix indicates descending sort order.",
+                          "key": "sort",
+                          "value": "createdAt"
+                        },
+                        {
+                          "description": "Number of workloads to return at a time",
+                          "key": "limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor to previous workloads result page",
+                          "key": "previous",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Cursor to next workloads result page",
+                          "key": "next",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Backend name",
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Optional search string, used to filter workloads by id or tags",
+                          "key": "search",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled.",
+                          "key": "status",
+                          "value": "failed"
+                        },
+                        {
+                          "description": "Workload mode: job, session or batch",
+                          "key": "mode",
+                          "value": "session"
+                        },
+                        {
+                          "description": "Filter jobs and session created after this date",
+                          "key": "created_after",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Filter jobs and session created before this date",
+                          "key": "created_before",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Optional array of tags for the workloads",
+                          "key": "tags",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                  "createdAt": "2026-06-05T15:10:04.000Z",
+                  "updatedAt": "2026-06-05T15:10:04.000Z",
+                  "uid": "35240-ca6b03d8-9c37-4814-96d5-e4c043d730bb"
+                }
+              ],
+              "createdAt": "2026-06-05T15:10:04.000Z",
+              "updatedAt": "2026-06-05T15:10:04.000Z",
+              "uid": "35240-553f3ec5-1a58-4d77-abaf-a2516230aea6"
+            }
+          ],
+          "id": "6a9e81a1-4316-4fc1-85b2-06258b48586d",
+          "createdAt": "2026-06-05T15:10:04.000Z",
+          "updatedAt": "2026-06-05T15:10:04.000Z",
+          "uid": "35240-6a9e81a1-4316-4fc1-85b2-06258b48586d"
+        },
+        {
+          "name": "analytics",
+          "item": [
+            {
+              "name": "usage",
+              "item": [
+                {
+                  "name": "Get Usage Analytics",
+                  "id": "7145042f-2d1b-4165-b20b-f3e701ccdede",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Service-CRN",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/analytics/usage?instance=<string>&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&backend=<string>&user_id=<string>&user_id=<string>&simulators=true&plan=<string>&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "analytics",
+                        "usage"
+                      ],
+                      "query": [
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "interval_start",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "interval_end",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "user_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "user_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Include simulators",
+                          "key": "simulators",
+                          "value": "true"
+                        },
+                        {
+                          "key": "plan",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "plan",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                          "key": "subscription_id",
+                          "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                        }
+                      ]
+                    },
+                    "description": "Get usage analytics"
+                  },
+                  "response": [
+                    {
+                      "id": "de01ee0f-9338-400b-9e6e-d2721d4177f4",
+                      "name": "response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage?instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"usage\": \"<number>\",\n  \"jobs\": \"<number>\",\n  \"sessions\": \"<number>\",\n  \"sessions_usage\": \"<number>\",\n  \"avg_sessions_usage\": \"<number>\",\n  \"max_sessions_usage\": \"<number>\",\n  \"batch_sessions\": \"<number>\",\n  \"batch_sessions_usage\": \"<number>\",\n  \"avg_batch_sessions_usage\": \"<number>\",\n  \"max_batch_sessions_usage\": \"<number>\",\n  \"dedicated_sessions\": \"<number>\",\n  \"dedicated_sessions_usage\": \"<number>\",\n  \"avg_dedicated_sessions_usage\": \"<number>\",\n  \"max_dedicated_sessions_usage\": \"<number>\",\n  \"individual_jobs\": \"<number>\",\n  \"individual_jobs_usage\": \"<number>\",\n  \"avg_individual_jobs_usage\": \"<number>\",\n  \"max_individual_jobs_usage\": \"<number>\",\n  \"queue_time\": \"<number>\",\n  \"avg_queue_time\": \"<number>\",\n  \"max_queue_time\": \"<number>\"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-de01ee0f-9338-400b-9e6e-d2721d4177f4"
+                    },
+                    {
+                      "id": "a3896ff7-7d37-4885-9922-e27034dc30b9",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage?instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-a3896ff7-7d37-4885-9922-e27034dc30b9"
+                    },
+                    {
+                      "id": "b6a1c97a-fb35-4fba-8e83-091f5f5c3adc",
+                      "name": "Forbidden",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage?instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-b6a1c97a-fb35-4fba-8e83-091f5f5c3adc"
+                    },
+                    {
+                      "id": "79ce17b9-153c-451a-be4c-e3a7b1a7bf24",
+                      "name": "Not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage?instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-79ce17b9-153c-451a-be4c-e3a7b1a7bf24"
+                    },
+                    {
+                      "id": "94b44c27-0d70-403b-8475-2b53ec63f1d6",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage?instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-94b44c27-0d70-403b-8475-2b53ec63f1d6"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:10:04.000Z",
+                  "updatedAt": "2026-06-05T15:10:04.000Z",
+                  "uid": "35240-7145042f-2d1b-4165-b20b-f3e701ccdede"
+                }
+              ],
+              "id": "bff095bc-3d2b-4b66-a6c5-33eecdb808f2",
+              "createdAt": "2026-06-05T15:10:04.000Z",
+              "updatedAt": "2026-06-05T15:10:04.000Z",
+              "uid": "35240-bff095bc-3d2b-4b66-a6c5-33eecdb808f2"
+            },
+            {
+              "name": "usage_grouped",
+              "item": [
+                {
+                  "name": "Get Usage Analytics Grouped",
+                  "id": "f8c7bcf7-954c-422c-bd66-f5ae91210ebb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Service-CRN",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/analytics/usage_grouped?group_by=instance&instance=<string>&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&backend=<string>&user_id=<string>&user_id=<string>&simulators=true&plan=<string>&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "analytics",
+                        "usage_grouped"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) key to group usage by",
+                          "key": "group_by",
+                          "value": "instance"
+                        },
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "start date",
+                          "key": "interval_start",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "end date",
+                          "key": "interval_end",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "backend to filter by",
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "backend to filter by",
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "user_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "user_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Include simulators",
+                          "key": "simulators",
+                          "value": "true"
+                        },
+                        {
+                          "key": "plan",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "plan",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                          "key": "subscription_id",
+                          "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                        }
+                      ]
+                    },
+                    "description": "Get usage analytics grouped"
+                  },
+                  "response": [
+                    {
+                      "id": "1ef50cac-ac95-4d5b-9bb2-53e7eb61eb0e",
+                      "name": "response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "start date",
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "end date",
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "backend to filter by",
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"key\": \"<string>\",\n      \"usage\": \"<number>\",\n      \"jobs\": \"<number>\",\n      \"sessions\": \"<number>\",\n      \"sessions_usage\": \"<number>\",\n      \"avg_sessions_usage\": \"<number>\",\n      \"max_sessions_usage\": \"<number>\",\n      \"batch_sessions\": \"<number>\",\n      \"batch_sessions_usage\": \"<number>\",\n      \"avg_batch_sessions_usage\": \"<number>\",\n      \"max_batch_sessions_usage\": \"<number>\",\n      \"dedicated_sessions\": \"<number>\",\n      \"dedicated_sessions_usage\": \"<number>\",\n      \"avg_dedicated_sessions_usage\": \"<number>\",\n      \"max_dedicated_sessions_usage\": \"<number>\",\n      \"individual_jobs\": \"<number>\",\n      \"individual_jobs_usage\": \"<number>\",\n      \"avg_individual_jobs_usage\": \"<number>\",\n      \"max_individual_jobs_usage\": \"<number>\",\n      \"queue_time\": \"<number>\",\n      \"avg_queue_time\": \"<number>\",\n      \"max_queue_time\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"usage\": \"<number>\",\n      \"jobs\": \"<number>\",\n      \"sessions\": \"<number>\",\n      \"sessions_usage\": \"<number>\",\n      \"avg_sessions_usage\": \"<number>\",\n      \"max_sessions_usage\": \"<number>\",\n      \"batch_sessions\": \"<number>\",\n      \"batch_sessions_usage\": \"<number>\",\n      \"avg_batch_sessions_usage\": \"<number>\",\n      \"max_batch_sessions_usage\": \"<number>\",\n      \"dedicated_sessions\": \"<number>\",\n      \"dedicated_sessions_usage\": \"<number>\",\n      \"avg_dedicated_sessions_usage\": \"<number>\",\n      \"max_dedicated_sessions_usage\": \"<number>\",\n      \"individual_jobs\": \"<number>\",\n      \"individual_jobs_usage\": \"<number>\",\n      \"avg_individual_jobs_usage\": \"<number>\",\n      \"max_individual_jobs_usage\": \"<number>\",\n      \"queue_time\": \"<number>\",\n      \"avg_queue_time\": \"<number>\",\n      \"max_queue_time\": \"<number>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-1ef50cac-ac95-4d5b-9bb2-53e7eb61eb0e"
+                    },
+                    {
+                      "id": "6a4e3c6f-34d4-4b50-990e-06e3937cef8e",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "start date",
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "end date",
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "backend to filter by",
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-6a4e3c6f-34d4-4b50-990e-06e3937cef8e"
+                    },
+                    {
+                      "id": "2dbdf170-ce10-4802-94ce-aff834a1ff1a",
+                      "name": "Forbidden",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "start date",
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "end date",
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "backend to filter by",
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-2dbdf170-ce10-4802-94ce-aff834a1ff1a"
+                    },
+                    {
+                      "id": "7054952e-3b6a-475e-9e11-b010779e6bfe",
+                      "name": "Not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "start date",
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "end date",
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "backend to filter by",
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-7054952e-3b6a-475e-9e11-b010779e6bfe"
+                    },
+                    {
+                      "id": "ea083355-1739-45a2-9701-cd7b0722eca5",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "start date",
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "end date",
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "backend to filter by",
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-ea083355-1739-45a2-9701-cd7b0722eca5"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:10:04.000Z",
+                  "updatedAt": "2026-06-05T15:10:04.000Z",
+                  "uid": "35240-f8c7bcf7-954c-422c-bd66-f5ae91210ebb"
+                }
+              ],
+              "id": "78030936-e89b-4c9a-9632-215f1978cdea",
+              "createdAt": "2026-06-05T15:10:04.000Z",
+              "updatedAt": "2026-06-05T15:10:04.000Z",
+              "uid": "35240-78030936-e89b-4c9a-9632-215f1978cdea"
+            },
+            {
+              "name": "usage_grouped_by_date",
+              "item": [
+                {
+                  "name": "Get Usage Analytics Grouped by Date",
+                  "id": "6e46cd87-bccd-4983-9f12-98fe45fca82a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Service-CRN",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/analytics/usage_grouped_by_date?group_by=instance&instance=<string>&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&backend=<string>&user_id=<string>&user_id=<string>&simulators=true&plan=<string>&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "analytics",
+                        "usage_grouped_by_date"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) key to group usage by",
+                          "key": "group_by",
+                          "value": "instance"
+                        },
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "interval_start",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "interval_end",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "backend",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "user_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "user_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Include simulators",
+                          "key": "simulators",
+                          "value": "true"
+                        },
+                        {
+                          "key": "plan",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "plan",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                          "key": "subscription_id",
+                          "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                        }
+                      ]
+                    },
+                    "description": "Get usage analytics grouped by date"
+                  },
+                  "response": [
+                    {
+                      "id": "17a999f3-b9ff-49f1-aaff-bdabbebfa08a",
+                      "name": "response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped_by_date?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped_by_date"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"interval_start\": \"<string>\",\n  \"interval_end\": \"<string>\",\n  \"data\": [\n    {\n      \"key\": \"<string>\",\n      \"interval_start\": \"<string>\",\n      \"interval_end\": \"<string>\",\n      \"usage\": \"<number>\",\n      \"jobs\": \"<number>\",\n      \"sessions\": \"<number>\",\n      \"sessions_usage\": \"<number>\",\n      \"avg_sessions_usage\": \"<number>\",\n      \"max_sessions_usage\": \"<number>\",\n      \"batch_sessions\": \"<number>\",\n      \"batch_sessions_usage\": \"<number>\",\n      \"avg_batch_sessions_usage\": \"<number>\",\n      \"max_batch_sessions_usage\": \"<number>\",\n      \"dedicated_sessions\": \"<number>\",\n      \"dedicated_sessions_usage\": \"<number>\",\n      \"avg_dedicated_sessions_usage\": \"<number>\",\n      \"max_dedicated_sessions_usage\": \"<number>\",\n      \"individual_jobs\": \"<number>\",\n      \"individual_jobs_usage\": \"<number>\",\n      \"avg_individual_jobs_usage\": \"<number>\",\n      \"max_individual_jobs_usage\": \"<number>\",\n      \"queue_time\": \"<number>\",\n      \"avg_queue_time\": \"<number>\",\n      \"max_queue_time\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"interval_start\": \"<string>\",\n      \"interval_end\": \"<string>\",\n      \"usage\": \"<number>\",\n      \"jobs\": \"<number>\",\n      \"sessions\": \"<number>\",\n      \"sessions_usage\": \"<number>\",\n      \"avg_sessions_usage\": \"<number>\",\n      \"max_sessions_usage\": \"<number>\",\n      \"batch_sessions\": \"<number>\",\n      \"batch_sessions_usage\": \"<number>\",\n      \"avg_batch_sessions_usage\": \"<number>\",\n      \"max_batch_sessions_usage\": \"<number>\",\n      \"dedicated_sessions\": \"<number>\",\n      \"dedicated_sessions_usage\": \"<number>\",\n      \"avg_dedicated_sessions_usage\": \"<number>\",\n      \"max_dedicated_sessions_usage\": \"<number>\",\n      \"individual_jobs\": \"<number>\",\n      \"individual_jobs_usage\": \"<number>\",\n      \"avg_individual_jobs_usage\": \"<number>\",\n      \"max_individual_jobs_usage\": \"<number>\",\n      \"queue_time\": \"<number>\",\n      \"avg_queue_time\": \"<number>\",\n      \"max_queue_time\": \"<number>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-17a999f3-b9ff-49f1-aaff-bdabbebfa08a"
+                    },
+                    {
+                      "id": "5298f29e-7d7e-4411-931c-7ce593163dd2",
+                      "name": "Bad request",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped_by_date?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped_by_date"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-5298f29e-7d7e-4411-931c-7ce593163dd2"
+                    },
+                    {
+                      "id": "523a312b-6fad-4563-865a-06f07400aadb",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped_by_date?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped_by_date"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-523a312b-6fad-4563-865a-06f07400aadb"
+                    },
+                    {
+                      "id": "2f098361-13a5-49d0-891d-935b55e65c4c",
+                      "name": "Forbidden",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped_by_date?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped_by_date"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-2f098361-13a5-49d0-891d-935b55e65c4c"
+                    },
+                    {
+                      "id": "4b52b3ee-83e6-47e6-a85c-bff38d1ec8da",
+                      "name": "Not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped_by_date?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped_by_date"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-4b52b3ee-83e6-47e6-a85c-bff38d1ec8da"
+                    },
+                    {
+                      "id": "8c9a5075-45b5-4a5c-a0b7-84d1c01505bf",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/usage_grouped_by_date?group_by=instance&instance=<string>&interval_start=<dateTime>&interval_end=<dateTime>&backend=<string>&user_id=<string>&simulators=true&plan=<string>&subscription_id=ef2e1b44-57e7-4cfc-8f67-d521a325ea1b",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "usage_grouped_by_date"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) key to group usage by",
+                              "key": "group_by",
+                              "value": "instance"
+                            },
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "interval_start",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "interval_end",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "key": "backend",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "user_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include simulators",
+                              "key": "simulators",
+                              "value": "true"
+                            },
+                            {
+                              "key": "plan",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.",
+                              "key": "subscription_id",
+                              "value": "ef2e1b44-57e7-4cfc-8f67-d521a325ea1b"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-8c9a5075-45b5-4a5c-a0b7-84d1c01505bf"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:10:04.000Z",
+                  "updatedAt": "2026-06-05T15:10:04.000Z",
+                  "uid": "35240-6e46cd87-bccd-4983-9f12-98fe45fca82a"
+                }
+              ],
+              "id": "04c0b682-9604-42ae-95c6-621489452c68",
+              "createdAt": "2026-06-05T15:10:04.000Z",
+              "updatedAt": "2026-06-05T15:10:04.000Z",
+              "uid": "35240-04c0b682-9604-42ae-95c6-621489452c68"
+            },
+            {
+              "name": "filters",
+              "item": [
+                {
+                  "name": "Get Analytics Filters",
+                  "id": "e2bbc405-593b-4f80-a8e9-1def07291483",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "Service-CRN",
+                          "type": "string"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/analytics/filters?instance=<string>&instance=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "analytics",
+                        "filters"
+                      ],
+                      "query": [
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "instance",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "description": "Get analytics filters"
+                  },
+                  "response": [
+                    {
+                      "id": "27c56189-10e6-4d05-9f5e-6e7a809f2f92",
+                      "name": "response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/filters?instance=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "filters"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"backends\": [\n    {\n      \"name\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"instances\": [\n    {\n      \"id\": \"<string>\",\n      \"deleted\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"deleted\": \"<boolean>\"\n    }\n  ],\n  \"users\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ],\n  \"plans\": [\n    {\n      \"name\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"subscriptions\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-27c56189-10e6-4d05-9f5e-6e7a809f2f92"
+                    },
+                    {
+                      "id": "5ecbf8f1-344f-46f8-9114-f57768849f85",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/filters?instance=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "filters"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-5ecbf8f1-344f-46f8-9114-f57768849f85"
+                    },
+                    {
+                      "id": "bbc2e0f3-ecaa-4a10-9f8d-d10d88b1ca17",
+                      "name": "Forbidden",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/filters?instance=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "filters"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-bbc2e0f3-ecaa-4a10-9f8d-d10d88b1ca17"
+                    },
+                    {
+                      "id": "07fbb6ae-9053-4c8f-b939-23f4b99afdb6",
+                      "name": "Not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/filters?instance=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "filters"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-07fbb6ae-9053-4c8f-b939-23f4b99afdb6"
+                    },
+                    {
+                      "id": "be3546be-c5de-4803-a297-158282e81457",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Service-CRN",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/analytics/filters?instance=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "analytics",
+                            "filters"
+                          ],
+                          "query": [
+                            {
+                              "key": "instance",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"errors\": [\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    },\n    {\n      \"code\": \"<number>\",\n      \"message\": \"<string>\",\n      \"solution\": \"<string>\",\n      \"more_info\": \"<string>\"\n    }\n  ],\n  \"trace\": \" \"\n}",
+                      "createdAt": "2026-06-05T15:10:04.000Z",
+                      "updatedAt": "2026-06-05T15:10:04.000Z",
+                      "uid": "35240-be3546be-c5de-4803-a297-158282e81457"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:10:04.000Z",
+                  "updatedAt": "2026-06-05T15:10:04.000Z",
+                  "uid": "35240-e2bbc405-593b-4f80-a8e9-1def07291483"
+                }
+              ],
+              "id": "16f5262d-c755-4786-86a4-1279821ad2a6",
+              "createdAt": "2026-06-05T15:10:04.000Z",
+              "updatedAt": "2026-06-05T15:10:04.000Z",
+              "uid": "35240-16f5262d-c755-4786-86a4-1279821ad2a6"
+            }
+          ],
+          "id": "04d3f4cd-3b0e-4d28-b3bf-e9876a63b619",
+          "createdAt": "2026-06-05T15:10:04.000Z",
+          "updatedAt": "2026-06-05T15:10:04.000Z",
+          "uid": "35240-04d3f4cd-3b0e-4d28-b3bf-e9876a63b619"
+        }
+      ],
+      "id": "fc6d813c-8d10-4140-9374-c10985895c0f",
+      "createdAt": "2026-06-05T15:10:04.000Z",
+      "updatedAt": "2026-06-05T15:10:04.000Z",
+      "uid": "35240-fc6d813c-8d10-4140-9374-c10985895c0f"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://quantum.cloud.ibm.com/api"
+    }
+  ]
+}
