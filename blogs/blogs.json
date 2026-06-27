@@ -9,13 +9,13 @@
       "method": "none"
     },
     {
-      "source": "https://research.ibm.com/blog",
+      "source": "https://research.ibm.com/rss",
       "feed_url": "https://research.ibm.com/rss",
       "title": "",
-      "saved": 3,
-      "method": "discovered"
+      "saved": 6,
+      "method": "feed"
     }
   ],
-  "post_count": 6,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 13,
+  "fetched": "2026-06-27T12:03:07Z"
 }
