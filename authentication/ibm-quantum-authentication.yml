@@ -1,0 +1,47 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/ibm-quantum-runtime-analytics-openapi.yml, openapi/ibm-quantum-runtime-backends-openapi.yml,
+  openapi/ibm-quantum-runtime-instances-openapi.yml, openapi/ibm-quantum-runtime-jobs-openapi.yml,
+  openapi/ibm-quantum-runtime-sessions-openapi.yml, openapi/ibm-quantum-runtime-versions-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  description: IBM Cloud IAM bearer token
+  sources:
+  - openapi/ibm-quantum-runtime-analytics-openapi.yml
+  - openapi/ibm-quantum-runtime-backends-openapi.yml
+  - openapi/ibm-quantum-runtime-instances-openapi.yml
+  - openapi/ibm-quantum-runtime-jobs-openapi.yml
+  - openapi/ibm-quantum-runtime-sessions-openapi.yml
+  - openapi/ibm-quantum-runtime-versions-openapi.yml
+- name: ServiceCRN
+  type: apiKey
+  in: header
+  parameter: Service-CRN
+  description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
+  sources:
+  - openapi/ibm-quantum-runtime-analytics-openapi.yml
+  - openapi/ibm-quantum-runtime-backends-openapi.yml
+  - openapi/ibm-quantum-runtime-instances-openapi.yml
+  - openapi/ibm-quantum-runtime-jobs-openapi.yml
+  - openapi/ibm-quantum-runtime-sessions-openapi.yml
+  - openapi/ibm-quantum-runtime-versions-openapi.yml
+- name: ApiVersion
+  type: apiKey
+  in: header
+  parameter: IBM-API-Version
+  description: API version, e.g. 2026-03-15
+  sources:
+  - openapi/ibm-quantum-runtime-analytics-openapi.yml
+  - openapi/ibm-quantum-runtime-backends-openapi.yml
+  - openapi/ibm-quantum-runtime-instances-openapi.yml
+  - openapi/ibm-quantum-runtime-jobs-openapi.yml
+  - openapi/ibm-quantum-runtime-sessions-openapi.yml
+  - openapi/ibm-quantum-runtime-versions-openapi.yml

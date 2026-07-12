@@ -149,6 +149,12 @@ apis:
       Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates and backend
       topology. Bundled with Flex and Premium plans.
 common:
+  - type: VulnerabilityDisclosure
+    url: security/ibm-quantum-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/ibm-quantum-domain-security.yml
+  - type: Authentication
+    url: authentication/ibm-quantum-authentication.yml
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/ibm-quantum/overview
   - type: Arazzo
