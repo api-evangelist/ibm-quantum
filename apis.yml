@@ -149,6 +149,8 @@ apis:
       Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates and backend
       topology. Bundled with Flex and Premium plans.
 common:
+  - type: AgenticAccess
+    url: agentic-access/ibm-quantum-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/ibm-quantum-vulnerability-disclosure.yml
   - type: DomainSecurity
