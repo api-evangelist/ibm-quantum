@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: Qiskit Runtime Instances API
+  title: Qiskit Runtime Analytics Accounts Instances API
   version: 0.45.3
-  description: Inspect the current Qiskit Runtime instance, view instance configuration and limits, and read per-account configuration on IBM Quantum Platform.
+  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
   contact:
     name: IBM Quantum
     url: https://quantum.cloud.ibm.com
@@ -14,11 +14,16 @@ servers:
   description: Global region
 - url: https://eu-de.quantum.cloud.ibm.com/api
   description: EU-DE region
+security:
+- BearerAuth: []
+  ServiceCRN: []
+  ApiVersion: []
 tags:
 - name: Instances
-- name: Accounts
 paths:
   /v1/instance:
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
     get:
       tags:
       - Instances
@@ -67,9 +72,9 @@ paths:
       x-ibm-permissions:
         actions:
         - name: quantum-computing.instance.read
+  /v1/instances/configuration:
     parameters:
     - $ref: '#/components/parameters/IBM-API-Version'
-  /v1/instances/configuration:
     get:
       tags:
       - Instances
@@ -170,81 +175,9 @@ paths:
       x-ibm-permissions:
         actions:
         - name: quantum-computing.instance.configuration.update
-    parameters:
-    - $ref: '#/components/parameters/IBM-API-Version'
-  /v1/accounts/{id}:
-    get:
-      operationId: get_account
-      summary: Get Account Configuration
-      description: Get the current account information. If no account information is found, returns the default configuration.
-      parameters:
-      - schema:
-          type: string
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 64
-        name: plan_id
-        in: query
-        required: false
-        description: Obtain the account configuration only for the specified plan
-      tags:
-      - Accounts
-      responses:
-        '200':
-          description: Account configuration successfully retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExpandedAccountConfiguration'
-              examples:
-                accountConfigurationExample:
-                  $ref: '#/components/examples/expandedAccountConfigurationExample'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorContainer'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorContainer'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorContainer'
-        '500':
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorContainer'
-      security:
-      - IBMCloudAPIKey: []
-      - ServiceCRN: []
-      - IBMCloudAuth: []
-      x-ibm-events:
-        events:
-        - name: quantum-computing.account-configuration.read
-      x-ibm-permissions:
-        actions:
-        - name: quantum-computing.account-configuration.read
-    parameters:
-    - schema:
-        type: string
-        minLength: 1
-        maxLength: 64
-        pattern: ^[a-zA-Z0-9-_]+$
-      name: id
-      in: path
-      required: true
-      description: Account id (without `a/` prefix)
-    - $ref: '#/components/parameters/IBM-API-Version'
   /v1/instances/usage:
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
     get:
       description: Get instance usage
       operationId: get_usage
@@ -275,8 +208,6 @@ paths:
       x-ibm-permissions:
         actions:
         - name: quantum-computing.instance-usage.read
-    parameters:
-    - $ref: '#/components/parameters/IBM-API-Version'
 components:
   schemas:
     ErrorContainer:
@@ -301,72 +232,42 @@ components:
               more_info:
                 description: URL where information about the error can be read in a web browser
                 type: string
-    ExpandedAccountConfiguration:
+    InstanceConfiguration:
       type: object
-      description: Configuration for an account managed by the IBM Qiskit Runtime service.
+      description: Instance configuration
       properties:
-        plans:
-          description: The list of configurations for the account per plan
+        instance_limit:
+          type: number
+          format: double
+          description: Instance usage limit in seconds
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
           type: array
           items:
-            $ref: '#/components/schemas/ExpandedPlanConfiguration'
-          minItems: 0
-          maxItems: 20
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
       required:
-      - plans
-    ExpandedPlanConfiguration:
-      allOf:
-      - $ref: '#/components/schemas/PlanConfiguration'
-      - type: object
-        properties:
-          unallocated_usage_seconds:
-            type: integer
-            format: int32
-            minimum: 0
-            maximum: 2147483647
-            description: The remaining usage allocation that can still be allocated to instances.
-    FunctionConfig:
+      - errors
+      - trace
+    InstanceConfigurationUpdate:
       type: object
-      description: A function available to an account plan.
+      description: instance configuration update
       properties:
-        provider:
-          type: string
-          description: The function provider name.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: ibm
-        name:
-          type: string
-          description: The function name, unique within a provider.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: circuit-function
-        business_model:
-          type: string
-          description: The business model under which the function is offered.
-          enum:
-          - trial
-          - subsidized
-          - consumption
-        permissions:
-          type: array
-          description: IAM-style actions granted for this function.
-          items:
-            type: string
-            pattern: ^.+$
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 2147483647
-          example:
-          - function.run
-      required:
-      - provider
-      - name
-      - business_model
-      - permissions
+        instance_limit:
+          type: integer
+          format: int32
+          description: This field can be null or an integer. Use null to reset/remove the instance limit.
+          minimum: 1
+          maximum: 2147483647
     GenericError:
       type: object
       properties:
@@ -386,24 +287,17 @@ components:
       - message
       - solution
       - more_info
-    GenericErrorDto:
+    UsagePeriod:
       type: object
       properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
+        start_time:
+          format: date-time
           type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
-      required:
-      - errors
-      - trace
+          description: The start time of the usage
+        end_time:
+          format: date-time
+          type: string
+          description: The end time of the usage
     GetUsageResponse:
       type: object
       properties:
@@ -467,116 +361,6 @@ components:
         usage_allocation_seconds:
           type: string
           description: The maximum sum of allowable usage allocation on the instance.
-    InstanceConfiguration:
-      type: object
-      description: Instance configuration
-      properties:
-        instance_limit:
-          type: number
-          format: double
-          description: Instance usage limit in seconds
-    InstanceConfigurationUpdate:
-      type: object
-      description: instance configuration update
-      properties:
-        instance_limit:
-          type: integer
-          format: int32
-          description: This field can be null or an integer. Use null to reset/remove the instance limit.
-          minimum: 1
-          maximum: 2147483647
-    PlanConfiguration:
-      type: object
-      properties:
-        plan_id:
-          type: string
-          description: The plan id as defined in Global Catalog
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 128
-        subscription_id:
-          type: string
-          description: The id of subscription to identify each plan contract in one account
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 36
-        subscription_name:
-          type: string
-          description: The user-readable name of the subscription
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 128
-        usage_allocation_seconds:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: The maximum sum of allowable usage allocation across all instances in the account. Mandatory when plan_id is about flex plan.
-        usage_limit_seconds:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: The maximum amount of time workloads can run accross all instances in the account for the specified plan. Mandatory when plan_id is about flex plan.
-        backends:
-          type: array
-          description: List of backends to allow the account to assign for instances.
-          items:
-            type: string
-            pattern: ^.+$
-            minLength: 1
-            maxLength: 128
-          minItems: 0
-          maxItems: 100
-        max_ttl:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: The maximum time (in seconds) for session to run, subject to plan limits.
-        active_ttl:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: The remaining time (in seconds) for the session to be in the active state while jobs are running. Must be less than or equal to max ttl.
-        interactive_ttl:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: The maximum time (in seconds) between jobs to keep the session active. Must be less than or equal to active ttl.
-        start_time:
-          type: string
-          format: date-time
-          description: Start time for contract-based plans. Mandatory when plan_id is about flex plan.
-        end_time:
-          type: string
-          format: date-time
-          description: End time for contract-based plans. Mandatory when plan_id is about flex plan.
-        functions:
-          type: array
-          description: "Functions available to this account plan. Each entry specifies a function id, billing model, and the set of permitted actions. Unlike instance-level configuration, `[\"ANY\"]` is not a valid value \u2014 functions must be listed explicitly.\n"
-          items:
-            $ref: '#/components/schemas/FunctionConfig'
-          minItems: 0
-          maxItems: 2147483647
-      required:
-      - backends
-      - plan_id
-      - subscription_id
-      - subscription_name
-    UsagePeriod:
-      type: object
-      properties:
-        start_time:
-          format: date-time
-          type: string
-          description: The start time of the usage
-        end_time:
-          format: date-time
-          type: string
-          description: The end time of the usage
   securitySchemes:
     BearerAuth:
       type: http
@@ -592,7 +376,3 @@ components:
       in: header
       name: IBM-API-Version
       description: API version, e.g. 2026-03-15
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []

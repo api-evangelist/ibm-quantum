@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: Qiskit Runtime Analytics Accounts Tags API
+  version: 0.45.3
+  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
+  contact:
+    name: IBM Quantum
+    url: https://quantum.cloud.ibm.com
+  license:
+    name: IBM
+    url: https://www.ibm.com/legal
+servers:
+- url: https://quantum.cloud.ibm.com/api
+  description: Global region
+- url: https://eu-de.quantum.cloud.ibm.com/api
+  description: EU-DE region
+security:
+- BearerAuth: []
+  ServiceCRN: []
+  ApiVersion: []
+tags:
+- name: Tags
+paths:
+  /v1/tags:
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+    get:
+      operationId: list_tags
+      parameters:
+      - in: query
+        name: type
+        required: true
+        schema:
+          type: string
+          default: job
+          enum:
+          - job
+        description: Searches for tags in the specified type.
+      - in: query
+        name: search
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 100
+        description: Used for searching tags.
+      description: Search and list the tags of jobs.
+      tags:
+      - Tags
+      summary: List Tags
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTagsResponse'
+              examples:
+                jobsResponseExample:
+                  $ref: '#/components/examples/listTagsExample'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.job.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.job.read
+components:
+  schemas:
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    Tags:
+      title: Tags
+      description: List of job or program tags
+      type: array
+      minItems: 0
+      maxItems: 8
+      items:
+        type: string
+        pattern: ^.*$
+        minLength: 0
+        maxLength: 86
+    ListTagsResponse:
+      type: object
+      properties:
+        tags:
+          $ref: '#/components/schemas/Tags'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: IBM Cloud IAM bearer token
+    ServiceCRN:
+      type: apiKey
+      in: header
+      name: Service-CRN
+      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
+    ApiVersion:
+      type: apiKey
+      in: header
+      name: IBM-API-Version
+      description: API version, e.g. 2026-03-15

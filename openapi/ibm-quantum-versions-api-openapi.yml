@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: Qiskit Runtime Versions API
+  title: Qiskit Runtime Analytics Accounts Versions API
   version: 0.45.3
-  description: Discover the supported versions of the Qiskit Runtime REST API and negotiate the IBM-API-Version header value.
+  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
   contact:
     name: IBM Quantum
     url: https://quantum.cloud.ibm.com
@@ -14,6 +14,10 @@ servers:
   description: Global region
 - url: https://eu-de.quantum.cloud.ibm.com/api
   description: EU-DE region
+security:
+- BearerAuth: []
+  ServiceCRN: []
+  ApiVersion: []
 tags:
 - name: Versions
 paths:
@@ -58,6 +62,12 @@ components:
       required:
       - version
       - status
+    VersionStatus:
+      type: string
+      enum:
+      - live
+      - deprecated
+      description: The support status of the API version.
     VersionResponse:
       type: object
       properties:
@@ -85,12 +95,6 @@ components:
             $ref: '#/components/schemas/VersionMetadata'
       required:
       - versions
-    VersionStatus:
-      type: string
-      enum:
-      - live
-      - deprecated
-      description: The support status of the API version.
   securitySchemes:
     BearerAuth:
       type: http
@@ -106,7 +110,3 @@ components:
       in: header
       name: IBM-API-Version
       description: API version, e.g. 2026-03-15
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []
