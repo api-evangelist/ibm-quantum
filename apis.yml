@@ -1,153 +1,275 @@
 aid: ibm-quantum
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/ibm-quantum.png
 url: https://raw.githubusercontent.com/api-evangelist/ibm-quantum/refs/heads/main/apis.yml
 apis:
-  - aid: ibm-quantum:qiskit-runtime-jobs-api
-    name: Qiskit Runtime Jobs API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Runtime
-      - Jobs
-    humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-    properties:
-      - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-        type: Documentation
-      - url: https://quantum.cloud.ibm.com/api/openapi.json
-        type: OpenAPI
-      - url: openapi/ibm-quantum-runtime-jobs-openapi.yml
-        type: OpenAPI
-      - url: json-schema/ibm-quantum-job-schema.json
-        type: JSONSchema
-      - url: json-ld/ibm-quantum-context.jsonld
-        type: JSONLD
-      - url: examples/ibm-quantum-create-sampler-job-example.json
-        type: Examples
-    description: >-
-      Submit Qiskit Runtime primitive jobs (Sampler and Estimator) to IBM Quantum hardware over the REST API. Includes
-      job creation, listing, retrieval, deletion, cancellation, results, logs, metrics, and tag management. Job
-      submission is rate-limited to 5 requests per minute per IAM token.
-  - aid: ibm-quantum:qiskit-runtime-backends-api
-    name: Qiskit Runtime Backends API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Runtime
-      - Backends
-    humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-    properties:
-      - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-        type: Documentation
-      - url: openapi/ibm-quantum-runtime-backends-openapi.yml
-        type: OpenAPI
-      - url: json-schema/ibm-quantum-backend-schema.json
-        type: JSONSchema
-      - url: examples/ibm-quantum-list-backends-example.json
-        type: Examples
-    description: >-
-      Discover available IBM Quantum backends (Heron, Eagle, and other QPUs plus simulators). Read backend
-      configuration, calibrated properties, defaults, and live status for circuit transpilation and scheduling.
-  - aid: ibm-quantum:qiskit-runtime-sessions-api
-    name: Qiskit Runtime Sessions API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Runtime
-      - Sessions
-    humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-    properties:
-      - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-        type: Documentation
-      - url: openapi/ibm-quantum-runtime-sessions-openapi.yml
-        type: OpenAPI
-      - url: json-schema/ibm-quantum-session-schema.json
-        type: JSONSchema
-      - url: examples/ibm-quantum-create-session-example.json
-        type: Examples
-    description: >-
-      Create, inspect, update, and close Qiskit Runtime sessions for grouping primitive jobs against a target backend
-      with priority access. Supports dedicated and batch session modes with configurable max time and interactive
-      timeouts.
-  - aid: ibm-quantum:qiskit-runtime-instances-api
-    name: Qiskit Runtime Instances API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Runtime
-      - Instances
-      - Accounts
-    humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-    properties:
-      - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-        type: Documentation
-      - url: openapi/ibm-quantum-runtime-instances-openapi.yml
-        type: OpenAPI
-    description: >-
-      Inspect the current Qiskit Runtime instance, view instance limits and configuration, and read per-account
-      configuration. Each Qiskit Runtime instance is identified by an IBM Cloud Service-CRN and governs plan,
-      allocation, region, and access.
-  - aid: ibm-quantum:qiskit-runtime-analytics-api
-    name: Qiskit Runtime Analytics API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Runtime
-      - Analytics
-      - FinOps
-    humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-    properties:
-      - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-        type: Documentation
-      - url: openapi/ibm-quantum-runtime-analytics-openapi.yml
-        type: OpenAPI
-    description: >-
-      Usage analytics and active-workload reporting for a Qiskit Runtime instance. Powers FinOps and plan-utilization
-      tracking against Open, Pay-As-You-Go, Flex, and Premium minute pools.
-  - aid: ibm-quantum:qiskit-runtime-versions-api
-    name: Qiskit Runtime Versions API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Runtime
-      - Versions
-    humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-    properties:
-      - url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
-        type: Documentation
-      - url: openapi/ibm-quantum-runtime-versions-openapi.yml
-        type: OpenAPI
-    description: >-
-      Discover supported versions of the Qiskit Runtime REST API and negotiate the date-based IBM-API-Version header
-      value.
-  - aid: ibm-quantum:qiskit-functions-catalog-api
-    name: Qiskit Functions Catalog API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Functions
-    humanURL: https://github.com/Qiskit/qiskit-ibm-catalog
-    properties:
-      - url: https://github.com/Qiskit/qiskit-ibm-catalog
-        type: Documentation
-      - url: https://github.com/Qiskit/qiskit-ibm-catalog
-        type: SourceCode
-    description: >-
-      Premium / Flex-tier service for discovering and invoking abstracted Qiskit Functions — pre-packaged
-      quantum-classical workflows (e.g. circuit cutting, error-mitigation pipelines) callable through the
-      qiskit-ibm-catalog Python client. Accessible via the QiskitFunctionsCatalog object (catalog.list / load,
-      function.run).
-  - aid: ibm-quantum:qiskit-transpiler-as-a-service-api
-    name: Qiskit Transpiler as a Service API
-    tags:
-      - IBM Quantum
-      - Quantum Computing
-      - Qiskit Transpiler
-    humanURL: https://quantum.cloud.ibm.com/docs/
-    properties:
-      - url: https://quantum.cloud.ibm.com/docs/
-        type: Documentation
-    description: >-
-      Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates and backend
-      topology. Bundled with Flex and Premium plans.
+- aid: ibm-quantum:qiskit-functions-catalog-api
+  name: Qiskit Functions Catalog API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Functions
+  humanURL: https://github.com/Qiskit/qiskit-ibm-catalog
+  properties:
+  - url: https://github.com/Qiskit/qiskit-ibm-catalog
+    type: Documentation
+  - url: https://github.com/Qiskit/qiskit-ibm-catalog
+    type: SourceCode
+  description: >-
+    Premium / Flex-tier service for discovering and invoking abstracted Qiskit Functions — pre-packaged
+    quantum-classical workflows (e.g. circuit cutting, error-mitigation pipelines) callable through the
+    qiskit-ibm-catalog Python client. Accessible via the QiskitFunctionsCatalog object (catalog.list /
+    load, function.run).
+- aid: ibm-quantum:qiskit-transpiler-as-a-service-api
+  name: Qiskit Transpiler as a Service API
+  tags:
+  - IBM Quantum
+  - Quantum Computing
+  - Qiskit Transpiler
+  humanURL: https://quantum.cloud.ibm.com/docs/
+  properties:
+  - url: https://quantum.cloud.ibm.com/docs/
+    type: Documentation
+  description: >-
+    Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates and
+    backend topology. Bundled with Flex and Premium plans.
+- aid: ibm-quantum:ibm-quantum-accounts-api
+  name: ibm-quantum Accounts API
+  description: The Accounts API from ibm-quantum — 1 operation(s) for accounts.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-analytics-api
+  name: ibm-quantum Analytics API
+  description: The Analytics API from ibm-quantum — 4 operation(s) for analytics.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-analytics-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-backends-api
+  name: ibm-quantum Backends API
+  description: The Backends API from ibm-quantum — 5 operation(s) for backends.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Backends
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-backends-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-instances-api
+  name: ibm-quantum Instances API
+  description: The Instances API from ibm-quantum — 3 operation(s) for instances.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Instances
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-instances-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-jobs-api
+  name: ibm-quantum Jobs API
+  description: The Jobs API from ibm-quantum — 7 operation(s) for jobs.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-sessions-api
+  name: ibm-quantum Sessions API
+  description: The Sessions API from ibm-quantum — 3 operation(s) for sessions.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-sessions-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-tags-api
+  name: ibm-quantum Tags API
+  description: The Tags API from ibm-quantum — 1 operation(s) for tags.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-tags-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-versions-api
+  name: ibm-quantum Versions API
+  description: The Versions API from ibm-quantum — 1 operation(s) for versions.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Versions
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-versions-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
+- aid: ibm-quantum:ibm-quantum-workloads-api
+  name: ibm-quantum Workloads API
+  description: The Workloads API from ibm-quantum — 1 operation(s) for workloads.
+  humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  tags:
+  - Workloads
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-quantum-workloads-api-openapi.yml
+  - type: Documentation
+    url: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-job-schema.json
+  - type: JSONLD
+    url: json-ld/ibm-quantum-context.jsonld
+  - type: Examples
+    url: examples/ibm-quantum-create-sampler-job-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-backend-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-list-backends-example.json
+  - type: JSONSchema
+    url: json-schema/ibm-quantum-session-schema.json
+  - type: Examples
+    url: examples/ibm-quantum-create-session-example.json
 common:
   - type: AgenticAccess
     url: agentic-access/ibm-quantum-agentic-access.yml
