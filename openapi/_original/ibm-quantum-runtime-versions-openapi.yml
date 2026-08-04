@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: Qiskit Runtime Versions API
+  version: 0.45.3
+  description: Discover the supported versions of the Qiskit Runtime REST API and negotiate the IBM-API-Version header value.
+  contact:
+    name: IBM Quantum
+    url: https://quantum.cloud.ibm.com
+  license:
+    name: IBM
+    url: https://www.ibm.com/legal
+servers:
+- url: https://quantum.cloud.ibm.com/api
+  description: Global region
+- url: https://eu-de.quantum.cloud.ibm.com/api
+  description: EU-DE region
+tags:
+- name: Versions
+paths:
+  /v1/versions:
+    get:
+      description: Get a list of available API versions
+      operationId: get_versions
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionResponse'
+      summary: Get Versions
+      tags:
+      - Versions
+components:
+  schemas:
+    VersionMetadata:
+      type: object
+      properties:
+        version:
+          type: string
+          description: The API version in `YYYY-MM-DD` format.
+          format: date
+          minLength: 10
+          maxLength: 10
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        sunset_date:
+          type: string
+          description: The sunset date of the API version in `YYYY-MM-DD` format. Support may drop at anytime on or after this date.
+          format: date
+          minLength: 10
+          maxLength: 10
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        status:
+          description: The support status of the API version.
+          allOf:
+          - $ref: '#/components/schemas/VersionStatus'
+      required:
+      - version
+      - status
+    VersionResponse:
+      type: object
+      properties:
+        versions:
+          example:
+          - version: '2024-01-01'
+            sunset_date: '2027-01-01'
+            status: deprecated
+          - version: '2025-01-01'
+            sunset_date: '2027-01-01'
+            status: deprecated
+          - version: '2025-05-01'
+            sunset_date: '2027-01-01'
+            status: deprecated
+          - version: '2026-02-01'
+            sunset_date: '2027-02-01'
+            status: deprecated
+          - version: '2026-02-15'
+            sunset_date: '2027-02-15'
+            status: deprecated
+          - version: '2026-03-15'
+            status: live
+          type: array
+          items:
+            $ref: '#/components/schemas/VersionMetadata'
+      required:
+      - versions
+    VersionStatus:
+      type: string
+      enum:
+      - live
+      - deprecated
+      description: The support status of the API version.
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: IBM Cloud IAM bearer token
+    ServiceCRN:
+      type: apiKey
+      in: header
+      name: Service-CRN
+      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
+    ApiVersion:
+      type: apiKey
+      in: header
+      name: IBM-API-Version
+      description: API version, e.g. 2026-03-15
+security:
+- BearerAuth: []
+  ServiceCRN: []
+  ApiVersion: []

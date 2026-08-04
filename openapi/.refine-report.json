@@ -1,0 +1,50 @@
+{
+  "provider": "ibm-quantum",
+  "sources": [
+    "ibm-quantum-accounts-api-openapi.yml",
+    "ibm-quantum-analytics-api-openapi.yml",
+    "ibm-quantum-backends-api-openapi.yml",
+    "ibm-quantum-instances-api-openapi.yml",
+    "ibm-quantum-jobs-api-openapi.yml",
+    "ibm-quantum-sessions-api-openapi.yml",
+    "ibm-quantum-tags-api-openapi.yml",
+    "ibm-quantum-versions-api-openapi.yml",
+    "ibm-quantum-workloads-api-openapi.yml"
+  ],
+  "outputs": [
+    "ibm-quantum-accounts-api-openapi.yml",
+    "ibm-quantum-analytics-api-openapi.yml",
+    "ibm-quantum-backends-api-openapi.yml",
+    "ibm-quantum-instances-api-openapi.yml",
+    "ibm-quantum-jobs-api-openapi.yml",
+    "ibm-quantum-sessions-api-openapi.yml",
+    "ibm-quantum-tags-api-openapi.yml",
+    "ibm-quantum-versions-api-openapi.yml",
+    "ibm-quantum-workloads-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [
+    "ibm-quantum-accounts-api-openapi.yml: dangling $ref: #/components/examples/expandedAccountConfigurationExample",
+    "ibm-quantum-accounts-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version",
+    "ibm-quantum-analytics-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version",
+    "ibm-quantum-backends-api-openapi.yml: dangling $ref: #/components/examples/backendsResponseExample",
+    "ibm-quantum-backends-api-openapi.yml: dangling $ref: #/components/examples/sampleBackendConfigurationResponse",
+    "ibm-quantum-backends-api-openapi.yml: dangling $ref: #/components/examples/sampleBackendDefaultsResponse",
+    "ibm-quantum-backends-api-openapi.yml: dangling $ref: #/components/examples/sampleBackendPropertiesResponse",
+    "ibm-quantum-backends-api-openapi.yml: dangling $ref: #/components/examples/sampleBackendStatusResponse",
+    "ibm-quantum-backends-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version",
+    "ibm-quantum-instances-api-openapi.yml: dangling $ref: #/components/examples/sampleInstanceConfigurationResponse",
+    "ibm-quantum-instances-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version",
+    "ibm-quantum-jobs-api-openapi.yml: dangling $ref: #/components/examples/jobMetricsResponseExample",
+    "ibm-quantum-jobs-api-openapi.yml: dangling $ref: #/components/examples/jobResponseExample",
+    "ibm-quantum-jobs-api-openapi.yml: dangling $ref: #/components/examples/jobsResponseExample",
+    "ibm-quantum-jobs-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version",
+    "ibm-quantum-sessions-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version",
+    "ibm-quantum-tags-api-openapi.yml: dangling $ref: #/components/examples/listTagsExample",
+    "ibm-quantum-tags-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version",
+    "ibm-quantum-workloads-api-openapi.yml: dangling $ref: #/components/parameters/IBM-API-Version"
+  ],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

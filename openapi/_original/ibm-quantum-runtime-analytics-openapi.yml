@@ -1,0 +1,1275 @@
+openapi: 3.0.0
+info:
+  title: Qiskit Runtime Analytics API
+  version: 0.45.3
+  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
+  contact:
+    name: IBM Quantum
+    url: https://quantum.cloud.ibm.com
+  license:
+    name: IBM
+    url: https://www.ibm.com/legal
+servers:
+- url: https://quantum.cloud.ibm.com/api
+  description: Global region
+- url: https://eu-de.quantum.cloud.ibm.com/api
+  description: EU-DE region
+tags:
+- name: Analytics
+- name: Workloads
+paths:
+  /v1/workloads:
+    get:
+      description: List user instance workloads
+      operationId: find_instance_workloads
+      parameters:
+      - name: user
+        required: false
+        in: query
+        description: User identifier. For now it can only be "me".
+        schema:
+          example: me
+          type: string
+          enum:
+          - me
+      - name: sort
+        required: false
+        in: query
+        description: Field to sort the workloads by. A `-` prefix indicates descending sort order.
+        schema:
+          default: createdAt
+          type: string
+          enum:
+          - createdAt
+          - -createdAt
+      - name: limit
+        required: false
+        in: query
+        description: Number of workloads to return at a time
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 10
+          example: 5
+          type: number
+      - name: previous
+        required: false
+        in: query
+        description: Cursor to previous workloads result page
+        schema:
+          type: string
+      - name: next
+        required: false
+        in: query
+        description: Cursor to next workloads result page
+        schema:
+          type: string
+      - name: backend
+        required: false
+        in: query
+        description: Backend name
+        schema:
+          example: ibm_seattle
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: Optional search string, used to filter workloads by id or tags
+        schema:
+          example: test
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled.
+        schema:
+          example:
+          - pending
+          type: array
+          items:
+            type: string
+            enum:
+            - completed
+            - canceled
+            - failed
+            - pending
+            - in_progress
+      - name: mode
+        required: false
+        in: query
+        description: 'Workload mode: job, session or batch'
+        schema:
+          example: batch
+          type: string
+          enum:
+          - job
+          - session
+          - batch
+      - name: created_after
+        required: false
+        in: query
+        description: Filter jobs and session created after this date
+        schema:
+          format: date-time
+          example: '2021-01-01T00:00:00Z'
+          type: string
+      - name: created_before
+        required: false
+        in: query
+        description: Filter jobs and session created before this date
+        schema:
+          format: date-time
+          example: '2021-01-01T00:00:00Z'
+          type: string
+      - name: tags
+        required: false
+        in: query
+        description: Optional array of tags for the workloads
+        schema:
+          example:
+          - composer-info:composer:true
+          - bar
+          - foo
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationWorkloadsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+      summary: List User Instance Workloads
+      tags:
+      - Workloads
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.workload.list
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.workload.list
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+  /v1/analytics/usage:
+    get:
+      description: Get usage analytics
+      operationId: analytics_usage
+      parameters:
+      - name: instance
+        required: false
+        in: query
+        schema:
+          example: 'crn:v1:staging:public:quantum-computing:region:a/account:instance::'
+          type: array
+          items:
+            type: string
+      - name: interval_start
+        required: false
+        in: query
+        schema:
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+          type: string
+      - name: interval_end
+        required: false
+        in: query
+        schema:
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+          type: string
+      - name: backend
+        required: false
+        in: query
+        schema:
+          example: ibm_tenerife
+          type: array
+          items:
+            type: string
+      - name: user_id
+        required: false
+        in: query
+        schema:
+          example: '123'
+          type: array
+          items:
+            type: string
+      - name: simulators
+        required: false
+        in: query
+        description: Include simulators
+        schema:
+          default: true
+          example: false
+          type: boolean
+      - name: plan
+        required: false
+        in: query
+        schema:
+          example: premium
+          type: array
+          items:
+            type: string
+      - name: subscription_id
+        required: false
+        in: query
+        description: The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.
+        schema:
+          minItems: 1
+          maxItems: 200
+          example:
+          - 91b2c828-2952-4f05-aed8-bedf92c6c480
+          type: array
+          items:
+            type: string
+            format: uuid
+            pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+            minLength: 36
+            maxLength: 36
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAnalyticsUsageResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+      summary: Get Usage Analytics
+      tags:
+      - Analytics
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.account-analytics-usage.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.account-analytics-usage.read
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+  /v1/analytics/usage_grouped:
+    get:
+      description: Get usage analytics grouped
+      operationId: get_usage_analytics_grouped
+      parameters:
+      - name: group_by
+        required: true
+        in: query
+        description: key to group usage by
+        schema:
+          minLength: 4
+          maxLength: 15
+          pattern: ^[a-z_]+$
+          example: instance
+          type: string
+          enum:
+          - instance
+          - backend
+          - user_id
+          - plan
+          - subscription_id
+      - name: instance
+        required: false
+        in: query
+        schema:
+          example: 'crn:v1:staging:public:quantum-computing:region:a/account:instance::'
+          type: array
+          items:
+            type: string
+      - name: interval_start
+        required: false
+        in: query
+        description: start date
+        schema:
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+          type: string
+      - name: interval_end
+        required: false
+        in: query
+        description: end date
+        schema:
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+          type: string
+      - name: backend
+        required: false
+        in: query
+        description: backend to filter by
+        schema:
+          example: ibm_tenerife
+          type: array
+          items:
+            type: string
+      - name: user_id
+        required: false
+        in: query
+        schema:
+          example: '123'
+          type: array
+          items:
+            type: string
+      - name: simulators
+        required: false
+        in: query
+        description: Include simulators
+        schema:
+          default: true
+          example: false
+          type: boolean
+      - name: plan
+        required: false
+        in: query
+        schema:
+          example: premium
+          type: array
+          items:
+            type: string
+      - name: subscription_id
+        required: false
+        in: query
+        description: The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.
+        schema:
+          minItems: 1
+          maxItems: 200
+          example:
+          - 91b2c828-2952-4f05-aed8-bedf92c6c480
+          type: array
+          items:
+            type: string
+            format: uuid
+            pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+            minLength: 36
+            maxLength: 36
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAnalyticsUsageGroupedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+      summary: Get Usage Analytics Grouped
+      tags:
+      - Analytics
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.account-analytics-usage.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.account-analytics-usage.read
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+  /v1/analytics/usage_grouped_by_date:
+    get:
+      description: Get usage analytics grouped by date
+      operationId: get_usage_analytics_grouped_by_date
+      parameters:
+      - name: group_by
+        required: true
+        in: query
+        description: key to group usage by
+        schema:
+          minLength: 8
+          maxLength: 8
+          pattern: ^[a-z_]+$
+          example: instance
+          type: string
+          enum:
+          - instance
+      - name: instance
+        required: false
+        in: query
+        schema:
+          example: 'crn:v1:staging:public:quantum-computing:region:a/account:instance::'
+          type: array
+          items:
+            type: string
+      - name: interval_start
+        required: false
+        in: query
+        schema:
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+          type: string
+      - name: interval_end
+        required: false
+        in: query
+        schema:
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+          type: string
+      - name: backend
+        required: false
+        in: query
+        schema:
+          example: ibm_tenerife
+          type: array
+          items:
+            type: string
+      - name: user_id
+        required: false
+        in: query
+        schema:
+          example: '123'
+          type: array
+          items:
+            type: string
+      - name: simulators
+        required: false
+        in: query
+        description: Include simulators
+        schema:
+          default: true
+          example: false
+          type: boolean
+      - name: plan
+        required: false
+        in: query
+        schema:
+          example: premium
+          type: array
+          items:
+            type: string
+      - name: subscription_id
+        required: false
+        in: query
+        description: The subscription ID whose analytics are being requested. Could be a single ID or an array of IDs.
+        schema:
+          minItems: 1
+          maxItems: 200
+          example:
+          - 91b2c828-2952-4f05-aed8-bedf92c6c480
+          type: array
+          items:
+            type: string
+            format: uuid
+            pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+            minLength: 36
+            maxLength: 36
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAnalyticsUsageGroupedByDateResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+      summary: Get Usage Analytics Grouped by Date
+      tags:
+      - Analytics
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.account-analytics-usage.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.account-analytics-usage.read
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+  /v1/analytics/filters:
+    get:
+      description: Get analytics filters
+      operationId: analytics_filters
+      parameters:
+      - name: instance
+        required: false
+        in: query
+        schema:
+          example: 'crn:v1:staging:public:quantum-computing:region:a/account:instance::'
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAnalyticsFiltersResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+      summary: Get Analytics Filters
+      tags:
+      - Analytics
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.account-analytics-filters.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.account-analytics-filters.read
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+components:
+  schemas:
+    BackendFilter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: simulator
+      required:
+      - name
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
+    GetAnalyticsFiltersResponse:
+      type: object
+      properties:
+        backends:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendFilter'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceFilter'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserFilter'
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanFilter'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionFilter'
+      required:
+      - backends
+      - instances
+      - users
+      - plans
+      - subscriptions
+    GetAnalyticsUsageGroupedByDateResponse:
+      type: object
+      properties:
+        interval_start:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval start
+        interval_end:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval end
+        data:
+          description: Results
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAnalyticsUsageGroupedByDateResponseData'
+      required:
+      - interval_start
+      - interval_end
+      - data
+    GetAnalyticsUsageGroupedByDateResponseData:
+      type: object
+      properties:
+        key:
+          type: string
+          example: ibm-q/open/main
+          description: Group key. Depends on the groupBy query params.
+        interval_start:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval start
+        interval_end:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval end
+        usage:
+          type: number
+          example: 10
+          description: Total usage (in milliseconds)
+        jobs:
+          type: number
+          example: 10
+          description: Total number of jobs
+        sessions:
+          type: number
+          example: 10
+          description: Total number of sessions
+        sessions_usage:
+          type: number
+          example: 10
+          description: Total sessions usage (in milliseconds)
+        avg_sessions_usage:
+          type: number
+          example: 10
+          description: Average sessions usage (in milliseconds)
+        max_sessions_usage:
+          type: number
+          example: 10
+          description: Max sessions usage (in milliseconds)
+        batch_sessions:
+          type: number
+          example: 10
+          description: Total number of batch sessions
+        batch_sessions_usage:
+          type: number
+          example: 10
+          description: Total batch sessions usage (in milliseconds)
+        avg_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Average batch sessions usage (in milliseconds)
+        max_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Max batch sessions usage (in milliseconds)
+        dedicated_sessions:
+          type: number
+          example: 10
+          description: Total number of dedicated sessions
+        dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Total dedicated sessions usage (in milliseconds)
+        avg_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Average dedicated sessions usage (in milliseconds)
+        max_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Max dedicated sessions usage (in milliseconds)
+        individual_jobs:
+          type: number
+          example: 10
+          description: Total number of individual jobs
+        individual_jobs_usage:
+          type: number
+          example: 10
+          description: Total individual jobs usage  (in milliseconds)
+        avg_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Average individual jobs usage  (in milliseconds)
+        max_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Max individual jobs usage (in milliseconds)
+        queue_time:
+          type: number
+          example: 10
+          description: Total queue time (in milliseconds)
+        avg_queue_time:
+          type: number
+          example: 10
+          description: Average queue time (in milliseconds)
+        max_queue_time:
+          type: number
+          example: 10
+          description: Max queue time  (in milliseconds)
+      required:
+      - key
+      - interval_start
+      - interval_end
+      - usage
+      - jobs
+      - sessions
+      - sessions_usage
+      - avg_sessions_usage
+      - max_sessions_usage
+      - batch_sessions
+      - batch_sessions_usage
+      - avg_batch_sessions_usage
+      - max_batch_sessions_usage
+      - dedicated_sessions
+      - dedicated_sessions_usage
+      - avg_dedicated_sessions_usage
+      - max_dedicated_sessions_usage
+      - individual_jobs
+      - individual_jobs_usage
+      - avg_individual_jobs_usage
+      - max_individual_jobs_usage
+      - queue_time
+      - avg_queue_time
+      - max_queue_time
+    GetAnalyticsUsageGroupedResponse:
+      type: object
+      properties:
+        data:
+          description: Data
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAnalyticsUsageGroupedResponseData'
+      required:
+      - data
+    GetAnalyticsUsageGroupedResponseData:
+      type: object
+      properties:
+        key:
+          type: string
+          example: ibm-q/main/open
+          description: Grouping key
+          nullable: true
+        usage:
+          type: number
+          example: 10
+          description: Total usage (in milliseconds)
+        jobs:
+          type: number
+          example: 10
+          description: Total number of jobs
+        sessions:
+          type: number
+          example: 10
+          description: Total number of sessions
+        sessions_usage:
+          type: number
+          example: 10
+          description: Total sessions usage (in milliseconds)
+        avg_sessions_usage:
+          type: number
+          example: 10
+          description: Average sessions usage (in milliseconds)
+        max_sessions_usage:
+          type: number
+          example: 10
+          description: Max sessions usage (in milliseconds)
+        batch_sessions:
+          type: number
+          example: 10
+          description: Total number of batch sessions
+        batch_sessions_usage:
+          type: number
+          example: 10
+          description: Total batch sessions usage (in milliseconds)
+        avg_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Average batch sessions usage (in milliseconds)
+        max_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Max batch sessions usage (in milliseconds)
+        dedicated_sessions:
+          type: number
+          example: 10
+          description: Total number of dedicated sessions
+        dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Total dedicated sessions usage (in milliseconds)
+        avg_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Average dedicated sessions usage (in milliseconds)
+        max_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Max dedicated sessions usage (in milliseconds)
+        individual_jobs:
+          type: number
+          example: 10
+          description: Total number of individual jobs
+        individual_jobs_usage:
+          type: number
+          example: 10
+          description: Total individual jobs usage  (in milliseconds)
+        avg_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Average individual jobs usage  (in milliseconds)
+        max_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Max individual jobs usage (in milliseconds)
+        queue_time:
+          type: number
+          example: 10
+          description: Total queue time (in milliseconds)
+        avg_queue_time:
+          type: number
+          example: 10
+          description: Average queue time (in milliseconds)
+        max_queue_time:
+          type: number
+          example: 10
+          description: Max queue time  (in milliseconds)
+      required:
+      - key
+      - usage
+      - jobs
+      - sessions
+      - sessions_usage
+      - avg_sessions_usage
+      - max_sessions_usage
+      - batch_sessions
+      - batch_sessions_usage
+      - avg_batch_sessions_usage
+      - max_batch_sessions_usage
+      - dedicated_sessions
+      - dedicated_sessions_usage
+      - avg_dedicated_sessions_usage
+      - max_dedicated_sessions_usage
+      - individual_jobs
+      - individual_jobs_usage
+      - avg_individual_jobs_usage
+      - max_individual_jobs_usage
+      - queue_time
+      - avg_queue_time
+      - max_queue_time
+    GetAnalyticsUsageResponse:
+      type: object
+      properties:
+        usage:
+          type: number
+          example: 10
+          description: Total usage (in milliseconds)
+        jobs:
+          type: number
+          example: 10
+          description: Total number of jobs
+        sessions:
+          type: number
+          example: 10
+          description: Total number of sessions
+        sessions_usage:
+          type: number
+          example: 10
+          description: Total sessions usage (in milliseconds)
+        avg_sessions_usage:
+          type: number
+          example: 10
+          description: Average sessions usage (in milliseconds)
+        max_sessions_usage:
+          type: number
+          example: 10
+          description: Max sessions usage (in milliseconds)
+        batch_sessions:
+          type: number
+          example: 10
+          description: Total number of batch sessions
+        batch_sessions_usage:
+          type: number
+          example: 10
+          description: Total batch sessions usage (in milliseconds)
+        avg_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Average batch sessions usage (in milliseconds)
+        max_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Max batch sessions usage (in milliseconds)
+        dedicated_sessions:
+          type: number
+          example: 10
+          description: Total number of dedicated sessions
+        dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Total dedicated sessions usage (in milliseconds)
+        avg_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Average dedicated sessions usage (in milliseconds)
+        max_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Max dedicated sessions usage (in milliseconds)
+        individual_jobs:
+          type: number
+          example: 10
+          description: Total number of individual jobs
+        individual_jobs_usage:
+          type: number
+          example: 10
+          description: Total individual jobs usage  (in milliseconds)
+        avg_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Average individual jobs usage  (in milliseconds)
+        max_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Max individual jobs usage (in milliseconds)
+        queue_time:
+          type: number
+          example: 10
+          description: Total queue time (in milliseconds)
+        avg_queue_time:
+          type: number
+          example: 10
+          description: Average queue time (in milliseconds)
+        max_queue_time:
+          type: number
+          example: 10
+          description: Max queue time  (in milliseconds)
+      required:
+      - usage
+      - jobs
+      - sessions
+      - sessions_usage
+      - avg_sessions_usage
+      - max_sessions_usage
+      - batch_sessions
+      - batch_sessions_usage
+      - avg_batch_sessions_usage
+      - max_batch_sessions_usage
+      - dedicated_sessions
+      - dedicated_sessions_usage
+      - avg_dedicated_sessions_usage
+      - max_dedicated_sessions_usage
+      - individual_jobs
+      - individual_jobs_usage
+      - avg_individual_jobs_usage
+      - max_individual_jobs_usage
+      - queue_time
+      - avg_queue_time
+      - max_queue_time
+    InstanceFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'crn:v1:staging:public:quantum-computing:region:a/account:'
+        deleted:
+          type: boolean
+      required:
+      - id
+      - deleted
+    PaginationWorkloadsResponse:
+      type: object
+      properties:
+        workloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkloadResponse'
+        total_count:
+          type: number
+          example: 5
+        limit:
+          type: number
+          example: 5
+        previous:
+          example:
+            href: https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
+        next:
+          example:
+            href: https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
+      required:
+      - workloads
+      - total_count
+      - limit
+    PlanFilter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: premium
+      required:
+      - name
+    SubscriptionFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7f666d17-7893-47d8-bf9d-2b2389fc4dfc
+        name:
+          type: string
+          example: premium
+      required:
+      - id
+      - name
+    URLCursor:
+      type: object
+      properties:
+        href:
+          type: string
+          example:
+          - https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
+          - https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
+    UsageResponse:
+      type: object
+      properties:
+        qpu_charge_time_seconds:
+          type: number
+          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
+          example: 123
+        status:
+          type: string
+          description: Status of billing data completeness. Only present for jobs. "pending" indicates billing data is still being processed. "complete" indicates billing data is final.
+          example: complete
+          enum:
+          - pending
+          - complete
+      required:
+      - qpu_charge_time_seconds
+    UserFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+      required:
+      - id
+    WorkloadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Workload id (job and session id)
+          example: ch8b1ok4k9li68vm059r
+        created:
+          type: string
+          description: Creation date
+          example: '2024-07-04T16:13:56.562Z'
+        ended:
+          type: string
+          description: End date
+          example: '2024-07-04T16:13:56.562Z'
+        backend:
+          type: string
+          description: Backend name
+          example: ibm_seattle
+        instance:
+          type: string
+          description: Instance as hub/group/project
+          example: ibmq/open/main
+        user_id:
+          type: string
+          description: User id
+          example: 65f0478ed32a1891af0a8d31
+        accepting_jobs:
+          type: boolean
+          description: true if the session accepts jobs, false otherwise. Only for sessions, null for jobs
+          example: true
+          nullable: true
+        mode:
+          type: string
+          description: 'Workload mode: job, session or batch'
+          example: job
+          enum:
+          - job
+          - session
+          - batch
+        status:
+          type: string
+          description: State for the workload.
+          example: in_progress
+          enum:
+          - completed
+          - canceled
+          - failed
+          - pending
+          - in_progress
+        status_reason:
+          type: string
+          description: Jobs only, status reason for the job
+          example: Error occurred for job circuit-runner_ckodgbs1fc4b8ufrjsd0_d35e_2. Stale payload, retry maximum reached.
+        tags:
+          description: Tags for the jobs
+          example:
+          - test-job
+          - foo
+          - bar
+          type: array
+          items:
+            type: string
+        usage_seconds:
+          type: number
+          description: 'Usage in seconds. Can be null for ongoing workloads. DEPRECATED: Use `usage.qpu_charge_time_seconds` instead. This field will be removed in a future version.'
+          example: 1
+          deprecated: true
+        usage:
+          description: Usage information. Can be null for ongoing workloads.
+          allOf:
+          - $ref: '#/components/schemas/UsageResponse'
+        estimated_running_time_seconds:
+          type: number
+          description: Estimated usage in seconds
+          example: 1
+      required:
+      - id
+      - created
+      - backend
+      - instance
+      - user_id
+      - mode
+      - status
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: IBM Cloud IAM bearer token
+    ServiceCRN:
+      type: apiKey
+      in: header
+      name: Service-CRN
+      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
+    ApiVersion:
+      type: apiKey
+      in: header
+      name: IBM-API-Version
+      description: API version, e.g. 2026-03-15
+security:
+- BearerAuth: []
+  ServiceCRN: []
+  ApiVersion: []
