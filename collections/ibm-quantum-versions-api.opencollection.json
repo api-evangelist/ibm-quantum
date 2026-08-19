@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qiskit Runtime Analytics Accounts Versions API",
+    "version": "0.45.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Versions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/versions"
+          },
+          "docs": "Get a list of available API versions"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

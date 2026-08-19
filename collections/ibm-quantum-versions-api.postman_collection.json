@@ -1,0 +1,120 @@
+{
+  "item": [
+    {
+      "id": "3b16b37c-0a0c-40f8-84af-d5aee6a171c4",
+      "name": "Versions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "36b9d60d-66e3-4d2f-9b1f-2d71a9ca07f9",
+          "name": "Get Versions",
+          "request": {
+            "name": "Get Versions",
+            "description": {
+              "content": "Get a list of available API versions",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9e5154ff-150e-490a-97f1-d58077892c25",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"versions\": [\n    {\n      \"version\": \"2024-01-01\",\n      \"sunset_date\": \"2027-01-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2025-01-01\",\n      \"sunset_date\": \"2027-01-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2025-05-01\",\n      \"sunset_date\": \"2027-01-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2026-02-01\",\n      \"sunset_date\": \"2027-02-01\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2026-02-15\",\n      \"sunset_date\": \"2027-02-15\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"2026-03-15\",\n      \"status\": \"live\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://quantum.cloud.ibm.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "75823489-9923-47db-88c0-efe3f3749a57",
+    "name": "Qiskit Runtime Analytics Accounts Versions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.\n\nContact Support:\n Name: IBM Quantum",
+      "type": "text/plain"
+    }
+  }
+}

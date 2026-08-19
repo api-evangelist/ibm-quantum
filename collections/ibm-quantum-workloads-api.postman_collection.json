@@ -1,0 +1,480 @@
+{
+  "item": [
+    {
+      "id": "063924ea-cb0e-4ce6-8977-42ad5dc5616d",
+      "name": "Workloads",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "75ccbe16-c21a-4812-bc3f-9e27b54540f0",
+          "name": "List User Instance Workloads",
+          "request": {
+            "name": "List User Instance Workloads",
+            "description": {
+              "content": "List user instance workloads",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workloads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "user",
+                  "value": "<string>",
+                  "description": "User identifier. For now it can only be \"me\"."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "createdAt",
+                  "description": "Field to sort the workloads by. A `-` prefix indicates descending sort order."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of workloads to return at a time"
+                },
+                {
+                  "disabled": false,
+                  "key": "previous",
+                  "value": "<string>",
+                  "description": "Cursor to previous workloads result page"
+                },
+                {
+                  "disabled": false,
+                  "key": "next",
+                  "value": "<string>",
+                  "description": "Cursor to next workloads result page"
+                },
+                {
+                  "disabled": false,
+                  "key": "backend",
+                  "value": "<string>",
+                  "description": "Backend name"
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Optional search string, used to filter workloads by id or tags"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Status type to filter workloads by. It can be pending, in_progress, failed, completed or canceled."
+                },
+                {
+                  "disabled": false,
+                  "key": "mode",
+                  "value": "<string>",
+                  "description": "Workload mode: job, session or batch"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<dateTime>",
+                  "description": "Filter jobs and session created after this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<dateTime>",
+                  "description": "Filter jobs and session created before this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>",
+                  "description": "Optional array of tags for the workloads"
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>",
+                  "description": "Optional array of tags for the workloads"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Service-CRN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "733e98f5-db79-436b-8dbe-8725f57037bc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    },
+                    {
+                      "key": "previous",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "backend",
+                      "value": "ibm_seattle"
+                    },
+                    {
+                      "key": "search",
+                      "value": "test"
+                    },
+                    {
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "key": "mode",
+                      "value": "batch"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2021-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2021-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "composer-info:composer:true"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "bar"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "foo"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Service-CRN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"workloads\": [\n    {\n      \"id\": \"ch8b1ok4k9li68vm059r\",\n      \"created\": \"2024-07-04T16:13:56.562Z\",\n      \"backend\": \"ibm_seattle\",\n      \"instance\": \"ibmq/open/main\",\n      \"user_id\": \"65f0478ed32a1891af0a8d31\",\n      \"mode\": \"job\",\n      \"status\": \"in_progress\",\n      \"ended\": \"2024-07-04T16:13:56.562Z\",\n      \"accepting_jobs\": true,\n      \"status_reason\": \"Error occurred for job circuit-runner_ckodgbs1fc4b8ufrjsd0_d35e_2. Stale payload, retry maximum reached.\",\n      \"tags\": [\n        \"test-job\",\n        \"foo\",\n        \"bar\"\n      ],\n      \"usage_seconds\": 1,\n      \"usage\": {\n        \"qpu_charge_time_seconds\": 123,\n        \"status\": \"complete\"\n      },\n      \"estimated_running_time_seconds\": 1\n    },\n    {\n      \"id\": \"ch8b1ok4k9li68vm059r\",\n      \"created\": \"2024-07-04T16:13:56.562Z\",\n      \"backend\": \"ibm_seattle\",\n      \"instance\": \"ibmq/open/main\",\n      \"user_id\": \"65f0478ed32a1891af0a8d31\",\n      \"mode\": \"job\",\n      \"status\": \"in_progress\",\n      \"ended\": \"2024-07-04T16:13:56.562Z\",\n      \"accepting_jobs\": true,\n      \"status_reason\": \"Error occurred for job circuit-runner_ckodgbs1fc4b8ufrjsd0_d35e_2. Stale payload, retry maximum reached.\",\n      \"tags\": [\n        \"test-job\",\n        \"foo\",\n        \"bar\"\n      ],\n      \"usage_seconds\": 1,\n      \"usage\": {\n        \"qpu_charge_time_seconds\": 123,\n        \"status\": \"complete\"\n      },\n      \"estimated_running_time_seconds\": 1\n    }\n  ],\n  \"total_count\": 5,\n  \"limit\": 5,\n  \"previous\": {\n    \"href\": \"https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26\"\n  },\n  \"next\": {\n    \"href\": \"https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb4e36e1-6254-454c-8720-56aa5b14d570",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    },
+                    {
+                      "key": "previous",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "backend",
+                      "value": "ibm_seattle"
+                    },
+                    {
+                      "key": "search",
+                      "value": "test"
+                    },
+                    {
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "key": "mode",
+                      "value": "batch"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2021-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2021-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "composer-info:composer:true"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "bar"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "foo"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Service-CRN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"code\": 1000,\n      \"message\": \"message\",\n      \"solution\": \"This is a possible solution\",\n      \"more_info\": \"string\"\n    },\n    {\n      \"code\": 1000,\n      \"message\": \"message\",\n      \"solution\": \"This is a possible solution\",\n      \"more_info\": \"string\"\n    }\n  ],\n  \"trace\": \"fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f4fbe03-f63a-4cc6-8d03-b80541b8f7f8",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    },
+                    {
+                      "key": "previous",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "next",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "backend",
+                      "value": "ibm_seattle"
+                    },
+                    {
+                      "key": "search",
+                      "value": "test"
+                    },
+                    {
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "key": "mode",
+                      "value": "batch"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2021-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2021-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "composer-info:composer:true"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "bar"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "foo"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Service-CRN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"code\": 1000,\n      \"message\": \"message\",\n      \"solution\": \"This is a possible solution\",\n      \"more_info\": \"string\"\n    },\n    {\n      \"code\": 1000,\n      \"message\": \"message\",\n      \"solution\": \"This is a possible solution\",\n      \"more_info\": \"string\"\n    }\n  ],\n  \"trace\": \"fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://quantum.cloud.ibm.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fc3c6aed-8474-401e-a0cf-fc89c359833b",
+    "name": "Qiskit Runtime Analytics Accounts Workloads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.\n\nContact Support:\n Name: IBM Quantum",
+      "type": "text/plain"
+    }
+  }
+}

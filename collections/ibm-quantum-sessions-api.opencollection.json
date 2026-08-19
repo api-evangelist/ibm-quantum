@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qiskit Runtime Analytics Accounts Sessions API",
+    "version": "0.45.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://quantum.cloud.ibm.com/api/v1/sessions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a session"
+        },
+        {
+          "info": {
+            "name": "Get a Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/sessions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Job Session ID"
+              }
+            ]
+          },
+          "docs": "Get a session"
+        },
+        {
+          "info": {
+            "name": "Update a Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://quantum.cloud.ibm.com/api/v1/sessions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Job Session ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a session"
+        },
+        {
+          "info": {
+            "name": "Close Job Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://quantum.cloud.ibm.com/api/v1/sessions/:id/close",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session Id"
+              }
+            ]
+          },
+          "docs": "Closes the runtime session. The session stops accepting new jobs and queued jobs will not run.\nExisting running jobs will run to completion. This is analogous to the `cancel()` function in Qiskit.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

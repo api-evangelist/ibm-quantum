@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qiskit Runtime Analytics Accounts Tags API",
+    "version": "0.45.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://quantum.cloud.ibm.com/api/v1/tags",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Searches for tags in the specified type."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Used for searching tags."
+              }
+            ]
+          },
+          "docs": "Search and list the tags of jobs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
