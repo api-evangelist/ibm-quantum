@@ -50,6 +50,8 @@ apis:
   description: The Accounts API from ibm-quantum — 1 operation(s) for accounts.
   humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -100,6 +102,8 @@ apis:
   description: The Backends API from ibm-quantum — 5 operation(s) for backends.
   humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
   tags:
+  - Backend
+  tags_raw:
   - Backends
   properties:
   - type: OpenAPI
@@ -150,6 +154,8 @@ apis:
   description: The Jobs API from ibm-quantum — 7 operation(s) for jobs.
   humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
   tags:
+  - Job
+  tags_raw:
   - Jobs
   properties:
   - type: OpenAPI
