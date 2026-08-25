@@ -6,17 +6,16 @@
       "feed_url": "https://www.ibm.com/quantum/blog",
       "title": "",
       "saved": 0,
-      "method": "none",
-      "error": "parse_failed"
+      "method": "none"
     },
     {
       "source": "https://research.ibm.com/rss",
       "feed_url": "https://research.ibm.com/rss",
       "title": "",
-      "saved": 3,
+      "saved": 0,
       "method": "feed"
     }
   ],
-  "post_count": 35,
-  "fetched": "2026-08-15T12:11:08Z"
+  "post_count": 36,
+  "fetched": "2026-08-22T20:20:02Z"
 }
