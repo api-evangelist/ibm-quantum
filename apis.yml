@@ -1,4 +1,5 @@
 aid: ibm-quantum
+name: "IBM Quantum"
 accessModel:
   pricing: freemium
   onboarding: self-serve
