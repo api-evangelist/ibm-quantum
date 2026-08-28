@@ -12,11 +12,11 @@ info:
     OpenAPI descriptions.
   version: 1.0.0
 sourceDescriptions:
-- name: sessionsApi
-  url: ../openapi/ibm-quantum-runtime-sessions-openapi.yml
-  type: openapi
 - name: jobsApi
-  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  url: ../openapi/ibm-quantum-jobs-api-openapi.yml
+  type: openapi
+- name: sessionsApi
+  url: ../openapi/ibm-quantum-sessions-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: session-run-and-close

@@ -14,7 +14,7 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: backendsApi
-  url: ../openapi/ibm-quantum-runtime-backends-openapi.yml
+  url: ../openapi/ibm-quantum-backends-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: backend-readiness-preflight

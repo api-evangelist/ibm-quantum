@@ -13,7 +13,7 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: jobsApi
-  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  url: ../openapi/ibm-quantum-jobs-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: cancel-running-job

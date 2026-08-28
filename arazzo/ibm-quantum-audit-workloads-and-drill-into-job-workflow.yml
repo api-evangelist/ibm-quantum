@@ -12,11 +12,11 @@ info:
     executed without opening the underlying OpenAPI descriptions.
   version: 1.0.0
 sourceDescriptions:
-- name: analyticsApi
-  url: ../openapi/ibm-quantum-runtime-analytics-openapi.yml
-  type: openapi
 - name: jobsApi
-  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  url: ../openapi/ibm-quantum-jobs-api-openapi.yml
+  type: openapi
+- name: workloadsApi
+  url: ../openapi/ibm-quantum-workloads-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: audit-workloads-and-drill-into-job

@@ -12,10 +12,10 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: backendsApi
-  url: ../openapi/ibm-quantum-runtime-backends-openapi.yml
+  url: ../openapi/ibm-quantum-backends-api-openapi.yml
   type: openapi
 - name: jobsApi
-  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  url: ../openapi/ibm-quantum-jobs-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: select-backend-and-submit-job

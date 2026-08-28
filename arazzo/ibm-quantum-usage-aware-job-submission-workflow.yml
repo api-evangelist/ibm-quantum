@@ -13,10 +13,10 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: instancesApi
-  url: ../openapi/ibm-quantum-runtime-instances-openapi.yml
+  url: ../openapi/ibm-quantum-instances-api-openapi.yml
   type: openapi
 - name: jobsApi
-  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
+  url: ../openapi/ibm-quantum-jobs-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: usage-aware-job-submission

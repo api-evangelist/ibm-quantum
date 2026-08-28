@@ -13,11 +13,11 @@ info:
     opening the underlying OpenAPI descriptions.
   version: 1.0.0
 sourceDescriptions:
-- name: jobsApi
-  url: ../openapi/ibm-quantum-runtime-jobs-openapi.yml
-  type: openapi
 - name: backendsApi
-  url: ../openapi/ibm-quantum-runtime-backends-openapi.yml
+  url: ../openapi/ibm-quantum-backends-api-openapi.yml
+  type: openapi
+- name: jobsApi
+  url: ../openapi/ibm-quantum-jobs-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: submit-job-and-poll-results

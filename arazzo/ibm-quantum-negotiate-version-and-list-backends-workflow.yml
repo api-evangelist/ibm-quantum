@@ -13,11 +13,11 @@ info:
     without opening the underlying OpenAPI descriptions.
   version: 1.0.0
 sourceDescriptions:
-- name: versionsApi
-  url: ../openapi/ibm-quantum-runtime-versions-openapi.yml
-  type: openapi
 - name: backendsApi
-  url: ../openapi/ibm-quantum-runtime-backends-openapi.yml
+  url: ../openapi/ibm-quantum-backends-api-openapi.yml
+  type: openapi
+- name: versionsApi
+  url: ../openapi/ibm-quantum-versions-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: negotiate-version-and-list-backends
