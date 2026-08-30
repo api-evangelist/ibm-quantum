@@ -116,7 +116,7 @@ apis:
   description: The Backends API from ibm-quantum — 5 operation(s) for backends.
   humanURL: https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest
   tags:
-  - Backend
+  - Backends
   tags_raw:
   - Backends
   properties:
