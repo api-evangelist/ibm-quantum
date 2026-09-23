@@ -1,8 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Qiskit Runtime Analytics Accounts Backends API
+  title: Qiskit Runtime Backends API
   version: 0.45.3
-  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
+  description: Discover and inspect available IBM Quantum backends (QPUs and simulators). Returns backend list, properties (calibrations), configuration, defaults, and live status.
   contact:
     name: IBM Quantum
     url: https://quantum.cloud.ibm.com
@@ -49,9 +49,7 @@ paths:
               examples:
                 sampleBackendsResponse:
                   $ref: '#/components/examples/backendsResponseExample'
-      description: 'Returns a list of all the backends your service instance has access to.
-
-        '
+      description: Returns a list of all the backends your service instance has access to.
       security:
       - IBMCloudAPIKey: []
       - ServiceCRN: []
@@ -247,55 +245,6 @@ paths:
         - name: quantum-computing.device.read
 components:
   schemas:
-    ClopsType:
-      type: object
-      properties:
-        type:
-          type: string
-          example: virtual
-          enum:
-          - virtual
-          - hardware
-        value:
-          oneOf:
-          - type: integer
-            format: int32
-            minimum: 0
-            maximum: 2147483647
-          - type: string
-            pattern: ^.*$
-          example: 100
-      required:
-      - type
-      - value
-    TwoQErrorBest:
-      type: object
-      properties:
-        value:
-          type: number
-          example: 0.1
-        gate:
-          type: string
-          example: cx
-        unit:
-          type: string
-          example: ''
-        qubits:
-          type: array
-          example:
-          - 1
-          - 2
-          items:
-            type: number
-      required:
-      - value
-      - gate
-      - qubits
-    BackendDefaultsResponse:
-      title: BackendsDefaultsResponse
-      type: object
-      description: Backends Defaults Response
-      additionalProperties: true
     ReadoutErrorMedian:
       type: object
       properties:
@@ -307,152 +256,6 @@ components:
           example: ''
       required:
       - value
-    BackendsResponse:
-      title: BackendsResponse
-      type: object
-      description: Backends Response
-      properties:
-        devices:
-          minItems: 1
-          type: array
-          description: A list of backends with their status
-          items:
-            type: object
-            required:
-            - name
-            - status
-            - queue_length
-            properties:
-              name:
-                type: string
-                description: The name of the backend device
-                minLength: 1
-                maxLength: 255
-              status:
-                type: object
-                description: The status of the backend device
-                properties:
-                  name:
-                    type: string
-                    description: The status name of the backend device
-                    enum:
-                    - online
-                    - paused
-                    - offline
-                  reason:
-                    type: string
-                    description: Optional reason for the status
-                required:
-                - name
-              is_simulator:
-                type: boolean
-                description: Indicates if the device is a simulator
-              qubits:
-                type: integer
-                format: int32
-                minimum: 0
-                maximum: 2147483647
-                nullable: true
-                description: The number of qubits in the device
-              clops:
-                type: object
-                nullable: true
-                description: Details of the CLOPS
-                properties:
-                  type:
-                    type: string
-                    enum:
-                    - virtual
-                    - hardware
-                  value:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                required:
-                - type
-                - value
-              processor_type:
-                type: object
-                nullable: true
-                description: Details of the processor type
-                properties:
-                  family:
-                    type: string
-                    nullable: true
-                    description: The family of the processor
-                  revision:
-                    type: string
-                    nullable: true
-                    description: The revision of the processor
-                  segment:
-                    type: string
-                    nullable: true
-                    description: The segment of the processor
-              queue_length:
-                type: integer
-                format: int32
-                minimum: 0
-                maximum: 2147483647
-                description: The number of jobs waiting to be executed
-              performance_metrics:
-                $ref: '#/components/schemas/PerformanceMetrics'
-              wait_time_seconds:
-                type: object
-                nullable: true
-                description: Job wait times for the device (in seconds)
-                properties:
-                  average:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: Average wait time before jobs start running (in seconds)
-                  p50:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: P50 wait time before jobs start running (in seconds)
-                  p95:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: P95 wait time before jobs start running (in seconds)
-                required:
-                - average
-                - p50
-                - p95
-      required:
-      - devices
-    GateProperties:
-      type: object
-      properties:
-        gate:
-          type: string
-          description: The gate name for these parameters
-          minLength: 1
-          maxLength: 64
-          pattern: ^[a-zA-Z0-9_]*$
-        parameters:
-          description: The parameters of this gate on these qubits
-          minItems: 1
-          maxItems: 2147483647
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendPropertiesNduv'
-        qubits:
-          description: The qubits for these parameters
-          minItems: 1
-          maxItems: 2147483647
-          type: array
-          items:
-            type: string
-      required:
-      - gate
-      - parameters
-      - qubits
     ProcessorType:
       type: object
       description: The processor type of this backend
@@ -478,6 +281,48 @@ components:
           minLength: 1
           maxLength: 64
           pattern: ^[a-zA-Z0-9]*$
+    TwoQErrorBest:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 0.1
+        gate:
+          type: string
+          example: cx
+        unit:
+          type: string
+          example: ''
+        qubits:
+          type: array
+          example:
+          - 1
+          - 2
+          items:
+            type: number
+      required:
+      - value
+      - gate
+      - qubits
+    PerformanceMetrics:
+      type: object
+      properties:
+        two_q_error_best:
+          description: 2Q error (best)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorBest'
+        two_q_error_layered:
+          description: 2Q error (layered)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorLayered'
+        two_q_error_median:
+          description: 2Q error (median)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorMedian'
+        readout_error_median:
+          description: Readout error (median)
+          allOf:
+          - $ref: '#/components/schemas/ReadoutErrorMedian'
     Hamiltonian:
       type: object
       description: Hamiltonian of the backend
@@ -509,32 +354,33 @@ components:
           description: Number of levels for each oscillator mode
       required:
       - h_latex
-    BackendStatusResponse:
-      title: BackendStatusResponse
+    GateProperties:
       type: object
-      description: Backends Status Response
-      additionalProperties: false
-      required:
-      - length_queue
       properties:
-        state:
-          type: boolean
-          description: State of the backend
-        status:
+        gate:
           type: string
-          description: Status of the backend
-        message:
-          type: string
-          description: Description of the backend state
-        length_queue:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: Length of the queue for the backend
-        backend_version:
-          type: string
-          description: Backend version
+          description: The gate name for these parameters
+          minLength: 1
+          maxLength: 64
+          pattern: ^[a-zA-Z0-9_]*$
+        parameters:
+          description: The parameters of this gate on these qubits
+          minItems: 1
+          maxItems: 2147483647
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendPropertiesNduv'
+        qubits:
+          description: The qubits for these parameters
+          minItems: 1
+          maxItems: 2147483647
+          type: array
+          items:
+            type: string
+      required:
+      - gate
+      - parameters
+      - qubits
     BackendPropertiesNduv:
       type: object
       properties:
@@ -562,96 +408,6 @@ components:
       - name
       - unit
       - value
-    TimingConstraints:
-      type: object
-      description: The timing constraints on this backend
-      properties:
-        granularity:
-          type: integer
-          format: int64
-          description: Waveform memory data chunk size
-          maximum: 9007199254740991
-          minimum: 0
-        min_length:
-          type: integer
-          format: int64
-          description: Minimum number of samples required to define a pulse
-          maximum: 9007199254740991
-          minimum: 0
-        pulse_alignment:
-          type: integer
-          format: int64
-          description: Instruction triggering time resolution of pulse channel in units of dt
-          maximum: 9007199254740991
-          minimum: 0
-        acquire_alignment:
-          type: integer
-          format: int64
-          description: Instruction triggering time resolution of acquisition channel in units of dt
-          maximum: 9007199254740991
-          minimum: 0
-    TwoQErrorMedian:
-      type: object
-      properties:
-        value:
-          type: number
-          example: 0.14123123
-        unit:
-          type: string
-          example: ''
-      required:
-      - value
-    BackendPropertiesResponse:
-      type: object
-      properties:
-        backend_name:
-          type: string
-          description: Backend name
-          pattern: ^[a-zA-Z0-9_]*$
-          minLength: 1
-          maxLength: 64
-        backend_version:
-          type: string
-          description: Backend version in the form X.X.X
-          pattern: ^[0-9]+.[0-9]+.[0-9]+$
-          minLength: 5
-          maxLength: 16
-        gates:
-          description: System gate parameters
-          minItems: 0
-          maxItems: 2147483647
-          type: array
-          items:
-            $ref: '#/components/schemas/GateProperties'
-        general:
-          description: General system parameters
-          minItems: 0
-          maxItems: 2147483647
-          type: array
-          items:
-            type: string
-        last_update_date:
-          format: date-time
-          type: string
-          description: Last date/time that a property was updated.
-          minLength: 20
-          maxLength: 20
-        qubits:
-          type: array
-          items:
-            description: System qubit parameters
-            minItems: 1
-            maxItems: 2147483647
-            type: array
-            items:
-              $ref: '#/components/schemas/BackendPropertiesNduv'
-      required:
-      - backend_name
-      - backend_version
-      - gates
-      - general
-      - last_update_date
-      - qubits
     BackendConfigurationResponse:
       title: BackendsConfigurationResponse
       type: object
@@ -1073,17 +829,57 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/UChannelLOItem'
-    TwoQErrorLayered:
+    BackendPropertiesResponse:
       type: object
       properties:
-        value:
-          type: number
-          example: 0.1
-        unit:
+        backend_name:
           type: string
-          example: ''
+          description: Backend name
+          pattern: ^[a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 64
+        backend_version:
+          type: string
+          description: Backend version in the form X.X.X
+          pattern: ^[0-9]+.[0-9]+.[0-9]+$
+          minLength: 5
+          maxLength: 16
+        gates:
+          description: System gate parameters
+          minItems: 0
+          maxItems: 2147483647
+          type: array
+          items:
+            $ref: '#/components/schemas/GateProperties'
+        general:
+          description: General system parameters
+          minItems: 0
+          maxItems: 2147483647
+          type: array
+          items:
+            type: string
+        last_update_date:
+          format: date-time
+          type: string
+          description: Last date/time that a property was updated.
+          minLength: 20
+          maxLength: 20
+        qubits:
+          type: array
+          items:
+            description: System qubit parameters
+            minItems: 1
+            maxItems: 2147483647
+            type: array
+            items:
+              $ref: '#/components/schemas/BackendPropertiesNduv'
       required:
-      - value
+      - backend_name
+      - backend_version
+      - gates
+      - general
+      - last_update_date
+      - qubits
     GateConfig:
       type: object
       description: The definition of a gate
@@ -1152,25 +948,17 @@ components:
           minLength: 1
           maxLength: 64
           pattern: ^[a-zA-Z0-9\s]*$
-    PerformanceMetrics:
+    TwoQErrorLayered:
       type: object
       properties:
-        two_q_error_best:
-          description: 2Q error (best)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorBest'
-        two_q_error_layered:
-          description: 2Q error (layered)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorLayered'
-        two_q_error_median:
-          description: 2Q error (median)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorMedian'
-        readout_error_median:
-          description: Readout error (median)
-          allOf:
-          - $ref: '#/components/schemas/ReadoutErrorMedian'
+        value:
+          type: number
+          example: 0.1
+        unit:
+          type: string
+          example: ''
+      required:
+      - value
     UChannelLOItem:
       type: object
       description: The description of a single U Channel LO in terms of qubit LO's
@@ -1186,6 +974,50 @@ components:
       required:
       - q
       - scale
+    TwoQErrorMedian:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 0.14123123
+        unit:
+          type: string
+          example: ''
+      required:
+      - value
+    BackendDefaultsResponse:
+      title: BackendsDefaultsResponse
+      type: object
+      description: Backends Defaults Response
+      additionalProperties: true
+    TimingConstraints:
+      type: object
+      description: The timing constraints on this backend
+      properties:
+        granularity:
+          type: integer
+          format: int64
+          description: Waveform memory data chunk size
+          maximum: 9007199254740991
+          minimum: 0
+        min_length:
+          type: integer
+          format: int64
+          description: Minimum number of samples required to define a pulse
+          maximum: 9007199254740991
+          minimum: 0
+        pulse_alignment:
+          type: integer
+          format: int64
+          description: Instruction triggering time resolution of pulse channel in units of dt
+          maximum: 9007199254740991
+          minimum: 0
+        acquire_alignment:
+          type: integer
+          format: int64
+          description: Instruction triggering time resolution of acquisition channel in units of dt
+          maximum: 9007199254740991
+          minimum: 0
     ComplexNumber:
       type: object
       properties:
@@ -1197,6 +1029,179 @@ components:
           type: array
       required:
       - number
+    BackendStatusResponse:
+      title: BackendStatusResponse
+      type: object
+      description: Backends Status Response
+      additionalProperties: false
+      required:
+      - length_queue
+      properties:
+        state:
+          type: boolean
+          description: State of the backend
+        status:
+          type: string
+          description: Status of the backend
+        message:
+          type: string
+          description: Description of the backend state
+        length_queue:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+          description: Length of the queue for the backend
+        backend_version:
+          type: string
+          description: Backend version
+    ClopsType:
+      type: object
+      properties:
+        type:
+          type: string
+          example: virtual
+          enum:
+          - virtual
+          - hardware
+        value:
+          oneOf:
+          - type: integer
+            format: int32
+            minimum: 0
+            maximum: 2147483647
+          - type: string
+            pattern: ^.*$
+          example: 100
+      required:
+      - type
+      - value
+    BackendsResponse:
+      title: BackendsResponse
+      type: object
+      description: Backends Response
+      properties:
+        devices:
+          minItems: 1
+          type: array
+          description: A list of backends with their status
+          items:
+            type: object
+            required:
+            - name
+            - status
+            - queue_length
+            properties:
+              name:
+                type: string
+                description: The name of the backend device
+                minLength: 1
+                maxLength: 255
+              status:
+                type: object
+                description: The status of the backend device
+                properties:
+                  name:
+                    type: string
+                    description: The status name of the backend device
+                    enum:
+                    - online
+                    - paused
+                    - offline
+                  reason:
+                    type: string
+                    description: Optional reason for the status
+                required:
+                - name
+              is_simulator:
+                type: boolean
+                description: Indicates if the device is a simulator
+              qubits:
+                type:
+                - integer
+                - 'null'
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: The number of qubits in the device
+              clops:
+                type:
+                - object
+                - 'null'
+                description: Details of the CLOPS
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - virtual
+                    - hardware
+                  value:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                required:
+                - type
+                - value
+              processor_type:
+                type:
+                - object
+                - 'null'
+                description: Details of the processor type
+                properties:
+                  family:
+                    type:
+                    - string
+                    - 'null'
+                    description: The family of the processor
+                  revision:
+                    type:
+                    - string
+                    - 'null'
+                    description: The revision of the processor
+                  segment:
+                    type:
+                    - string
+                    - 'null'
+                    description: The segment of the processor
+              queue_length:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: The number of jobs waiting to be executed
+              performance_metrics:
+                $ref: '#/components/schemas/PerformanceMetrics'
+              wait_time_seconds:
+                type:
+                - object
+                - 'null'
+                description: Job wait times for the device (in seconds)
+                properties:
+                  average:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: Average wait time before jobs start running (in seconds)
+                  p50:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: P50 wait time before jobs start running (in seconds)
+                  p95:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: P95 wait time before jobs start running (in seconds)
+                required:
+                - average
+                - p50
+                - p95
+      required:
+      - devices
   securitySchemes:
     BearerAuth:
       type: http

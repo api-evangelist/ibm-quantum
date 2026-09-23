@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Qiskit Runtime Accounts Analytics API
+  title: Qiskit Runtime Analytics API
   version: 0.45.3
   description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
   contact:
@@ -494,117 +494,6 @@ components:
       required:
       - id
       - name
-    InstanceFilter:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 'crn:v1:staging:public:quantum-computing:region:a/account:'
-        deleted:
-          type: boolean
-      required:
-      - id
-      - deleted
-    GetAnalyticsUsageGroupedResponse:
-      type: object
-      properties:
-        data:
-          description: Data
-          type: array
-          items:
-            $ref: '#/components/schemas/GetAnalyticsUsageGroupedResponseData'
-      required:
-      - data
-    UserFilter:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-      required:
-      - id
-    PlanFilter:
-      type: object
-      properties:
-        name:
-          type: string
-          example: premium
-      required:
-      - name
-    GenericErrorDto:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
-          type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
-      required:
-      - errors
-      - trace
-    GenericError:
-      type: object
-      properties:
-        code:
-          type: number
-          example: 1000
-        message:
-          type: string
-          example: message
-        solution:
-          type: string
-          example: This is a possible solution
-        more_info:
-          type: string
-      required:
-      - code
-      - message
-      - solution
-      - more_info
-    GetAnalyticsFiltersResponse:
-      type: object
-      properties:
-        backends:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendFilter'
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/InstanceFilter'
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserFilter'
-        plans:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlanFilter'
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionFilter'
-      required:
-      - backends
-      - instances
-      - users
-      - plans
-      - subscriptions
-    BackendFilter:
-      type: object
-      properties:
-        name:
-          type: string
-          example: simulator
-      required:
-      - name
     GetAnalyticsUsageResponse:
       type: object
       properties:
@@ -714,14 +603,92 @@ components:
       - queue_time
       - avg_queue_time
       - max_queue_time
+    GetAnalyticsUsageGroupedResponse:
+      type: object
+      properties:
+        data:
+          description: Data
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAnalyticsUsageGroupedResponseData'
+      required:
+      - data
+    GetAnalyticsUsageGroupedByDateResponse:
+      type: object
+      properties:
+        interval_start:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval start
+        interval_end:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval end
+        data:
+          description: Results
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAnalyticsUsageGroupedByDateResponseData'
+      required:
+      - interval_start
+      - interval_end
+      - data
+    GetAnalyticsFiltersResponse:
+      type: object
+      properties:
+        backends:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendFilter'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceFilter'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserFilter'
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanFilter'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionFilter'
+      required:
+      - backends
+      - instances
+      - users
+      - plans
+      - subscriptions
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
     GetAnalyticsUsageGroupedResponseData:
       type: object
       properties:
         key:
-          type: string
+          type:
+          - string
+          - 'null'
           example: ibm-q/main/open
           description: Grouping key
-          nullable: true
         usage:
           type: number
           example: 10
@@ -829,26 +796,6 @@ components:
       - queue_time
       - avg_queue_time
       - max_queue_time
-    GetAnalyticsUsageGroupedByDateResponse:
-      type: object
-      properties:
-        interval_start:
-          type: string
-          example: '2024-01-01T00:00:00.000Z'
-          description: Interval start
-        interval_end:
-          type: string
-          example: '2024-01-01T00:00:00.000Z'
-          description: Interval end
-        data:
-          description: Results
-          type: array
-          items:
-            $ref: '#/components/schemas/GetAnalyticsUsageGroupedByDateResponseData'
-      required:
-      - interval_start
-      - interval_end
-      - data
     GetAnalyticsUsageGroupedByDateResponseData:
       type: object
       properties:
@@ -973,6 +920,60 @@ components:
       - queue_time
       - avg_queue_time
       - max_queue_time
+    PlanFilter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: premium
+      required:
+      - name
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
+    InstanceFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'crn:v1:staging:public:quantum-computing:region:a/account:'
+        deleted:
+          type: boolean
+      required:
+      - id
+      - deleted
+    UserFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+      required:
+      - id
+    BackendFilter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: simulator
+      required:
+      - name
   securitySchemes:
     BearerAuth:
       type: http

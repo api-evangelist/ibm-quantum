@@ -1,8 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Qiskit Runtime Analytics Accounts Tags API
+  title: Qiskit Runtime Jobs Tags API
   version: 0.45.3
-  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
+  description: Submit, list, inspect, cancel, delete, and tag Qiskit Runtime quantum primitive jobs (Sampler and Estimator) executed on IBM Quantum hardware. Retrieve job results, logs, metrics and manage job tags.
   contact:
     name: IBM Quantum
     url: https://quantum.cloud.ibm.com
@@ -110,6 +110,11 @@ components:
               more_info:
                 description: URL where information about the error can be read in a web browser
                 type: string
+    ListTagsResponse:
+      type: object
+      properties:
+        tags:
+          $ref: '#/components/schemas/Tags'
     Tags:
       title: Tags
       description: List of job or program tags
@@ -121,11 +126,6 @@ components:
         pattern: ^.*$
         minLength: 0
         maxLength: 86
-    ListTagsResponse:
-      type: object
-      properties:
-        tags:
-          $ref: '#/components/schemas/Tags'
   securitySchemes:
     BearerAuth:
       type: http

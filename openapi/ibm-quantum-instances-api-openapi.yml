@@ -1,8 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Qiskit Runtime Analytics Accounts Instances API
+  title: Qiskit Runtime Instances API
   version: 0.45.3
-  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
+  description: Inspect the current Qiskit Runtime instance, view instance configuration and limits, and read per-account configuration on IBM Quantum Platform.
   contact:
     name: IBM Quantum
     url: https://quantum.cloud.ibm.com
@@ -210,94 +210,6 @@ paths:
         - name: quantum-computing.instance-usage.read
 components:
   schemas:
-    ErrorContainer:
-      description: Error response
-      type: object
-      properties:
-        trace:
-          type: string
-          description: A request identifier
-        errors:
-          type: array
-          description: A list of errors
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Error type identifier
-              message:
-                description: Explanation of the problem
-                type: string
-              more_info:
-                description: URL where information about the error can be read in a web browser
-                type: string
-    InstanceConfiguration:
-      type: object
-      description: Instance configuration
-      properties:
-        instance_limit:
-          type: number
-          format: double
-          description: Instance usage limit in seconds
-    GenericErrorDto:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
-          type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
-      required:
-      - errors
-      - trace
-    InstanceConfigurationUpdate:
-      type: object
-      description: instance configuration update
-      properties:
-        instance_limit:
-          type: integer
-          format: int32
-          description: This field can be null or an integer. Use null to reset/remove the instance limit.
-          minimum: 1
-          maximum: 2147483647
-    GenericError:
-      type: object
-      properties:
-        code:
-          type: number
-          example: 1000
-        message:
-          type: string
-          example: message
-        solution:
-          type: string
-          example: This is a possible solution
-        more_info:
-          type: string
-      required:
-      - code
-      - message
-      - solution
-      - more_info
-    UsagePeriod:
-      type: object
-      properties:
-        start_time:
-          format: date-time
-          type: string
-          description: The start time of the usage
-        end_time:
-          format: date-time
-          type: string
-          description: The end time of the usage
     GetUsageResponse:
       type: object
       properties:
@@ -329,6 +241,86 @@ components:
       - instance_id
       - plan_id
       - usage_consumed_seconds
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
+    UsagePeriod:
+      type: object
+      properties:
+        start_time:
+          format: date-time
+          type: string
+          description: The start time of the usage
+        end_time:
+          format: date-time
+          type: string
+          description: The end time of the usage
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
+    InstanceConfigurationUpdate:
+      type: object
+      description: instance configuration update
+      properties:
+        instance_limit:
+          type: integer
+          format: int32
+          description: This field can be null or an integer. Use null to reset/remove the instance limit.
+          minimum: 1
+          maximum: 2147483647
     Instance:
       type: object
       description: Instance
@@ -341,7 +333,6 @@ components:
             pattern: ^.*$
             minLength: 1
             maxLength: 128
-            nullable: false
           minItems: 0
           maxItems: 100
         instance_limit:
@@ -361,6 +352,14 @@ components:
         usage_allocation_seconds:
           type: string
           description: The maximum sum of allowable usage allocation on the instance.
+    InstanceConfiguration:
+      type: object
+      description: Instance configuration
+      properties:
+        instance_limit:
+          type: number
+          format: double
+          description: Instance usage limit in seconds
   securitySchemes:
     BearerAuth:
       type: http

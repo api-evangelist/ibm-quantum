@@ -1,8 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Qiskit Runtime Analytics Accounts API
+  title: Qiskit Runtime Instances Accounts API
   version: 0.45.3
-  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
+  description: Inspect the current Qiskit Runtime instance, view instance configuration and limits, and read per-account configuration on IBM Quantum Platform.
   contact:
     name: IBM Quantum
     url: https://quantum.cloud.ibm.com
@@ -117,17 +117,48 @@ components:
               more_info:
                 description: URL where information about the error can be read in a web browser
                 type: string
-    ExpandedPlanConfiguration:
-      allOf:
-      - $ref: '#/components/schemas/PlanConfiguration'
-      - type: object
-        properties:
-          unallocated_usage_seconds:
-            type: integer
-            format: int32
-            minimum: 0
-            maximum: 2147483647
-            description: The remaining usage allocation that can still be allocated to instances.
+    FunctionConfig:
+      type: object
+      description: A function available to an account plan.
+      properties:
+        provider:
+          type: string
+          description: The function provider name.
+          pattern: ^.+$
+          minLength: 1
+          maxLength: 256
+          example: ibm
+        name:
+          type: string
+          description: The function name, unique within a provider.
+          pattern: ^.+$
+          minLength: 1
+          maxLength: 256
+          example: circuit-function
+        business_model:
+          type: string
+          description: The business model under which the function is offered.
+          enum:
+          - trial
+          - subsidized
+          - consumption
+        permissions:
+          type: array
+          description: IAM-style actions granted for this function.
+          items:
+            type: string
+            pattern: ^.+$
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 2147483647
+          example:
+          - function.run
+      required:
+      - provider
+      - name
+      - business_model
+      - permissions
     PlanConfiguration:
       type: object
       properties:
@@ -211,6 +242,17 @@ components:
       - plan_id
       - subscription_id
       - subscription_name
+    ExpandedPlanConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/PlanConfiguration'
+      - type: object
+        properties:
+          unallocated_usage_seconds:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 2147483647
+            description: The remaining usage allocation that can still be allocated to instances.
     ExpandedAccountConfiguration:
       type: object
       description: Configuration for an account managed by the IBM Qiskit Runtime service.
@@ -224,48 +266,6 @@ components:
           maxItems: 20
       required:
       - plans
-    FunctionConfig:
-      type: object
-      description: A function available to an account plan.
-      properties:
-        provider:
-          type: string
-          description: The function provider name.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: ibm
-        name:
-          type: string
-          description: The function name, unique within a provider.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: circuit-function
-        business_model:
-          type: string
-          description: The business model under which the function is offered.
-          enum:
-          - trial
-          - subsidized
-          - consumption
-        permissions:
-          type: array
-          description: IAM-style actions granted for this function.
-          items:
-            type: string
-            pattern: ^.+$
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 2147483647
-          example:
-          - function.run
-      required:
-      - provider
-      - name
-      - business_model
-      - permissions
   securitySchemes:
     BearerAuth:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Qiskit Runtime Analytics Accounts Workloads API
+  title: Qiskit Runtime Analytics Workloads API
   version: 0.45.3
   description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
   contact:
@@ -172,22 +172,33 @@ paths:
         - name: quantum-computing.workload.list
 components:
   schemas:
-    UsageResponse:
+    PaginationWorkloadsResponse:
       type: object
       properties:
-        qpu_charge_time_seconds:
+        workloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkloadResponse'
+        total_count:
           type: number
-          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
-          example: 123
-        status:
-          type: string
-          description: Status of billing data completeness. Only present for jobs. "pending" indicates billing data is still being processed. "complete" indicates billing data is final.
-          example: complete
-          enum:
-          - pending
-          - complete
+          example: 5
+        limit:
+          type: number
+          example: 5
+        previous:
+          example:
+            href: https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
+        next:
+          example:
+            href: https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
       required:
-      - qpu_charge_time_seconds
+      - workloads
+      - total_count
+      - limit
     WorkloadResponse:
       type: object
       properties:
@@ -216,10 +227,11 @@ components:
           description: User id
           example: 65f0478ed32a1891af0a8d31
         accepting_jobs:
-          type: boolean
+          type:
+          - boolean
+          - 'null'
           description: true if the session accepts jobs, false otherwise. Only for sessions, null for jobs
           example: true
-          nullable: true
         mode:
           type: string
           description: 'Workload mode: job, session or batch'
@@ -290,6 +302,22 @@ components:
       required:
       - errors
       - trace
+    UsageResponse:
+      type: object
+      properties:
+        qpu_charge_time_seconds:
+          type: number
+          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
+          example: 123
+        status:
+          type: string
+          description: Status of billing data completeness. Only present for jobs. "pending" indicates billing data is still being processed. "complete" indicates billing data is final.
+          example: complete
+          enum:
+          - pending
+          - complete
+      required:
+      - qpu_charge_time_seconds
     GenericError:
       type: object
       properties:
@@ -317,33 +345,6 @@ components:
           example:
           - https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
           - https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
-    PaginationWorkloadsResponse:
-      type: object
-      properties:
-        workloads:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkloadResponse'
-        total_count:
-          type: number
-          example: 5
-        limit:
-          type: number
-          example: 5
-        previous:
-          example:
-            href: https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
-          allOf:
-          - $ref: '#/components/schemas/URLCursor'
-        next:
-          example:
-            href: https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
-          allOf:
-          - $ref: '#/components/schemas/URLCursor'
-      required:
-      - workloads
-      - total_count
-      - limit
   securitySchemes:
     BearerAuth:
       type: http
