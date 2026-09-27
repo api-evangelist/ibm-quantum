@@ -95,28 +95,19 @@ paths:
         - name: quantum-computing.account-configuration.read
 components:
   schemas:
-    ErrorContainer:
-      description: Error response
+    ExpandedAccountConfiguration:
       type: object
+      description: Configuration for an account managed by the IBM Qiskit Runtime service.
       properties:
-        trace:
-          type: string
-          description: A request identifier
-        errors:
+        plans:
+          description: The list of configurations for the account per plan
           type: array
-          description: A list of errors
           items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Error type identifier
-              message:
-                description: Explanation of the problem
-                type: string
-              more_info:
-                description: URL where information about the error can be read in a web browser
-                type: string
+            $ref: '#/components/schemas/ExpandedPlanConfiguration'
+          minItems: 0
+          maxItems: 20
+      required:
+      - plans
     FunctionConfig:
       type: object
       description: A function available to an account plan.
@@ -253,19 +244,28 @@ components:
             minimum: 0
             maximum: 2147483647
             description: The remaining usage allocation that can still be allocated to instances.
-    ExpandedAccountConfiguration:
+    ErrorContainer:
+      description: Error response
       type: object
-      description: Configuration for an account managed by the IBM Qiskit Runtime service.
       properties:
-        plans:
-          description: The list of configurations for the account per plan
+        trace:
+          type: string
+          description: A request identifier
+        errors:
           type: array
+          description: A list of errors
           items:
-            $ref: '#/components/schemas/ExpandedPlanConfiguration'
-          minItems: 0
-          maxItems: 20
-      required:
-      - plans
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
   securitySchemes:
     BearerAuth:
       type: http

@@ -241,6 +241,85 @@ components:
       - instance_id
       - plan_id
       - usage_consumed_seconds
+    UsagePeriod:
+      type: object
+      properties:
+        start_time:
+          format: date-time
+          type: string
+          description: The start time of the usage
+        end_time:
+          format: date-time
+          type: string
+          description: The end time of the usage
+    InstanceConfiguration:
+      type: object
+      description: Instance configuration
+      properties:
+        instance_limit:
+          type: number
+          format: double
+          description: Instance usage limit in seconds
+    Instance:
+      type: object
+      description: Instance
+      properties:
+        backends:
+          type: array
+          description: List of backend systems or clusters associated with the service instance
+          items:
+            type: string
+            pattern: ^.*$
+            minLength: 1
+            maxLength: 128
+          minItems: 0
+          maxItems: 100
+        instance_limit:
+          type: number
+          format: double
+          description: Represents the instance limits in seconds; will be replaced by instance_limit_seconds
+          deprecated: true
+        instance_limit_seconds:
+          type: string
+          description: Specifies the maximum number of resources time that can run on this instance
+        plan_id:
+          type: string
+          description: Identifier for the service plan associated with the instance as defined in Global Catalog
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 128
+        usage_allocation_seconds:
+          type: string
+          description: The maximum sum of allowable usage allocation on the instance.
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
+    InstanceConfigurationUpdate:
+      type: object
+      description: instance configuration update
+      properties:
+        instance_limit:
+          type: integer
+          format: int32
+          description: This field can be null or an integer. Use null to reset/remove the instance limit.
+          minimum: 1
+          maximum: 2147483647
     ErrorContainer:
       description: Error response
       type: object
@@ -281,85 +360,6 @@ components:
       required:
       - errors
       - trace
-    UsagePeriod:
-      type: object
-      properties:
-        start_time:
-          format: date-time
-          type: string
-          description: The start time of the usage
-        end_time:
-          format: date-time
-          type: string
-          description: The end time of the usage
-    GenericError:
-      type: object
-      properties:
-        code:
-          type: number
-          example: 1000
-        message:
-          type: string
-          example: message
-        solution:
-          type: string
-          example: This is a possible solution
-        more_info:
-          type: string
-      required:
-      - code
-      - message
-      - solution
-      - more_info
-    InstanceConfigurationUpdate:
-      type: object
-      description: instance configuration update
-      properties:
-        instance_limit:
-          type: integer
-          format: int32
-          description: This field can be null or an integer. Use null to reset/remove the instance limit.
-          minimum: 1
-          maximum: 2147483647
-    Instance:
-      type: object
-      description: Instance
-      properties:
-        backends:
-          type: array
-          description: List of backend systems or clusters associated with the service instance
-          items:
-            type: string
-            pattern: ^.*$
-            minLength: 1
-            maxLength: 128
-          minItems: 0
-          maxItems: 100
-        instance_limit:
-          type: number
-          format: double
-          description: Represents the instance limits in seconds; will be replaced by instance_limit_seconds
-          deprecated: true
-        instance_limit_seconds:
-          type: string
-          description: Specifies the maximum number of resources time that can run on this instance
-        plan_id:
-          type: string
-          description: Identifier for the service plan associated with the instance as defined in Global Catalog
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 128
-        usage_allocation_seconds:
-          type: string
-          description: The maximum sum of allowable usage allocation on the instance.
-    InstanceConfiguration:
-      type: object
-      description: Instance configuration
-      properties:
-        instance_limit:
-          type: number
-          format: double
-          description: Instance usage limit in seconds
   securitySchemes:
     BearerAuth:
       type: http

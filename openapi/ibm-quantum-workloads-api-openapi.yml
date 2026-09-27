@@ -172,33 +172,6 @@ paths:
         - name: quantum-computing.workload.list
 components:
   schemas:
-    PaginationWorkloadsResponse:
-      type: object
-      properties:
-        workloads:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkloadResponse'
-        total_count:
-          type: number
-          example: 5
-        limit:
-          type: number
-          example: 5
-        previous:
-          example:
-            href: https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
-          allOf:
-          - $ref: '#/components/schemas/URLCursor'
-        next:
-          example:
-            href: https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
-          allOf:
-          - $ref: '#/components/schemas/URLCursor'
-      required:
-      - workloads
-      - total_count
-      - limit
     WorkloadResponse:
       type: object
       properties:
@@ -284,24 +257,6 @@ components:
       - user_id
       - mode
       - status
-    GenericErrorDto:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
-          type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
-      required:
-      - errors
-      - trace
     UsageResponse:
       type: object
       properties:
@@ -337,6 +292,33 @@ components:
       - message
       - solution
       - more_info
+    PaginationWorkloadsResponse:
+      type: object
+      properties:
+        workloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkloadResponse'
+        total_count:
+          type: number
+          example: 5
+        limit:
+          type: number
+          example: 5
+        previous:
+          example:
+            href: https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
+        next:
+          example:
+            href: https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
+      required:
+      - workloads
+      - total_count
+      - limit
     URLCursor:
       type: object
       properties:
@@ -345,6 +327,24 @@ components:
           example:
           - https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
           - https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
   securitySchemes:
     BearerAuth:
       type: http

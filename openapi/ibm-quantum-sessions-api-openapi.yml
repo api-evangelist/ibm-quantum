@@ -198,83 +198,9 @@ paths:
         - name: quantum-computing.session.update
 components:
   schemas:
-    CreateSessionRequestCloud:
-      allOf:
-      - $ref: '#/components/schemas/BaseCreateSessionRequest'
-      - description: Request to create a session. Only for use with IBM Cloud Channel.
-      example:
-        mode: dedicated
-        max_ttl: 28800
-        backend: ibm_backend
-    SessionTimestamp:
-      type: object
-      description: Contains information about the time a specific status transition happened
-      properties:
-        status:
-          $ref: '#/components/schemas/SessionState'
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp of when the session transitioned into the given status
-      required:
-      - status
-      - timestamp
-    SessionState:
-      type: string
-      enum:
-      - open
-      - active
-      - inactive
-      - closed
-      description: 'The state of the session.
-
-        - open: The session is waiting to run jobs.
-
-        - active: The session has priority to run jobs on the backend and is running jobs or is waiting for more jobs to run.
-
-        - inactive: The session does not have priority and is not running any jobs.
-
-        - closed: The session is not running any jobs and will not accept/run new jobs.
-
-        '
-    ErrorContainer:
-      description: Error response
-      type: object
-      properties:
-        trace:
-          type: string
-          description: A request identifier
-        errors:
-          type: array
-          description: A list of errors
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Error type identifier
-              message:
-                description: Explanation of the problem
-                type: string
-              more_info:
-                description: URL where information about the error can be read in a web browser
-                type: string
-    SessionStateReason:
-      type: string
-      description: The reason for the state change.
-    ExecutionMode:
-      type: string
-      description: Execution mode to run the session in
-      enum:
-      - batch
-      - dedicated
-    UpdateSessionRequest:
-      type: object
-      properties:
-        accepting_jobs:
-          $ref: '#/components/schemas/AcceptingJobs'
-      required:
-      - accepting_jobs
+    AcceptingJobs:
+      type: boolean
+      description: If true, the session is actively accepting new jobs to be queued. If false, jobs will be rejected on create and the session will be immediately closed when there are no more jobs to run in the session.
     CreateSessionRequestChannelPartner:
       allOf:
       - $ref: '#/components/schemas/BaseCreateSessionRequest'
@@ -301,6 +227,19 @@ components:
         active_ttl: 28800
         mode: batch
         backend: ibm_backend
+    UpdateSessionRequest:
+      type: object
+      properties:
+        accepting_jobs:
+          $ref: '#/components/schemas/AcceptingJobs'
+      required:
+      - accepting_jobs
+    ExecutionMode:
+      type: string
+      description: Execution mode to run the session in
+      enum:
+      - batch
+      - dedicated
     JobSession:
       type: object
       description: Job session
@@ -374,13 +313,34 @@ components:
       - id
       - backend_name
       - mode
-    AcceptingJobs:
-      type: boolean
-      description: If true, the session is actively accepting new jobs to be queued. If false, jobs will be rejected on create and the session will be immediately closed when there are no more jobs to run in the session.
+    CreateSessionRequestCloud:
+      allOf:
+      - $ref: '#/components/schemas/BaseCreateSessionRequest'
+      - description: Request to create a session. Only for use with IBM Cloud Channel.
+      example:
+        mode: dedicated
+        max_ttl: 28800
+        backend: ibm_backend
+    SessionStateReason:
+      type: string
+      description: The reason for the state change.
     CreateSessionRequest:
       oneOf:
       - $ref: '#/components/schemas/CreateSessionRequestCloud'
       - $ref: '#/components/schemas/CreateSessionRequestChannelPartner'
+    SessionTimestamp:
+      type: object
+      description: Contains information about the time a specific status transition happened
+      properties:
+        status:
+          $ref: '#/components/schemas/SessionState'
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of when the session transitioned into the given status
+      required:
+      - status
+      - timestamp
     BaseCreateSessionRequest:
       type: object
       description: Base request schema to create a session.
@@ -402,6 +362,46 @@ components:
           description: Backend name (fallback)
       required:
       - mode
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    SessionState:
+      type: string
+      enum:
+      - open
+      - active
+      - inactive
+      - closed
+      description: 'The state of the session.
+
+        - open: The session is waiting to run jobs.
+
+        - active: The session has priority to run jobs on the backend and is running jobs or is waiting for more jobs to run.
+
+        - inactive: The session does not have priority and is not running any jobs.
+
+        - closed: The session is not running any jobs and will not accept/run new jobs.
+
+        '
   securitySchemes:
     BearerAuth:
       type: http

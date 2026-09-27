@@ -245,115 +245,175 @@ paths:
         - name: quantum-computing.device.read
 components:
   schemas:
-    ReadoutErrorMedian:
+    TimingConstraints:
       type: object
+      description: The timing constraints on this backend
       properties:
-        value:
-          type: number
-          example: 0.3442341
-        unit:
-          type: string
-          example: ''
+        granularity:
+          type: integer
+          format: int64
+          description: Waveform memory data chunk size
+          maximum: 9007199254740991
+          minimum: 0
+        min_length:
+          type: integer
+          format: int64
+          description: Minimum number of samples required to define a pulse
+          maximum: 9007199254740991
+          minimum: 0
+        pulse_alignment:
+          type: integer
+          format: int64
+          description: Instruction triggering time resolution of pulse channel in units of dt
+          maximum: 9007199254740991
+          minimum: 0
+        acquire_alignment:
+          type: integer
+          format: int64
+          description: Instruction triggering time resolution of acquisition channel in units of dt
+          maximum: 9007199254740991
+          minimum: 0
+    UChannelLOItem:
+      type: object
+      description: The description of a single U Channel LO in terms of qubit LO's
+      properties:
+        q:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The qubit number
+        scale:
+          $ref: '#/components/schemas/ComplexNumber'
       required:
-      - value
-    ProcessorType:
+      - q
+      - scale
+    BackendsResponse:
+      title: BackendsResponse
       type: object
-      description: The processor type of this backend
-      required:
-      - family
-      - revision
+      description: Backends Response
       properties:
-        family:
-          type: string
-          description: Processor family indicates quantum chip architecture
-          minLength: 1
-          maxLength: 64
-          pattern: ^[a-zA-Z0-9]*$
-        revision:
-          type: string
-          description: Revision number reflects design variants within a given processor family. Is typically a semantic versioning value without the patch value, eg., \"1.0\".
-          minLength: 1
-          maxLength: 64
-          pattern: ^[0-9]+.[0-9]+$
-        segment:
-          type: string
-          description: Segment, if indicated, is used to distinguish different subsets of the qubit fabric/chip
-          minLength: 1
-          maxLength: 64
-          pattern: ^[a-zA-Z0-9]*$
-    TwoQErrorBest:
-      type: object
-      properties:
-        value:
-          type: number
-          example: 0.1
-        gate:
-          type: string
-          example: cx
-        unit:
-          type: string
-          example: ''
-        qubits:
-          type: array
-          example:
-          - 1
-          - 2
-          items:
-            type: number
-      required:
-      - value
-      - gate
-      - qubits
-    PerformanceMetrics:
-      type: object
-      properties:
-        two_q_error_best:
-          description: 2Q error (best)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorBest'
-        two_q_error_layered:
-          description: 2Q error (layered)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorLayered'
-        two_q_error_median:
-          description: 2Q error (median)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorMedian'
-        readout_error_median:
-          description: Readout error (median)
-          allOf:
-          - $ref: '#/components/schemas/ReadoutErrorMedian'
-    Hamiltonian:
-      type: object
-      description: Hamiltonian of the backend
-      properties:
-        h_latex:
-          type: string
-          description: The Hamiltonian in latex form
-          minLength: 1
-          maxLength: 4096
-          pattern: ^.*$
-        h_str:
-          type: array
-          description: The Hamiltonian in machine readable form
+        devices:
           minItems: 1
-          maxItems: 2147483647
+          type: array
+          description: A list of backends with their status
           items:
-            type: string
-            minLength: 1
-            maxLength: 1024
-            pattern: ^.*$
-          example:
-          - '"0.5 * X0 Y1"'
-          - '"1.0 * Z0"'
-        vars:
-          type: object
-          description: Variables in the h_str
-        osc:
-          type: object
-          description: Number of levels for each oscillator mode
+            type: object
+            required:
+            - name
+            - status
+            - queue_length
+            properties:
+              name:
+                type: string
+                description: The name of the backend device
+                minLength: 1
+                maxLength: 255
+              status:
+                type: object
+                description: The status of the backend device
+                properties:
+                  name:
+                    type: string
+                    description: The status name of the backend device
+                    enum:
+                    - online
+                    - paused
+                    - offline
+                  reason:
+                    type: string
+                    description: Optional reason for the status
+                required:
+                - name
+              is_simulator:
+                type: boolean
+                description: Indicates if the device is a simulator
+              qubits:
+                type:
+                - integer
+                - 'null'
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: The number of qubits in the device
+              clops:
+                type:
+                - object
+                - 'null'
+                description: Details of the CLOPS
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - virtual
+                    - hardware
+                  value:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                required:
+                - type
+                - value
+              processor_type:
+                type:
+                - object
+                - 'null'
+                description: Details of the processor type
+                properties:
+                  family:
+                    type:
+                    - string
+                    - 'null'
+                    description: The family of the processor
+                  revision:
+                    type:
+                    - string
+                    - 'null'
+                    description: The revision of the processor
+                  segment:
+                    type:
+                    - string
+                    - 'null'
+                    description: The segment of the processor
+              queue_length:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: The number of jobs waiting to be executed
+              performance_metrics:
+                $ref: '#/components/schemas/PerformanceMetrics'
+              wait_time_seconds:
+                type:
+                - object
+                - 'null'
+                description: Job wait times for the device (in seconds)
+                properties:
+                  average:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: Average wait time before jobs start running (in seconds)
+                  p50:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: P50 wait time before jobs start running (in seconds)
+                  p95:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: P95 wait time before jobs start running (in seconds)
+                required:
+                - average
+                - p50
+                - p95
       required:
-      - h_latex
+      - devices
     GateProperties:
       type: object
       properties:
@@ -381,33 +441,34 @@ components:
       - gate
       - parameters
       - qubits
-    BackendPropertiesNduv:
+    TwoQErrorBest:
       type: object
       properties:
-        date:
-          format: date-time
-          type: string
-          description: Date of the parameter
-          minLength: 24
-          maxLength: 24
-        name:
-          type: string
-          description: Name of the parameter
-          minLength: 1
-          maxLength: 64
-        unit:
-          type: string
-          description: Unit of the parameter
-          minLength: 0
-          maxLength: 64
         value:
           type: number
-          description: Value of the parameter
+          example: 0.1
+        gate:
+          type: string
+          example: cx
+        unit:
+          type: string
+          example: ''
+        qubits:
+          type: array
+          example:
+          - 1
+          - 2
+          items:
+            type: number
       required:
-      - date
-      - name
-      - unit
       - value
+      - gate
+      - qubits
+    BackendDefaultsResponse:
+      title: BackendsDefaultsResponse
+      type: object
+      description: Backends Defaults Response
+      additionalProperties: true
     BackendConfigurationResponse:
       title: BackendsConfigurationResponse
       type: object
@@ -829,57 +890,17 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/UChannelLOItem'
-    BackendPropertiesResponse:
+    ComplexNumber:
       type: object
       properties:
-        backend_name:
-          type: string
-          description: Backend name
-          pattern: ^[a-zA-Z0-9_]*$
-          minLength: 1
-          maxLength: 64
-        backend_version:
-          type: string
-          description: Backend version in the form X.X.X
-          pattern: ^[0-9]+.[0-9]+.[0-9]+$
-          minLength: 5
-          maxLength: 16
-        gates:
-          description: System gate parameters
-          minItems: 0
-          maxItems: 2147483647
-          type: array
+        number:
+          minItems: 2
+          maxItems: 2
           items:
-            $ref: '#/components/schemas/GateProperties'
-        general:
-          description: General system parameters
-          minItems: 0
-          maxItems: 2147483647
-          type: array
-          items:
-            type: string
-        last_update_date:
-          format: date-time
-          type: string
-          description: Last date/time that a property was updated.
-          minLength: 20
-          maxLength: 20
-        qubits:
-          type: array
-          items:
-            description: System qubit parameters
-            minItems: 1
-            maxItems: 2147483647
             type: array
-            items:
-              $ref: '#/components/schemas/BackendPropertiesNduv'
+          type: array
       required:
-      - backend_name
-      - backend_version
-      - gates
-      - general
-      - last_update_date
-      - qubits
+      - number
     GateConfig:
       type: object
       description: The definition of a gate
@@ -948,6 +969,124 @@ components:
           minLength: 1
           maxLength: 64
           pattern: ^[a-zA-Z0-9\s]*$
+    BackendPropertiesResponse:
+      type: object
+      properties:
+        backend_name:
+          type: string
+          description: Backend name
+          pattern: ^[a-zA-Z0-9_]*$
+          minLength: 1
+          maxLength: 64
+        backend_version:
+          type: string
+          description: Backend version in the form X.X.X
+          pattern: ^[0-9]+.[0-9]+.[0-9]+$
+          minLength: 5
+          maxLength: 16
+        gates:
+          description: System gate parameters
+          minItems: 0
+          maxItems: 2147483647
+          type: array
+          items:
+            $ref: '#/components/schemas/GateProperties'
+        general:
+          description: General system parameters
+          minItems: 0
+          maxItems: 2147483647
+          type: array
+          items:
+            type: string
+        last_update_date:
+          format: date-time
+          type: string
+          description: Last date/time that a property was updated.
+          minLength: 20
+          maxLength: 20
+        qubits:
+          type: array
+          items:
+            description: System qubit parameters
+            minItems: 1
+            maxItems: 2147483647
+            type: array
+            items:
+              $ref: '#/components/schemas/BackendPropertiesNduv'
+      required:
+      - backend_name
+      - backend_version
+      - gates
+      - general
+      - last_update_date
+      - qubits
+    BackendPropertiesNduv:
+      type: object
+      properties:
+        date:
+          format: date-time
+          type: string
+          description: Date of the parameter
+          minLength: 24
+          maxLength: 24
+        name:
+          type: string
+          description: Name of the parameter
+          minLength: 1
+          maxLength: 64
+        unit:
+          type: string
+          description: Unit of the parameter
+          minLength: 0
+          maxLength: 64
+        value:
+          type: number
+          description: Value of the parameter
+      required:
+      - date
+      - name
+      - unit
+      - value
+    ClopsType:
+      type: object
+      properties:
+        type:
+          type: string
+          example: virtual
+          enum:
+          - virtual
+          - hardware
+        value:
+          oneOf:
+          - type: integer
+            format: int32
+            minimum: 0
+            maximum: 2147483647
+          - type: string
+            pattern: ^.*$
+          example: 100
+      required:
+      - type
+      - value
+    PerformanceMetrics:
+      type: object
+      properties:
+        two_q_error_best:
+          description: 2Q error (best)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorBest'
+        two_q_error_layered:
+          description: 2Q error (layered)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorLayered'
+        two_q_error_median:
+          description: 2Q error (median)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorMedian'
+        readout_error_median:
+          description: Readout error (median)
+          allOf:
+          - $ref: '#/components/schemas/ReadoutErrorMedian'
     TwoQErrorLayered:
       type: object
       properties:
@@ -959,21 +1098,6 @@ components:
           example: ''
       required:
       - value
-    UChannelLOItem:
-      type: object
-      description: The description of a single U Channel LO in terms of qubit LO's
-      properties:
-        q:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 2147483647
-          description: The qubit number
-        scale:
-          $ref: '#/components/schemas/ComplexNumber'
-      required:
-      - q
-      - scale
     TwoQErrorMedian:
       type: object
       properties:
@@ -985,50 +1109,73 @@ components:
           example: ''
       required:
       - value
-    BackendDefaultsResponse:
-      title: BackendsDefaultsResponse
+    ProcessorType:
       type: object
-      description: Backends Defaults Response
-      additionalProperties: true
-    TimingConstraints:
-      type: object
-      description: The timing constraints on this backend
-      properties:
-        granularity:
-          type: integer
-          format: int64
-          description: Waveform memory data chunk size
-          maximum: 9007199254740991
-          minimum: 0
-        min_length:
-          type: integer
-          format: int64
-          description: Minimum number of samples required to define a pulse
-          maximum: 9007199254740991
-          minimum: 0
-        pulse_alignment:
-          type: integer
-          format: int64
-          description: Instruction triggering time resolution of pulse channel in units of dt
-          maximum: 9007199254740991
-          minimum: 0
-        acquire_alignment:
-          type: integer
-          format: int64
-          description: Instruction triggering time resolution of acquisition channel in units of dt
-          maximum: 9007199254740991
-          minimum: 0
-    ComplexNumber:
-      type: object
-      properties:
-        number:
-          minItems: 2
-          maxItems: 2
-          items:
-            type: array
-          type: array
+      description: The processor type of this backend
       required:
-      - number
+      - family
+      - revision
+      properties:
+        family:
+          type: string
+          description: Processor family indicates quantum chip architecture
+          minLength: 1
+          maxLength: 64
+          pattern: ^[a-zA-Z0-9]*$
+        revision:
+          type: string
+          description: Revision number reflects design variants within a given processor family. Is typically a semantic versioning value without the patch value, eg., \"1.0\".
+          minLength: 1
+          maxLength: 64
+          pattern: ^[0-9]+.[0-9]+$
+        segment:
+          type: string
+          description: Segment, if indicated, is used to distinguish different subsets of the qubit fabric/chip
+          minLength: 1
+          maxLength: 64
+          pattern: ^[a-zA-Z0-9]*$
+    Hamiltonian:
+      type: object
+      description: Hamiltonian of the backend
+      properties:
+        h_latex:
+          type: string
+          description: The Hamiltonian in latex form
+          minLength: 1
+          maxLength: 4096
+          pattern: ^.*$
+        h_str:
+          type: array
+          description: The Hamiltonian in machine readable form
+          minItems: 1
+          maxItems: 2147483647
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            pattern: ^.*$
+          example:
+          - '"0.5 * X0 Y1"'
+          - '"1.0 * Z0"'
+        vars:
+          type: object
+          description: Variables in the h_str
+        osc:
+          type: object
+          description: Number of levels for each oscillator mode
+      required:
+      - h_latex
+    ReadoutErrorMedian:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 0.3442341
+        unit:
+          type: string
+          example: ''
+      required:
+      - value
     BackendStatusResponse:
       title: BackendStatusResponse
       type: object
@@ -1055,153 +1202,6 @@ components:
         backend_version:
           type: string
           description: Backend version
-    ClopsType:
-      type: object
-      properties:
-        type:
-          type: string
-          example: virtual
-          enum:
-          - virtual
-          - hardware
-        value:
-          oneOf:
-          - type: integer
-            format: int32
-            minimum: 0
-            maximum: 2147483647
-          - type: string
-            pattern: ^.*$
-          example: 100
-      required:
-      - type
-      - value
-    BackendsResponse:
-      title: BackendsResponse
-      type: object
-      description: Backends Response
-      properties:
-        devices:
-          minItems: 1
-          type: array
-          description: A list of backends with their status
-          items:
-            type: object
-            required:
-            - name
-            - status
-            - queue_length
-            properties:
-              name:
-                type: string
-                description: The name of the backend device
-                minLength: 1
-                maxLength: 255
-              status:
-                type: object
-                description: The status of the backend device
-                properties:
-                  name:
-                    type: string
-                    description: The status name of the backend device
-                    enum:
-                    - online
-                    - paused
-                    - offline
-                  reason:
-                    type: string
-                    description: Optional reason for the status
-                required:
-                - name
-              is_simulator:
-                type: boolean
-                description: Indicates if the device is a simulator
-              qubits:
-                type:
-                - integer
-                - 'null'
-                format: int32
-                minimum: 0
-                maximum: 2147483647
-                description: The number of qubits in the device
-              clops:
-                type:
-                - object
-                - 'null'
-                description: Details of the CLOPS
-                properties:
-                  type:
-                    type: string
-                    enum:
-                    - virtual
-                    - hardware
-                  value:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                required:
-                - type
-                - value
-              processor_type:
-                type:
-                - object
-                - 'null'
-                description: Details of the processor type
-                properties:
-                  family:
-                    type:
-                    - string
-                    - 'null'
-                    description: The family of the processor
-                  revision:
-                    type:
-                    - string
-                    - 'null'
-                    description: The revision of the processor
-                  segment:
-                    type:
-                    - string
-                    - 'null'
-                    description: The segment of the processor
-              queue_length:
-                type: integer
-                format: int32
-                minimum: 0
-                maximum: 2147483647
-                description: The number of jobs waiting to be executed
-              performance_metrics:
-                $ref: '#/components/schemas/PerformanceMetrics'
-              wait_time_seconds:
-                type:
-                - object
-                - 'null'
-                description: Job wait times for the device (in seconds)
-                properties:
-                  average:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: Average wait time before jobs start running (in seconds)
-                  p50:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: P50 wait time before jobs start running (in seconds)
-                  p95:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: P95 wait time before jobs start running (in seconds)
-                required:
-                - average
-                - p50
-                - p95
-      required:
-      - devices
   securitySchemes:
     BearerAuth:
       type: http
