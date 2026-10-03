@@ -172,6 +172,76 @@ paths:
         - name: quantum-computing.workload.list
 components:
   schemas:
+    PaginationWorkloadsResponse:
+      type: object
+      properties:
+        workloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkloadResponse'
+        total_count:
+          type: number
+          example: 5
+        limit:
+          type: number
+          example: 5
+        previous:
+          example:
+            href: https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
+        next:
+          example:
+            href: https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
+          allOf:
+          - $ref: '#/components/schemas/URLCursor'
+      required:
+      - workloads
+      - total_count
+      - limit
+    UsageResponse:
+      type: object
+      properties:
+        qpu_charge_time_seconds:
+          type: number
+          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
+          example: 123
+        status:
+          type: string
+          description: Status of billing data completeness. Only present for jobs. "pending" indicates billing data is still being processed. "complete" indicates billing data is final.
+          example: complete
+          enum:
+          - pending
+          - complete
+      required:
+      - qpu_charge_time_seconds
+    URLCursor:
+      type: object
+      properties:
+        href:
+          type: string
+          example:
+          - https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
+          - https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
     WorkloadResponse:
       type: object
       properties:
@@ -257,76 +327,6 @@ components:
       - user_id
       - mode
       - status
-    UsageResponse:
-      type: object
-      properties:
-        qpu_charge_time_seconds:
-          type: number
-          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
-          example: 123
-        status:
-          type: string
-          description: Status of billing data completeness. Only present for jobs. "pending" indicates billing data is still being processed. "complete" indicates billing data is final.
-          example: complete
-          enum:
-          - pending
-          - complete
-      required:
-      - qpu_charge_time_seconds
-    GenericError:
-      type: object
-      properties:
-        code:
-          type: number
-          example: 1000
-        message:
-          type: string
-          example: message
-        solution:
-          type: string
-          example: This is a possible solution
-        more_info:
-          type: string
-      required:
-      - code
-      - message
-      - solution
-      - more_info
-    PaginationWorkloadsResponse:
-      type: object
-      properties:
-        workloads:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkloadResponse'
-        total_count:
-          type: number
-          example: 5
-        limit:
-          type: number
-          example: 5
-        previous:
-          example:
-            href: https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
-          allOf:
-          - $ref: '#/components/schemas/URLCursor'
-        next:
-          example:
-            href: https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
-          allOf:
-          - $ref: '#/components/schemas/URLCursor'
-      required:
-      - workloads
-      - total_count
-      - limit
-    URLCursor:
-      type: object
-      properties:
-        href:
-          type: string
-          example:
-          - https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
-          - https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
     GenericErrorDto:
       type: object
       properties:

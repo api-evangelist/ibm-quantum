@@ -44,30 +44,6 @@ components:
       - live
       - deprecated
       description: The support status of the API version.
-    VersionMetadata:
-      type: object
-      properties:
-        version:
-          type: string
-          description: The API version in `YYYY-MM-DD` format.
-          format: date
-          minLength: 10
-          maxLength: 10
-          pattern: ^\d{4}-\d{2}-\d{2}$
-        sunset_date:
-          type: string
-          description: The sunset date of the API version in `YYYY-MM-DD` format. Support may drop at anytime on or after this date.
-          format: date
-          minLength: 10
-          maxLength: 10
-          pattern: ^\d{4}-\d{2}-\d{2}$
-        status:
-          description: The support status of the API version.
-          allOf:
-          - $ref: '#/components/schemas/VersionStatus'
-      required:
-      - version
-      - status
     VersionResponse:
       type: object
       properties:
@@ -95,6 +71,30 @@ components:
             $ref: '#/components/schemas/VersionMetadata'
       required:
       - versions
+    VersionMetadata:
+      type: object
+      properties:
+        version:
+          type: string
+          description: The API version in `YYYY-MM-DD` format.
+          format: date
+          minLength: 10
+          maxLength: 10
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        sunset_date:
+          type: string
+          description: The sunset date of the API version in `YYYY-MM-DD` format. Support may drop at anytime on or after this date.
+          format: date
+          minLength: 10
+          maxLength: 10
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        status:
+          description: The support status of the API version.
+          allOf:
+          - $ref: '#/components/schemas/VersionStatus'
+      required:
+      - version
+      - status
   securitySchemes:
     BearerAuth:
       type: http

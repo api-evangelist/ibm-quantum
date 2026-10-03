@@ -210,6 +210,73 @@ paths:
         - name: quantum-computing.instance-usage.read
 components:
   schemas:
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    InstanceConfiguration:
+      type: object
+      description: Instance configuration
+      properties:
+        instance_limit:
+          type: number
+          format: double
+          description: Instance usage limit in seconds
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
     GetUsageResponse:
       type: object
       properties:
@@ -241,25 +308,6 @@ components:
       - instance_id
       - plan_id
       - usage_consumed_seconds
-    UsagePeriod:
-      type: object
-      properties:
-        start_time:
-          format: date-time
-          type: string
-          description: The start time of the usage
-        end_time:
-          format: date-time
-          type: string
-          description: The end time of the usage
-    InstanceConfiguration:
-      type: object
-      description: Instance configuration
-      properties:
-        instance_limit:
-          type: number
-          format: double
-          description: Instance usage limit in seconds
     Instance:
       type: object
       description: Instance
@@ -291,25 +339,17 @@ components:
         usage_allocation_seconds:
           type: string
           description: The maximum sum of allowable usage allocation on the instance.
-    GenericError:
+    UsagePeriod:
       type: object
       properties:
-        code:
-          type: number
-          example: 1000
-        message:
+        start_time:
+          format: date-time
           type: string
-          example: message
-        solution:
+          description: The start time of the usage
+        end_time:
+          format: date-time
           type: string
-          example: This is a possible solution
-        more_info:
-          type: string
-      required:
-      - code
-      - message
-      - solution
-      - more_info
+          description: The end time of the usage
     InstanceConfigurationUpdate:
       type: object
       description: instance configuration update
@@ -320,46 +360,6 @@ components:
           description: This field can be null or an integer. Use null to reset/remove the instance limit.
           minimum: 1
           maximum: 2147483647
-    ErrorContainer:
-      description: Error response
-      type: object
-      properties:
-        trace:
-          type: string
-          description: A request identifier
-        errors:
-          type: array
-          description: A list of errors
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Error type identifier
-              message:
-                description: Explanation of the problem
-                type: string
-              more_info:
-                description: URL where information about the error can be read in a web browser
-                type: string
-    GenericErrorDto:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
-          type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
-      required:
-      - errors
-      - trace
   securitySchemes:
     BearerAuth:
       type: http

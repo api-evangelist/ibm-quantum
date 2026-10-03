@@ -482,6 +482,156 @@ paths:
         - name: quantum-computing.account-analytics-filters.read
 components:
   schemas:
+    GetAnalyticsUsageGroupedResponse:
+      type: object
+      properties:
+        data:
+          description: Data
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAnalyticsUsageGroupedResponseData'
+      required:
+      - data
+    PlanFilter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: premium
+      required:
+      - name
+    GetAnalyticsUsageGroupedByDateResponseData:
+      type: object
+      properties:
+        key:
+          type: string
+          example: ibm-q/open/main
+          description: Group key. Depends on the groupBy query params.
+        interval_start:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval start
+        interval_end:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval end
+        usage:
+          type: number
+          example: 10
+          description: Total usage (in milliseconds)
+        jobs:
+          type: number
+          example: 10
+          description: Total number of jobs
+        sessions:
+          type: number
+          example: 10
+          description: Total number of sessions
+        sessions_usage:
+          type: number
+          example: 10
+          description: Total sessions usage (in milliseconds)
+        avg_sessions_usage:
+          type: number
+          example: 10
+          description: Average sessions usage (in milliseconds)
+        max_sessions_usage:
+          type: number
+          example: 10
+          description: Max sessions usage (in milliseconds)
+        batch_sessions:
+          type: number
+          example: 10
+          description: Total number of batch sessions
+        batch_sessions_usage:
+          type: number
+          example: 10
+          description: Total batch sessions usage (in milliseconds)
+        avg_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Average batch sessions usage (in milliseconds)
+        max_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Max batch sessions usage (in milliseconds)
+        dedicated_sessions:
+          type: number
+          example: 10
+          description: Total number of dedicated sessions
+        dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Total dedicated sessions usage (in milliseconds)
+        avg_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Average dedicated sessions usage (in milliseconds)
+        max_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Max dedicated sessions usage (in milliseconds)
+        individual_jobs:
+          type: number
+          example: 10
+          description: Total number of individual jobs
+        individual_jobs_usage:
+          type: number
+          example: 10
+          description: Total individual jobs usage  (in milliseconds)
+        avg_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Average individual jobs usage  (in milliseconds)
+        max_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Max individual jobs usage (in milliseconds)
+        queue_time:
+          type: number
+          example: 10
+          description: Total queue time (in milliseconds)
+        avg_queue_time:
+          type: number
+          example: 10
+          description: Average queue time (in milliseconds)
+        max_queue_time:
+          type: number
+          example: 10
+          description: Max queue time  (in milliseconds)
+      required:
+      - key
+      - interval_start
+      - interval_end
+      - usage
+      - jobs
+      - sessions
+      - sessions_usage
+      - avg_sessions_usage
+      - max_sessions_usage
+      - batch_sessions
+      - batch_sessions_usage
+      - avg_batch_sessions_usage
+      - max_batch_sessions_usage
+      - dedicated_sessions
+      - dedicated_sessions_usage
+      - avg_dedicated_sessions_usage
+      - max_dedicated_sessions_usage
+      - individual_jobs
+      - individual_jobs_usage
+      - avg_individual_jobs_usage
+      - max_individual_jobs_usage
+      - queue_time
+      - avg_queue_time
+      - max_queue_time
+    UserFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+      required:
+      - id
     BackendFilter:
       type: object
       properties:
@@ -501,6 +651,84 @@ components:
       required:
       - id
       - deleted
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
+    SubscriptionFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7f666d17-7893-47d8-bf9d-2b2389fc4dfc
+        name:
+          type: string
+          example: premium
+      required:
+      - id
+      - name
+    GetAnalyticsFiltersResponse:
+      type: object
+      properties:
+        backends:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendFilter'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceFilter'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserFilter'
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanFilter'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionFilter'
+      required:
+      - backends
+      - instances
+      - users
+      - plans
+      - subscriptions
     GetAnalyticsUsageGroupedResponseData:
       type: object
       properties:
@@ -726,140 +954,6 @@ components:
       - queue_time
       - avg_queue_time
       - max_queue_time
-    GetAnalyticsUsageGroupedByDateResponseData:
-      type: object
-      properties:
-        key:
-          type: string
-          example: ibm-q/open/main
-          description: Group key. Depends on the groupBy query params.
-        interval_start:
-          type: string
-          example: '2024-01-01T00:00:00.000Z'
-          description: Interval start
-        interval_end:
-          type: string
-          example: '2024-01-01T00:00:00.000Z'
-          description: Interval end
-        usage:
-          type: number
-          example: 10
-          description: Total usage (in milliseconds)
-        jobs:
-          type: number
-          example: 10
-          description: Total number of jobs
-        sessions:
-          type: number
-          example: 10
-          description: Total number of sessions
-        sessions_usage:
-          type: number
-          example: 10
-          description: Total sessions usage (in milliseconds)
-        avg_sessions_usage:
-          type: number
-          example: 10
-          description: Average sessions usage (in milliseconds)
-        max_sessions_usage:
-          type: number
-          example: 10
-          description: Max sessions usage (in milliseconds)
-        batch_sessions:
-          type: number
-          example: 10
-          description: Total number of batch sessions
-        batch_sessions_usage:
-          type: number
-          example: 10
-          description: Total batch sessions usage (in milliseconds)
-        avg_batch_sessions_usage:
-          type: number
-          example: 10
-          description: Average batch sessions usage (in milliseconds)
-        max_batch_sessions_usage:
-          type: number
-          example: 10
-          description: Max batch sessions usage (in milliseconds)
-        dedicated_sessions:
-          type: number
-          example: 10
-          description: Total number of dedicated sessions
-        dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Total dedicated sessions usage (in milliseconds)
-        avg_dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Average dedicated sessions usage (in milliseconds)
-        max_dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Max dedicated sessions usage (in milliseconds)
-        individual_jobs:
-          type: number
-          example: 10
-          description: Total number of individual jobs
-        individual_jobs_usage:
-          type: number
-          example: 10
-          description: Total individual jobs usage  (in milliseconds)
-        avg_individual_jobs_usage:
-          type: number
-          example: 10
-          description: Average individual jobs usage  (in milliseconds)
-        max_individual_jobs_usage:
-          type: number
-          example: 10
-          description: Max individual jobs usage (in milliseconds)
-        queue_time:
-          type: number
-          example: 10
-          description: Total queue time (in milliseconds)
-        avg_queue_time:
-          type: number
-          example: 10
-          description: Average queue time (in milliseconds)
-        max_queue_time:
-          type: number
-          example: 10
-          description: Max queue time  (in milliseconds)
-      required:
-      - key
-      - interval_start
-      - interval_end
-      - usage
-      - jobs
-      - sessions
-      - sessions_usage
-      - avg_sessions_usage
-      - max_sessions_usage
-      - batch_sessions
-      - batch_sessions_usage
-      - avg_batch_sessions_usage
-      - max_batch_sessions_usage
-      - dedicated_sessions
-      - dedicated_sessions_usage
-      - avg_dedicated_sessions_usage
-      - max_dedicated_sessions_usage
-      - individual_jobs
-      - individual_jobs_usage
-      - avg_individual_jobs_usage
-      - max_individual_jobs_usage
-      - queue_time
-      - avg_queue_time
-      - max_queue_time
-    GetAnalyticsUsageGroupedResponse:
-      type: object
-      properties:
-        data:
-          description: Data
-          type: array
-          items:
-            $ref: '#/components/schemas/GetAnalyticsUsageGroupedResponseData'
-      required:
-      - data
     GetAnalyticsUsageGroupedByDateResponse:
       type: object
       properties:
@@ -880,100 +974,6 @@ components:
       - interval_start
       - interval_end
       - data
-    SubscriptionFilter:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 7f666d17-7893-47d8-bf9d-2b2389fc4dfc
-        name:
-          type: string
-          example: premium
-      required:
-      - id
-      - name
-    PlanFilter:
-      type: object
-      properties:
-        name:
-          type: string
-          example: premium
-      required:
-      - name
-    GetAnalyticsFiltersResponse:
-      type: object
-      properties:
-        backends:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendFilter'
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/InstanceFilter'
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserFilter'
-        plans:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlanFilter'
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionFilter'
-      required:
-      - backends
-      - instances
-      - users
-      - plans
-      - subscriptions
-    UserFilter:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-      required:
-      - id
-    GenericError:
-      type: object
-      properties:
-        code:
-          type: number
-          example: 1000
-        message:
-          type: string
-          example: message
-        solution:
-          type: string
-          example: This is a possible solution
-        more_info:
-          type: string
-      required:
-      - code
-      - message
-      - solution
-      - more_info
-    GenericErrorDto:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
-          type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
-      required:
-      - errors
-      - trace
   securitySchemes:
     BearerAuth:
       type: http

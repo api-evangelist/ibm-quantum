@@ -88,6 +88,11 @@ paths:
         - name: quantum-computing.job.read
 components:
   schemas:
+    ListTagsResponse:
+      type: object
+      properties:
+        tags:
+          $ref: '#/components/schemas/Tags'
     Tags:
       title: Tags
       description: List of job or program tags
@@ -99,11 +104,6 @@ components:
         pattern: ^.*$
         minLength: 0
         maxLength: 86
-    ListTagsResponse:
-      type: object
-      properties:
-        tags:
-          $ref: '#/components/schemas/Tags'
     ErrorContainer:
       description: Error response
       type: object
