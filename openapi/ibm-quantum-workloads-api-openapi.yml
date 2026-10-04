@@ -172,6 +172,24 @@ paths:
         - name: quantum-computing.workload.list
 components:
   schemas:
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
     PaginationWorkloadsResponse:
       type: object
       properties:
@@ -199,22 +217,6 @@ components:
       - workloads
       - total_count
       - limit
-    UsageResponse:
-      type: object
-      properties:
-        qpu_charge_time_seconds:
-          type: number
-          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
-          example: 123
-        status:
-          type: string
-          description: Status of billing data completeness. Only present for jobs. "pending" indicates billing data is still being processed. "complete" indicates billing data is final.
-          example: complete
-          enum:
-          - pending
-          - complete
-      required:
-      - qpu_charge_time_seconds
     URLCursor:
       type: object
       properties:
@@ -223,25 +225,6 @@ components:
           example:
           - https://api.example.com/v2/accounts?next=3fe78a36b9aa7f26
           - https://api.example.com/v2/accounts?previous=3fe78a36b9aa7f26
-    GenericError:
-      type: object
-      properties:
-        code:
-          type: number
-          example: 1000
-        message:
-          type: string
-          example: message
-        solution:
-          type: string
-          example: This is a possible solution
-        more_info:
-          type: string
-      required:
-      - code
-      - message
-      - solution
-      - more_info
     WorkloadResponse:
       type: object
       properties:
@@ -327,24 +310,41 @@ components:
       - user_id
       - mode
       - status
-    GenericErrorDto:
+    GenericError:
       type: object
       properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
+        code:
+          type: number
+          example: 1000
+        message:
           type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
       required:
-      - errors
-      - trace
+      - code
+      - message
+      - solution
+      - more_info
+    UsageResponse:
+      type: object
+      properties:
+        qpu_charge_time_seconds:
+          type: number
+          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
+          example: 123
+        status:
+          type: string
+          description: Status of billing data completeness. Only present for jobs. "pending" indicates billing data is still being processed. "complete" indicates billing data is final.
+          example: complete
+          enum:
+          - pending
+          - complete
+      required:
+      - qpu_charge_time_seconds
   securitySchemes:
     BearerAuth:
       type: http

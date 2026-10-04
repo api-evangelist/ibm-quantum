@@ -658,63 +658,196 @@ paths:
         - name: quantum-computing.job.update
 components:
   schemas:
-    IBMCloudCOSRemoteStorageOption:
+    JobRunParamsBase:
+      title: ProgramParams
       type: object
-      description: Remote storage metadata for where data is stored or to be stored in an IBM Cloud Object Storage bucket. Required fields may be omitted in field specific objected if allowed and defined in the default remote storage option.
+      description: Parameters used to run a job
       properties:
-        type:
+        program_id:
           type: string
+          description: ID of the program to be executed
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 10000
+        backend:
+          type: string
+          description: Name that identifies the backend on which to run the program.
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 10000
+        runtime:
+          type: string
+          description: Name and tag of the image to use when running a program (IBM Quantum channel users only). Should follow the pattern "name:tag".
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 10000
+        tags:
+          $ref: '#/components/schemas/Tags'
+        log_level:
+          type: string
+          description: Logging level of the program
           enum:
-          - ibmcloud_cos
-          default: ibmcloud_cos
-        region:
+          - critical
+          - error
+          - warning
+          - info
+          - debug
+        cost:
+          $ref: '#/components/schemas/JobCost'
+        session_id:
           type: string
-          example: us-east
-          description: Region, Cross-Region, or Single Data Center as defined by IBM Cloud Object Storage (https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-endpoints)
-          pattern: ^[a-zA-Z-]+$
-        region_type:
+          description: Identifier of the session that the job is a part of
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 36
+        calibration_id:
           type: string
-          enum:
-          - regional
-          - cross-region
-          - single-site
-        bucket_crn:
-          description: Fully specified <a href="https://cloud.ibm.com/docs/account?topic=account-crn">CRN</a> for the target Cloud Object Storage bucket
-          type: string
-          example: crn:v1:bluemix:public:cloud-object-storage:global:a/abc123:abc123:bucket:my-bucket
-        object_name:
-          description: Name/ID of the object in the IBM Cloud Object Storage bucket. May *not* be specified in the default remote storage option.
+          description: The ID of the calibration used for the job
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 100
+      required:
+      - program_id
+      - backend
+    JobRunParams:
+      allOf:
+      - $ref: '#/components/schemas/JobRunParamsBase'
+      - properties:
+          params:
+            oneOf:
+            - $ref: '#/components/schemas/JobRunParamsSampler'
+            - $ref: '#/components/schemas/JobRunParamsEstimator'
+            - $ref: '#/components/schemas/JobRunParamsNoiseLearner'
+            - $ref: '#/components/schemas/ExecutorV01ParamsModel'
+            - $ref: '#/components/schemas/ExecutorV02ParamsModel'
+            - $ref: '#/components/schemas/NoiseLearnerV3V01ParamsModel'
+            - $ref: '#/components/schemas/NoiseLearnerV3V02ParamsModel'
+          private:
+            $ref: '#/components/schemas/Private'
+    SamplexModelSSV1:
+      description: A samplex model constrained to use samplex serialization version (SSV) 1.
+      properties:
+        ssv:
+          maximum: 1
+          minimum: 1
+          title: Ssv
+          type: integer
+        samplex_json:
+          description: A JSON string representing the samplex.
+          title: Samplex Json
           type: string
       required:
-      - object_name
-      - bucket_crn
-      - region
-      - region_type
-    NoiseLearnerV3V01NoiseLearnerV3ResultsModel:
-      description: Result from executing a noise learner v3 job.
+      - ssv
+      - samplex_json
+      title: SamplexModelSSV1
+      type: object
+    ExecutorV01OptionsModel:
+      description: Runtime options.
       properties:
-        schema_version:
-          enum:
-          - v0.1
-          default: v0.1
-          description: Schema version of the result type.
-          title: Schema Version
-          type: string
-        data:
-          description: Resulting data for each item.
+        init_qubits:
+          default: true
+          description: Whether to reset the qubits to the ground state for each shot.
+          title: Init Qubits
+          type: boolean
+        rep_delay:
+          type:
+          - number
+          - 'null'
+          default: null
+          description: 'The repetition delay.
+
+
+            This is the delay between the end of one circuit and the start of the next within a shot loop.
+
+            This is only supported on backends that have ``backend.dynamic_reprate_enabled=True``. It must
+
+            be from the range supplied by ``backend.rep_delay_range``. When this value is ``None``, the
+
+            default value ``backend.default_rep_delay`` is used.'
+          title: Rep Delay
+      title: OptionsModel
+      type: object
+    ExecutorV01QuantumProgramModel:
+      description: Model to store a quantum program.
+      properties:
+        shots:
+          description: The number of shots for each individually bound circuit.
+          minimum: 1
+          title: Shots
+          type: integer
+        items:
+          description: Items of the program.
           items:
-            $ref: '#/components/schemas/NoiseLearnerV3V01NoiseLearnerV3ResultModel'
-          title: Data
+            discriminator:
+              mapping:
+                circuit: '#/components/schemas/ExecutorV01CircuitItemModel'
+                samplex: '#/components/schemas/ExecutorV01SamplexItemModel'
+              propertyName: item_type
+            oneOf:
+            - $ref: '#/components/schemas/ExecutorV01CircuitItemModel'
+            - $ref: '#/components/schemas/ExecutorV01SamplexItemModel'
+          title: Items
           type: array
       required:
-      - data
-      title: NoiseLearnerV3 v0.1 NoiseLearnerV3ResultsModel
+      - shots
+      - items
+      title: QuantumProgramModel
       type: object
-    RemoteStorageOption:
-      oneOf:
-      - $ref: '#/components/schemas/IBMCloudCOSRemoteStorageOption'
-      discriminator:
-        propertyName: type
+    ChunkSpan:
+      description: "Timing information about a single chunk of execution.\n\n.. note::\n\n    This span may include some amount of non-circuit time."
+      properties:
+        start:
+          description: The start time of the execution chunk in UTC.
+          format: date-time
+          title: Start
+          type: string
+        stop:
+          description: The stop time of the execution chunk in UTC.
+          format: date-time
+          title: Stop
+          type: string
+        parts:
+          description: A description of which parts of a quantum program are contained in this chunk.
+          items:
+            $ref: '#/components/schemas/ChunkPart'
+          title: Parts
+          type: array
+      required:
+      - start
+      - stop
+      - parts
+      title: ChunkSpan
+      type: object
+    NoiseLearnerV3V01OptionsModel:
+      description: Runtime options with all fields set.
+      properties:
+        shots_per_randomization:
+          default: 128
+          description: The total number of shots to use per randomized learning circuit.
+          title: Shots Per Randomization
+          type: integer
+        num_randomizations:
+          default: 32
+          description: The number of random circuits to use per learning circuit configuration.
+          title: Num Randomizations
+          type: integer
+        layer_pair_depths:
+          default:
+          - 0
+          - 1
+          - 2
+          - 4
+          - 16
+          - 32
+          description: The circuit depths (measured in number of pairs) to use in Pauli Lindblad experiments.
+          items:
+            type: integer
+          title: Layer Pair Depths
+          type: array
+        post_selection:
+          $ref: '#/components/schemas/PostSelectionOptionsModel'
+      title: OptionsModel
+      type: object
     NoiseLearnerV3V02NoiseLearnerV3ResultsModel:
       description: Result from executing a noise learner v3 job.
       properties:
@@ -735,120 +868,135 @@ components:
       - data
       title: NoiseLearnerV3 v0.2 NoiseLearnerV3ResultsModel
       type: object
-    JobsResponse:
-      title: JobsResponse
-      type: object
-      description: Jobs collection response
+    PauliLindbladMapModel:
+      description: Encoding of a sparse Pauli Lindblad map.
       properties:
-        jobs:
-          description: A list of jobs
-          type: array
-          minItems: 0
-          maxItems: 2147483647
+        sparse_terms:
+          description: The Pauli Lindblad terms in the sparse form ``(pauli_string [string], qubit_idxs [array of integers], rate [number])``.
           items:
-            $ref: '#/components/schemas/JobResponseV3'
-        count:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: Total number of jobs for the user
-        offset:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: Offset at which paginated results are returned
-        limit:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 200
-          description: Maximum number of results returned in the paginated response
-      required:
-      - limit
-      - offset
-      - jobs
-    ErrorContainer:
-      description: Error response
-      type: object
-      properties:
-        trace:
-          type: string
-          description: A request identifier
-        errors:
+            maxItems: 3
+            minItems: 3
+            type: array
+          title: Sparse Terms
           type: array
-          description: A list of errors
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Error type identifier
-              message:
-                description: Explanation of the problem
-                type: string
-              more_info:
-                description: URL where information about the error can be read in a web browser
-                type: string
-    JobRunParams:
-      allOf:
-      - $ref: '#/components/schemas/JobRunParamsBase'
-      - properties:
-          params:
-            oneOf:
-            - $ref: '#/components/schemas/JobRunParamsSampler'
-            - $ref: '#/components/schemas/JobRunParamsEstimator'
-            - $ref: '#/components/schemas/JobRunParamsNoiseLearner'
-            - $ref: '#/components/schemas/ExecutorV01ParamsModel'
-            - $ref: '#/components/schemas/ExecutorV02ParamsModel'
-            - $ref: '#/components/schemas/NoiseLearnerV3V01ParamsModel'
-            - $ref: '#/components/schemas/NoiseLearnerV3V02ParamsModel'
-          private:
-            $ref: '#/components/schemas/Private'
-    JobState:
-      title: JobState
-      type: object
-      description: Current state of the job
-      properties:
-        status:
-          type: string
-          description: Current status of the job
-          enum:
-          - Queued
-          - Running
-          - Completed
-          - Cancelled
-          - Failed
-        reason:
-          type: string
-          description: Reason for the current status
-        reason_code:
+        num_qubits:
+          description: The total number of qubits the map applies to.
+          minimum: 0
+          title: Num Qubits
           type: integer
-          format: int32
-          minimum: 1000
-          maximum: 9999
-          description: Reason code for the current status
-        reason_solution:
-          type: string
-          description: Next steps user can take in case of failure
       required:
-      - status
-    NoiseLearnerV3V02TREXResultMetadataModel:
-      description: The metadata of a single TREX result of a noise learner v3 job.
+      - sparse_terms
+      - num_qubits
+      title: PauliLindbladMapModel
+      type: object
+    ItemMetadataModel:
+      description: Per-item metadata for quantum program results.
       properties:
-        learning_protocol:
-          enum:
-          - trex
-          default: trex
-          description: The learning protocol used to obtain this result.
-          title: Learning Protocol
+        scheduler_timing:
+          $ref: '#/components/schemas/SchedulerTimingModel'
+        stretch_values:
+          items:
+            $ref: '#/components/schemas/StretchValueModel'
+          type:
+          - array
+          - 'null'
+          default: null
+          description: Stretch value resolution, if it is available.
+          title: Stretch Values
+      title: ItemMetadataModel
+      type: object
+    Timestamps:
+      type: object
+      description: A map of status transitions to timestamps
+      properties:
+        created:
+          pattern: ^[0-9TZt:\-+./*]+$
+          format: date-time
           type: string
-        post_selection:
-          $ref: '#/components/schemas/NoiseLearnerV3V02TREXResultPostSelectionMetadataModel'
+          description: Timestamp of when the job create request was received
+        finished:
+          pattern: ^[0-9TZt:\-+./*]+$
+          format: date-time
+          type: string
+          description: Timestamp of when the job finished
+        running:
+          pattern: ^[0-9TZt:\-+./*]+$
+          format: date-time
+          type: string
+          description: Timestamp of when the job started running
+    NoiseLearnerV3V02NoiseLearnerV3ResultModel:
+      description: Results for a single noise learner V3 item.
+      properties:
+        generators_sparse:
+          description: A representation of the generators in sparse format ``[string, array(int)]``.
+          items:
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+            type: array
+          title: Generators Sparse
+          type: array
+        num_qubits:
+          description: The number of qubits that the generators act on.
+          title: Num Qubits
+          type: integer
+        rates:
+          $ref: '#/components/schemas/F64TensorModel'
+        rates_std:
+          $ref: '#/components/schemas/F64TensorModel'
+        metadata:
+          description: Execution metadata pertaining to a single result.
+          discriminator:
+            mapping:
+              lindblad: '#/components/schemas/NoiseLearnerV3V02LinbdbladResultMetadataModel'
+              trex: '#/components/schemas/NoiseLearnerV3V02TREXResultMetadataModel'
+            propertyName: learning_protocol
+          oneOf:
+          - $ref: '#/components/schemas/NoiseLearnerV3V02TREXResultMetadataModel'
+          - $ref: '#/components/schemas/NoiseLearnerV3V02LinbdbladResultMetadataModel'
+          title: Metadata
       required:
-      - post_selection
-      title: TREXResultMetadataModel
+      - generators_sparse
+      - num_qubits
+      - rates
+      - rates_std
+      - metadata
+      title: NoiseLearnerV3ResultModel
+      type: object
+    QpyModelV13ToV16:
+      description: QPY encoded circuits with restricted version range.
+      properties:
+        circuit_b64:
+          description: Base-64 encoded data of the QPY serialization of a single quantum circuit.
+          title: Circuit B64
+          type: string
+        qpy_version:
+          maximum: 16
+          minimum: 13
+          title: Qpy Version
+          type: integer
+      required:
+      - circuit_b64
+      - qpy_version
+      title: QpyModelV13ToV16
+      type: object
+    QpyModelV13ToV17:
+      description: QPY encoded circuits with restricted version range.
+      properties:
+        circuit_b64:
+          description: Base-64 encoded data of the QPY serialization of a single quantum circuit.
+          title: Circuit B64
+          type: string
+        qpy_version:
+          maximum: 17
+          minimum: 13
+          title: Qpy Version
+          type: integer
+      required:
+      - circuit_b64
+      - qpy_version
+      title: QpyModelV13ToV17
       type: object
     NoiseLearnerV3V02OptionsModel:
       description: Runtime options with all fields set.
@@ -901,253 +1049,17 @@ components:
           title: Rep Delay
       title: OptionsModel
       type: object
-    UsageV3:
-      title: usage
-      description: usage metrics
-      type: object
-      properties:
-        qpu_charge_time_seconds:
-          type: number
-          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
-          minimum: 0
-        status:
-          $ref: '#/components/schemas/BillingStatus'
-    NoiseLearnerV3V01LinbdbladResultMetadataModel:
-      description: The metadata of a single Lindblad result of a noise learner v3 job.
-      properties:
-        learning_protocol:
-          enum:
-          - lindblad
-          default: lindblad
-          description: The learning protocol used to obtain this result.
-          title: Learning Protocol
-          type: string
-        post_selection:
-          $ref: '#/components/schemas/NoiseLearnerV3V01LinbdbladResultPostSelectionMetadataModel'
-      required:
-      - post_selection
-      title: LinbdbladResultMetadataModel
-      type: object
-    QpyModelV13ToV16:
-      description: QPY encoded circuits with restricted version range.
-      properties:
-        circuit_b64:
-          description: Base-64 encoded data of the QPY serialization of a single quantum circuit.
-          title: Circuit B64
-          type: string
-        qpy_version:
-          maximum: 16
-          minimum: 13
-          title: Qpy Version
-          type: integer
-      required:
-      - circuit_b64
-      - qpy_version
-      title: QpyModelV13ToV16
-      type: object
-    QiskitVersion:
-      type: string
-      description: Qiskit version used during execution of the job
-      pattern: ^v?(\d+(\.\d+)*|\.\d+(\.\d+)*)$
-      maxLength: 100
-    ExecutorV01OptionsModel:
-      description: Runtime options.
-      properties:
-        init_qubits:
-          default: true
-          description: Whether to reset the qubits to the ground state for each shot.
-          title: Init Qubits
-          type: boolean
-        rep_delay:
-          type:
-          - number
-          - 'null'
-          default: null
-          description: 'The repetition delay.
-
-
-            This is the delay between the end of one circuit and the start of the next within a shot loop.
-
-            This is only supported on backends that have ``backend.dynamic_reprate_enabled=True``. It must
-
-            be from the range supplied by ``backend.rep_delay_range``. When this value is ``None``, the
-
-            default value ``backend.default_rep_delay`` is used.'
-          title: Rep Delay
-      title: OptionsModel
-      type: object
-    PostSelectionOptionsModel:
-      description: Runtime options for post selection.
-      properties:
-        enable:
-          default: false
-          description: 'Whether to enable Post Selection when performing learning experiments.
-
-
-            If ``False``, all the other Post Selection options are ignored.'
-          title: Enable
-          type: boolean
-        x_pulse_type:
-          default: xslow
-          description: The type of the X-pulse used for the post selection measurements.
-          enum:
-          - xslow
-          - rx
-          title: X Pulse Type
-          type: string
-        strategy:
-          default: node
-          description: The strategy used to decide if a shot should be kept or discarded.
-          enum:
-          - node
-          - edge
-          title: Strategy
-          type: string
-      title: PostSelectionOptionsModel
-      type: object
-    ExecutorV02OptionsModel:
-      description: Runtime options.
-      properties:
-        init_qubits:
-          default: true
-          description: Whether to reset the qubits to the ground state for each shot.
-          title: Init Qubits
-          type: boolean
-        rep_delay:
-          type:
-          - number
-          - 'null'
-          default: null
-          description: 'The repetition delay.
-
-
-            This is the delay between the end of one circuit and the start of the next within a shot loop.
-
-            This is only supported on backends that have ``backend.dynamic_reprate_enabled=True``. It must
-
-            be from the range supplied by ``backend.rep_delay_range``. When this value is ``None``, the
-
-            default value ``backend.default_rep_delay`` is used.'
-          title: Rep Delay
-        scheduler_timing:
-          default: false
-          description: 'Whether to return circuit schedule timing of each provided quantum circuit.
-
-
-            Setting this value to true will cause corresponding metadata of every program item to be
-
-            populated in the returned data.'
-          title: Scheduler Timing
-          type: boolean
-        stretch_values:
-          default: false
-          description: 'Whether to return numeric resolutions of stretches for each provided quantum circuit.
-
-
-            Setting this value to true will cause corresponding metadata of every program item to be
-
-            populated in the returned data.'
-          title: Stretch Values
-          type: boolean
-        experimental:
-          additionalProperties:
-            $ref: '#/components/schemas/JsonValue'
-          default: {}
-          description: 'Experimental options.
-
-
-            These options are not guaranteed to be stable and may change or be removed without notice.'
-          title: Experimental
-          type: object
-      title: OptionsModel
-      type: object
-    Timestamps:
-      type: object
-      description: A map of status transitions to timestamps
-      properties:
-        created:
-          pattern: ^[0-9TZt:\-+./*]+$
-          format: date-time
-          type: string
-          description: Timestamp of when the job create request was received
-        finished:
-          pattern: ^[0-9TZt:\-+./*]+$
-          format: date-time
-          type: string
-          description: Timestamp of when the job finished
-        running:
-          pattern: ^[0-9TZt:\-+./*]+$
-          format: date-time
-          type: string
-          description: Timestamp of when the job started running
-    ExecutorV02QuantumProgramResultModel:
-      description: Result from executing a quantum program.
-      properties:
-        schema_version:
-          enum:
-          - v0.2
-          default: v0.2
-          description: Schema version of the result type.
-          title: Schema Version
-          type: string
-        data:
-          description: Resulting data for each quantum program item.
-          items:
-            $ref: '#/components/schemas/ExecutorV02QuantumProgramResultItemModel'
-          title: Data
-          type: array
-        metadata:
-          $ref: '#/components/schemas/ExecutorV02MetadataModel'
-        passthrough_data:
-          $ref: '#/components/schemas/DataTree'
-      required:
-      - data
-      - metadata
-      title: ExecutorV02QuantumProgramResultModel
-      type: object
-    JobCost:
-      type: integer
-      format: int32
-      minimum: 0
-      maximum: 10800
-      description: Cost of the job as the estimated time it should take to complete (in seconds). Should not exceed the cost of the program. If the provided value exceeds the maximum, it will be capped at that value.
-    ExecutorV02MetadataModel:
-      description: Execution metadata.
-      properties:
-        chunk_timing:
-          description: Timing information about all executed chunks of a quantum program.
-          items:
-            $ref: '#/components/schemas/ChunkSpan'
-          title: Chunk Timing
-          type: array
-      required:
-      - chunk_timing
-      title: MetadataModel
-      type: object
-    DataTree:
-      anyOf:
-      - items:
-          $ref: '#/components/schemas/DataTree'
-        type: array
-      - $ref: '#/components/schemas/TensorModel'
-      - additionalProperties:
-          $ref: '#/components/schemas/DataTree'
-        type: object
-      - type: string
-      - type: number
-      - type: integer
-      - type: boolean
-    JobStatus:
-      title: JobStatus
-      type: string
-      description: Current status of the job
-      enum:
-      - Queued
-      - Running
-      - Completed
-      - Cancelled
-      - Cancelled - Ran too long
-      - Failed
+    Tags:
+      title: Tags
+      description: List of job or program tags
+      type: array
+      minItems: 0
+      maxItems: 8
+      items:
+        type: string
+        pattern: ^.*$
+        minLength: 0
+        maxLength: 86
     NoiseLearnerV3V01NoiseLearnerV3ResultModel:
       description: Results for a single noise learner V3 item.
       properties:
@@ -1188,148 +1100,287 @@ components:
       - metadata
       title: NoiseLearnerV3ResultModel
       type: object
-    SamplexModelSSV1:
-      description: A samplex model constrained to use samplex serialization version (SSV) 1.
+    JobCost:
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 10800
+      description: Cost of the job as the estimated time it should take to complete (in seconds). Should not exceed the cost of the program. If the provided value exceeds the maximum, it will be capped at that value.
+    JobMetricsResponse:
+      title: JobMetrics
+      type: object
+      description: Various metrics about the execution of a job
       properties:
-        ssv:
-          maximum: 1
-          minimum: 1
-          title: Ssv
-          type: integer
-        samplex_json:
-          description: A JSON string representing the samplex.
-          title: Samplex Json
+        caller:
           type: string
-      required:
-      - ssv
-      - samplex_json
-      title: SamplexModelSSV1
+          description: This value is derived from the 'x-qx-client-application' request header and follows the format `qiskit/<version>/<optional-client>` that represents the client specified when present.
+          pattern: ^.*$
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+        usage:
+          $ref: '#/components/schemas/UsageV3'
+        circuits_execution_time_ns:
+          type: number
+          description: The amount of time, in nanoseconds, the job spent on the QPU.
+          minimum: 0
+        qiskit_version:
+          $ref: '#/components/schemas/QiskitVersion'
+    ErrorContainer:
+      description: Error response
       type: object
-    JobRunParamsChannelPartner:
-      allOf:
-      - $ref: '#/components/schemas/JobRunParamsBase'
-      - title: ProgramParamsChannelPartner
-        description: Program run params for Qiskit Runtime instances with the Channel Partner plan
-        properties:
-          remote_storage:
-            $ref: '#/components/schemas/RemoteStorage'
-        required:
-        - remote_storage
-    JsonValue: {}
-    NoiseLearnerV3V02NoiseLearnerV3ResultModel:
-      description: Results for a single noise learner V3 item.
       properties:
-        generators_sparse:
-          description: A representation of the generators in sparse format ``[string, array(int)]``.
-          items:
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-            type: array
-          title: Generators Sparse
+        trace:
+          type: string
+          description: A request identifier
+        errors:
           type: array
-        num_qubits:
-          description: The number of qubits that the generators act on.
-          title: Num Qubits
-          type: integer
-        rates:
-          $ref: '#/components/schemas/F64TensorModel'
-        rates_std:
-          $ref: '#/components/schemas/F64TensorModel'
-        metadata:
-          description: Execution metadata pertaining to a single result.
-          discriminator:
-            mapping:
-              lindblad: '#/components/schemas/NoiseLearnerV3V02LinbdbladResultMetadataModel'
-              trex: '#/components/schemas/NoiseLearnerV3V02TREXResultMetadataModel'
-            propertyName: learning_protocol
-          oneOf:
-          - $ref: '#/components/schemas/NoiseLearnerV3V02TREXResultMetadataModel'
-          - $ref: '#/components/schemas/NoiseLearnerV3V02LinbdbladResultMetadataModel'
-          title: Metadata
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    NoiseLearnerV3V02ParamsModel:
+      description: Schema version 1 of the inner parameters.
+      properties:
+        schema_version:
+          enum:
+          - v0.2
+          default: v0.2
+          title: Schema Version
+          type: string
+        instructions:
+          $ref: '#/components/schemas/QpyModelV13ToV17'
+        options:
+          $ref: '#/components/schemas/NoiseLearnerV3V02OptionsModel'
       required:
-      - generators_sparse
-      - num_qubits
-      - rates
-      - rates_std
-      - metadata
-      title: NoiseLearnerV3ResultModel
+      - instructions
+      - options
+      title: NoiseLearnerV3 v0.2 input
       type: object
-    NoiseLearnerV3V01TREXResultMetadataModel:
-      description: The metadata of a single TREX result of a noise learner v3 job.
+    NoiseLearnerV3V02LinbdbladResultMetadataModel:
+      description: The metadata of a single Lindblad result of a noise learner v3 job.
       properties:
         learning_protocol:
           enum:
-          - trex
-          default: trex
+          - lindblad
+          default: lindblad
           description: The learning protocol used to obtain this result.
           title: Learning Protocol
           type: string
         post_selection:
-          $ref: '#/components/schemas/NoiseLearnerV3V01TREXResultPostSelectionMetadataModel'
+          $ref: '#/components/schemas/NoiseLearnerV3V02LinbdbladResultPostSelectionMetadataModel'
       required:
       - post_selection
-      title: TREXResultMetadataModel
+      title: LinbdbladResultMetadataModel
       type: object
-    ItemMetadataModel:
-      description: Per-item metadata for quantum program results.
+    ExecutorV02MetadataModel:
+      description: Execution metadata.
       properties:
-        scheduler_timing:
-          $ref: '#/components/schemas/SchedulerTimingModel'
-        stretch_values:
+        chunk_timing:
+          description: Timing information about all executed chunks of a quantum program.
           items:
-            $ref: '#/components/schemas/StretchValueModel'
-          type:
-          - array
-          - 'null'
-          default: null
-          description: Stretch value resolution, if it is available.
-          title: Stretch Values
-      title: ItemMetadataModel
-      type: object
-    PauliLindbladMapModel:
-      description: Encoding of a sparse Pauli Lindblad map.
-      properties:
-        sparse_terms:
-          description: The Pauli Lindblad terms in the sparse form ``(pauli_string [string], qubit_idxs [array of integers], rate [number])``.
-          items:
-            maxItems: 3
-            minItems: 3
-            type: array
-          title: Sparse Terms
+            $ref: '#/components/schemas/ChunkSpan'
+          title: Chunk Timing
           type: array
-        num_qubits:
-          description: The total number of qubits the map applies to.
-          minimum: 0
-          title: Num Qubits
-          type: integer
       required:
-      - sparse_terms
-      - num_qubits
-      title: PauliLindbladMapModel
+      - chunk_timing
+      title: MetadataModel
       type: object
-    SchedulerTimingModel:
-      description: 'Describes the timing of a scheduled circuit.
-
-
-        All timing information is expressed in terms of multiples of the quantity ``dt``, time step
-
-        duration of the control electronics, which can be queried in backend and target properties.'
+    NoiseLearnerV3V01ParamsModel:
+      description: Schema version 1 of the inner parameters.
       properties:
-        timing:
-          description: A description of circuit timing in a comma-separated text format.
-          title: Timing
+        schema_version:
+          enum:
+          - v0.1
+          default: v0.1
+          title: Schema Version
           type: string
-        circuit_duration:
-          description: The duration of the circuit in ``dt`` steps.
-          title: Circuit Duration
-          type: integer
+        instructions:
+          $ref: '#/components/schemas/QpyModelV13ToV16'
+        options:
+          $ref: '#/components/schemas/NoiseLearnerV3V01OptionsModel'
       required:
-      - timing
-      - circuit_duration
-      title: SchedulerTimingModel
+      - instructions
+      - options
+      title: NoiseLearnerV3 v0.1 input
       type: object
+    JobRunParamsSampler:
+      title: SamplerV2 input
+      description: The input for an SamplerV2 API call
+      type: object
+      required:
+      - pubs
+      properties:
+        pubs:
+          type: array
+          description: Primitive Unit Blocs of data. Each PUB is of the form (Circuit, Parameters, Shots) where the circuit is required, parameters should be passed only for parametrized circuits, and shots is optional
+          items:
+            anyOf:
+            - type: array
+              minItems: 1
+              items: {}
+              x-prefixItems:
+              - description: The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.
+              - description: A dictionary of the parameter values. The keys are the names of the parameters, and the values are the actual parameter values.
+              - description: The number of shots to use in this PUB
+                type:
+                - integer
+                - 'null'
+            - description: The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.
+              not:
+                type: array
+                items: {}
+        options:
+          type: object
+          description: Options for V2 Sampler
+          properties:
+            default_shots:
+              description: The default number of shots to use if none are specified in the PUBs
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 2147483647
+            dynamical_decoupling:
+              description: Suboptions for dynamical decoupling
+              type: object
+              properties:
+                enable:
+                  description: Whether to enable DD as specified by the other options in this class
+                  type: boolean
+                sequence_type:
+                  description: Which dynamical decoupling sequence to use
+                  type: string
+                  enum:
+                  - XX
+                  - XpXm
+                  - XY4
+                extra_slack_distribution:
+                  description: Where to put extra timing delays due to rounding issues
+                  type: string
+                  enum:
+                  - middle
+                  - edges
+                scheduling_method:
+                  description: Whether to schedule gates as soon as ('asap') or as late as ('alap') possible
+                  type: string
+                  enum:
+                  - alap
+                  - asap
+                skip_reset_qubits:
+                  description: Whether to insert DD on idle periods that immediately follow initialized/reset qubits.
+                  type: boolean
+            execution:
+              description: Execution options
+              type: object
+              properties:
+                init_qubits:
+                  description: Whether to reset the qubits to the ground state for each shot
+                  type: boolean
+                rep_delay:
+                  description: The delay between a measurement and the subsequent quantum circuit
+                  type: number
+                meas_type:
+                  description: How to process and return measurement results
+                  enum:
+                  - classified
+                  - kerneled
+                  - avg_kerneled
+            twirling:
+              description: Twirling options
+              type: object
+              properties:
+                enable_gates:
+                  description: Whether to apply 2-qubit gate twirling
+                  type: boolean
+                enable_measure:
+                  description: Whether to apply measurement twirling
+                  type: boolean
+                num_randomizations:
+                  description: The number of random samples to use when twirling or performing sampled mitigation
+                  oneOf:
+                  - type: integer
+                    format: int32
+                    minimum: 1
+                    maximum: 2147483647
+                  - enum:
+                    - auto
+                shots_per_randomization:
+                  description: The number of shots to run for each random sample
+                  oneOf:
+                  - type: integer
+                    format: int32
+                    minimum: 1
+                    maximum: 2147483647
+                  - enum:
+                    - auto
+                strategy:
+                  description: The strategy of twirling qubits in identified layers of 2-qubit twirled gates
+                  type: string
+                  enum:
+                  - active
+                  - active-circuit
+                  - active-accum
+                  - all
+            simulator:
+              description: Simulator options
+              type: object
+              properties:
+                noise_model:
+                  description: Noise model for the simulator.
+                  type:
+                  - object
+                  - 'null'
+                seed_simulator:
+                  description: Random seed to control sampling.
+                  type:
+                  - integer
+                  - 'null'
+                  format: int32
+                  minimum: 0
+                  maximum: 2147483647
+                coupling_map:
+                  description: Directed coupling map to target in mapping.
+                  type:
+                  - array
+                  - 'null'
+                  items: {}
+                basis_gates:
+                  description: List of basis gate names to unroll to.
+                  type: array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+              additionalProperties: false
+            experimental:
+              description: Experimental options.
+              type: object
+          additionalProperties: false
+        shots:
+          description: Default number of shots which applies to all PUBs without shots. This overrides default_shots specified in options.
+          type:
+          - integer
+          - 'null'
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+        support_qiskit:
+          description: If True, returns a Qiskit-style output, meant to be parsed using the runtime result decoder, or resort to returning pure JSON results (resulting in larger objects)
+          type: boolean
+        version:
+          description: For SamplerV2, version should always be 2
+          enum:
+          - 2
+      additionalProperties: false
+      x-version: 1.0.0
     JobRunParamsEstimator:
       title: EstimatorV2 input
       description: The input for an EstimatorV2 API call
@@ -1636,6 +1687,328 @@ components:
           - 2
       additionalProperties: false
       x-version: 1.0.0
+    JobState:
+      title: JobState
+      type: object
+      description: Current state of the job
+      properties:
+        status:
+          type: string
+          description: Current status of the job
+          enum:
+          - Queued
+          - Running
+          - Completed
+          - Cancelled
+          - Failed
+        reason:
+          type: string
+          description: Reason for the current status
+        reason_code:
+          type: integer
+          format: int32
+          minimum: 1000
+          maximum: 9999
+          description: Reason code for the current status
+        reason_solution:
+          type: string
+          description: Next steps user can take in case of failure
+      required:
+      - status
+    JobStatus:
+      title: JobStatus
+      type: string
+      description: Current status of the job
+      enum:
+      - Queued
+      - Running
+      - Completed
+      - Cancelled
+      - Cancelled - Ran too long
+      - Failed
+    ExecutorV01MetadataModel:
+      description: Execution metadata.
+      properties:
+        chunk_timing:
+          description: Timing information about all executed chunks of a quantum program.
+          items:
+            $ref: '#/components/schemas/ChunkSpan'
+          title: Chunk Timing
+          type: array
+      required:
+      - chunk_timing
+      title: MetadataModel
+      type: object
+    ExecutorV02QuantumProgramResultModel:
+      description: Result from executing a quantum program.
+      properties:
+        schema_version:
+          enum:
+          - v0.2
+          default: v0.2
+          description: Schema version of the result type.
+          title: Schema Version
+          type: string
+        data:
+          description: Resulting data for each quantum program item.
+          items:
+            $ref: '#/components/schemas/ExecutorV02QuantumProgramResultItemModel'
+          title: Data
+          type: array
+        metadata:
+          $ref: '#/components/schemas/ExecutorV02MetadataModel'
+        passthrough_data:
+          $ref: '#/components/schemas/DataTree'
+      required:
+      - data
+      - metadata
+      title: ExecutorV02QuantumProgramResultModel
+      type: object
+    ExecutorV02ParamsModel:
+      description: A model describing the Executor program inputs.
+      properties:
+        schema_version:
+          enum:
+          - v0.2
+          default: v0.2
+          title: Schema Version
+          type: string
+        quantum_program:
+          $ref: '#/components/schemas/ExecutorV02QuantumProgramModel'
+        options:
+          $ref: '#/components/schemas/ExecutorV02OptionsModel'
+      required:
+      - quantum_program
+      - options
+      title: Executor v0.2 input
+      type: object
+    IBMCloudCOSRemoteStorageOption:
+      type: object
+      description: Remote storage metadata for where data is stored or to be stored in an IBM Cloud Object Storage bucket. Required fields may be omitted in field specific objected if allowed and defined in the default remote storage option.
+      properties:
+        type:
+          type: string
+          enum:
+          - ibmcloud_cos
+          default: ibmcloud_cos
+        region:
+          type: string
+          example: us-east
+          description: Region, Cross-Region, or Single Data Center as defined by IBM Cloud Object Storage (https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-endpoints)
+          pattern: ^[a-zA-Z-]+$
+        region_type:
+          type: string
+          enum:
+          - regional
+          - cross-region
+          - single-site
+        bucket_crn:
+          description: Fully specified <a href="https://cloud.ibm.com/docs/account?topic=account-crn">CRN</a> for the target Cloud Object Storage bucket
+          type: string
+          example: crn:v1:bluemix:public:cloud-object-storage:global:a/abc123:abc123:bucket:my-bucket
+        object_name:
+          description: Name/ID of the object in the IBM Cloud Object Storage bucket. May *not* be specified in the default remote storage option.
+          type: string
+      required:
+      - object_name
+      - bucket_crn
+      - region
+      - region_type
+    JobsResponse:
+      title: JobsResponse
+      type: object
+      description: Jobs collection response
+      properties:
+        jobs:
+          description: A list of jobs
+          type: array
+          minItems: 0
+          maxItems: 2147483647
+          items:
+            $ref: '#/components/schemas/JobResponseV3'
+        count:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+          description: Total number of jobs for the user
+        offset:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+          description: Offset at which paginated results are returned
+        limit:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 200
+          description: Maximum number of results returned in the paginated response
+      required:
+      - limit
+      - offset
+      - jobs
+    RemoteStorageOption:
+      oneOf:
+      - $ref: '#/components/schemas/IBMCloudCOSRemoteStorageOption'
+      discriminator:
+        propertyName: type
+    ExecutorV01CircuitItemModel:
+      description: Execution specifications for a single quantum circuit.
+      properties:
+        item_type:
+          enum:
+          - circuit
+          default: circuit
+          description: The type of quantum program item.
+          title: Item Type
+          type: string
+        circuit:
+          $ref: '#/components/schemas/QpyModelV13ToV16'
+        circuit_arguments:
+          $ref: '#/components/schemas/F64TensorModel'
+        chunk_size:
+          anyOf:
+          - minimum: 1
+            type: integer
+          - enum:
+            - auto
+            type: string
+          default: auto
+          description: 'The maximum number circuit arguments to bind to the circuit per shot loop.
+
+
+            When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
+
+            execution speed. A quantum program must have items where either all chunk sizes are
+
+            integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
+
+            session exection mode.'
+          title: Chunk Size
+      required:
+      - circuit
+      - circuit_arguments
+      title: CircuitItemModel
+      type: object
+    JobResponseV3:
+      title: JobResponse
+      type: object
+      description: A job
+      properties:
+        id:
+          type: string
+          description: Identifier assigned to the job
+          pattern: ^[A-Za-z0-9_-]+$
+        backend:
+          type: string
+          description: '&ast;&ast;Warning:&ast;&ast; While this parameter is not currently required for requests, specifying it is strongly encouraged. Running an ISA circuit on a backend that has a different instruction set will result in an error. The backend parameter will be required in a future release.
+
+
+            The backend on which to run the program.  If no backend is specified, the job is sent to the backend with the shortest queue that you have access to.
+
+            '
+          pattern: ^.*$
+        state:
+          $ref: '#/components/schemas/JobState'
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        params:
+          $ref: '#/components/schemas/Params'
+        program:
+          $ref: '#/components/schemas/Program'
+        created:
+          type: string
+          description: UTC timestamp for when the job was created
+          format: date-time
+          pattern: ^[0-9TZt:\-+./*]+$
+        runtime:
+          type: string
+          description: Name and tag of the image to use when running a program (IBM Quantum channel users only)
+        cost:
+          $ref: '#/components/schemas/JobCost'
+        tags:
+          $ref: '#/components/schemas/Tags'
+        remote_storage:
+          $ref: '#/components/schemas/RemoteStorage'
+        session_id:
+          type: string
+          description: Identifier of the session that the job is a part of
+        user_id:
+          type: string
+          description: The id of the user submitted the job
+        usage:
+          $ref: '#/components/schemas/UsageV3'
+        private:
+          $ref: '#/components/schemas/Private'
+        estimated_running_time_seconds:
+          type: number
+          format: double
+          description: Estimated usage in seconds
+        calibration_id:
+          type: string
+          description: The ID of the calibration used for the job
+      required:
+      - id
+      - created
+      - program
+      - state
+      - status
+      - cost
+    ExecutorV01QuantumProgramResultItemModel:
+      description: Results for a single quantum program item.
+      properties:
+        results:
+          additionalProperties:
+            $ref: '#/components/schemas/TensorModel'
+          description: A map from results to their tensor values.
+          title: Results
+          type: object
+        metadata:
+          description: Metadata pertaining to the execution of this particular quantum program item.
+          title: Metadata
+      required:
+      - results
+      - metadata
+      title: QuantumProgramResultItemModel
+      type: object
+    JobCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Job ID
+        backend:
+          type: string
+          description: Backend selected to run job
+        session_id:
+          type: string
+          description: Id of the session associated with the job
+        private:
+          $ref: '#/components/schemas/Private'
+        calibration_id:
+          type: string
+          description: The ID of the calibration used for the job
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 100
+      description: Response when creating a job
+      required:
+      - id
+      - backend
+    NoiseLearnerV3V01TREXResultPostSelectionMetadataModel:
+      description: The post selection metadata of a single TREX result of a noise learner v3 job.
+      properties:
+        fraction_kept:
+          description: The fraction of shots kept.
+          maximum: 1
+          minimum: 0
+          title: Fraction Kept
+          type: number
+      required:
+      - fraction_kept
+      title: TREXResultPostSelectionMetadataModel
+      type: object
     ExecutorV01SamplexItemModel:
       description: Execution specifications for a single quantum circuit.
       properties:
@@ -1697,112 +2070,68 @@ components:
       - shape
       title: SamplexItemModel
       type: object
-    ExecutorV02CircuitItemModel:
-      description: Execution specifications for a single quantum circuit.
+    TensorModel:
+      description: Model of tensor data.
       properties:
-        item_type:
-          enum:
-          - circuit
-          default: circuit
-          description: The type of quantum program item.
-          title: Item Type
+        data:
+          description: 'Base-64-encoded data in litte endian format.
+
+
+            Bool arrays are bitpacked, other types are IEEE753. Everything is little-endian.
+
+            Tensors are C-ordering.'
+          title: Data
           type: string
-        circuit:
-          $ref: '#/components/schemas/QpyModelV13ToV17'
-        circuit_arguments:
-          $ref: '#/components/schemas/F64TensorModel'
-        chunk_size:
-          anyOf:
-          - minimum: 1
-            type: integer
-          - enum:
-            - auto
-            type: string
-          default: auto
-          description: 'The maximum number circuit arguments to bind to the circuit per shot loop.
-
-
-            When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
-
-            execution speed. A quantum program must have items where either all chunk sizes are
-
-            integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
-
-            session exection mode.'
-          title: Chunk Size
-      required:
-      - circuit
-      - circuit_arguments
-      title: CircuitItemModel
-      type: object
-    NoiseLearnerV3V01OptionsModel:
-      description: Runtime options with all fields set.
-      properties:
-        shots_per_randomization:
-          default: 128
-          description: The total number of shots to use per randomized learning circuit.
-          title: Shots Per Randomization
-          type: integer
-        num_randomizations:
-          default: 32
-          description: The number of random circuits to use per learning circuit configuration.
-          title: Num Randomizations
-          type: integer
-        layer_pair_depths:
-          default:
-          - 0
-          - 1
-          - 2
-          - 4
-          - 16
-          - 32
-          description: The circuit depths (measured in number of pairs) to use in Pauli Lindblad experiments.
+        shape:
+          description: The shape of the tensor.
           items:
             type: integer
-          title: Layer Pair Depths
+          title: Shape
           type: array
-        post_selection:
-          $ref: '#/components/schemas/PostSelectionOptionsModel'
-      title: OptionsModel
-      type: object
-    ChunkPart:
-      description: A description of the contents of a single part of an execution chunk.
-      properties:
-        idx_item:
-          description: The index of an item in a quantum program.
-          title: Idx Item
-          type: integer
-        size:
-          description: 'The number of elements from the quantum program item that were executed.
-
-
-            For example, if a quantum program item has shape ``(10, 5)``, then it has a total of ``50``
-
-            elements, so that if this ``size`` is ``10``, it constitutes 20% of the total work for the item.'
-          title: Size
-          type: integer
-      required:
-      - idx_item
-      - size
-      title: ChunkPart
-      type: object
-    SamplexModelSSV1ToSSV2:
-      description: A samplex model constrained to use samplex serialization versions (SSV) 1 or 2.
-      properties:
-        ssv:
-          maximum: 2
-          minimum: 1
-          title: Ssv
-          type: integer
-        samplex_json:
-          description: A JSON string representing the samplex.
-          title: Samplex Json
+        dtype:
+          description: The data type of the tensor.
+          enum:
+          - f64
+          - bool
+          - u8
+          - c128
+          title: Dtype
           type: string
       required:
-      - ssv
-      - samplex_json
-      title: SamplexModelSSV1ToSSV2
+      - data
+      - shape
+      - dtype
+      title: TensorModel
       type: object
+    ExecutorV01ParamsModel:
+      description: Schema version 1 of the inner parameters.
+      properties:
+        schema_version:
+          enum:
+          - v0.1
+          default: v0.1
+          title: Schema Version
+          type: string
+        quantum_program:
+          $ref: '#/components/schemas/ExecutorV01QuantumProgramModel'
+        options:
+          $ref: '#/components/schemas/ExecutorV01OptionsModel'
+      required:
+      - quantum_program
+      - options
+      title: Executor v0.1 input
+      type: object
+    UsageV3:
+      title: usage
+      description: usage metrics
+      type: object
+      properties:
+        qpu_charge_time_seconds:
+          type: number
+          description: The amount of resource usage in seconds. This value is used to calculate capacity consumption.
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/BillingStatus'
     F64TensorModel:
       description: Model of tensor data specialized to f64.
       properties:
@@ -1832,206 +2161,16 @@ components:
       - shape
       title: F64TensorModel
       type: object
-    BillingStatus:
-      title: BillingStatus
-      type: string
-      description: Status of billing data completeness
-      enum:
-      - pending
-      - complete
-    NoiseLearnerV3V01ParamsModel:
-      description: Schema version 1 of the inner parameters.
-      properties:
-        schema_version:
-          enum:
-          - v0.1
-          default: v0.1
-          title: Schema Version
-          type: string
-        instructions:
-          $ref: '#/components/schemas/QpyModelV13ToV16'
-        options:
-          $ref: '#/components/schemas/NoiseLearnerV3V01OptionsModel'
-      required:
-      - instructions
-      - options
-      title: NoiseLearnerV3 v0.1 input
-      type: object
-    ExecutorV01MetadataModel:
-      description: Execution metadata.
-      properties:
-        chunk_timing:
-          description: Timing information about all executed chunks of a quantum program.
-          items:
-            $ref: '#/components/schemas/ChunkSpan'
-          title: Chunk Timing
-          type: array
-      required:
-      - chunk_timing
-      title: MetadataModel
-      type: object
-    ExecutorV01QuantumProgramResultModel:
-      description: Result from executing a quantum program.
-      properties:
-        schema_version:
-          enum:
-          - v0.1
-          default: v0.1
-          description: Schema version of the result type.
-          title: Schema Version
-          type: string
-        data:
-          description: Resulting data for each quantum program item.
-          items:
-            $ref: '#/components/schemas/ExecutorV01QuantumProgramResultItemModel'
-          title: Data
-          type: array
-        metadata:
-          $ref: '#/components/schemas/ExecutorV01MetadataModel'
-      required:
-      - data
-      - metadata
-      title: ExecutorV01QuantumProgramResultModel
-      type: object
-    NoiseLearnerV3V02LinbdbladResultMetadataModel:
-      description: The metadata of a single Lindblad result of a noise learner v3 job.
-      properties:
-        learning_protocol:
-          enum:
-          - lindblad
-          default: lindblad
-          description: The learning protocol used to obtain this result.
-          title: Learning Protocol
-          type: string
-        post_selection:
-          $ref: '#/components/schemas/NoiseLearnerV3V02LinbdbladResultPostSelectionMetadataModel'
-      required:
-      - post_selection
-      title: LinbdbladResultMetadataModel
-      type: object
-    Private:
-      type: boolean
-      description: When set to true, input parameters are not returned, and the results can only be read once. After the job is completed, input parameters are deleted from the service. After the results are read, they are deleted from the service. When set to false, the input parameters and results follow the standard retention behavior of the API. Only returned in the response if the value is true, otherwise it is omitted.
-    NoiseLearnerV3V01TREXResultPostSelectionMetadataModel:
-      description: The post selection metadata of a single TREX result of a noise learner v3 job.
-      properties:
-        fraction_kept:
-          description: The fraction of shots kept.
-          maximum: 1
-          minimum: 0
-          title: Fraction Kept
-          type: number
-      required:
-      - fraction_kept
-      title: TREXResultPostSelectionMetadataModel
-      type: object
-    Tags:
-      title: Tags
-      description: List of job or program tags
-      type: array
-      minItems: 0
-      maxItems: 8
-      items:
-        type: string
-        pattern: ^.*$
-        minLength: 0
-        maxLength: 86
-    ExecutorV02QuantumProgramResultItemModel:
-      description: Results for a single quantum program item.
-      properties:
-        results:
-          additionalProperties:
-            $ref: '#/components/schemas/TensorModel'
-          description: A map from results to their tensor values.
-          title: Results
-          type: object
-        metadata:
-          $ref: '#/components/schemas/ItemMetadataModel'
-      required:
-      - results
-      - metadata
-      title: QuantumProgramResultItemModel
-      type: object
-    ExecutorV02ParamsModel:
-      description: A model describing the Executor program inputs.
-      properties:
-        schema_version:
-          enum:
-          - v0.2
-          default: v0.2
-          title: Schema Version
-          type: string
-        quantum_program:
-          $ref: '#/components/schemas/ExecutorV02QuantumProgramModel'
-        options:
-          $ref: '#/components/schemas/ExecutorV02OptionsModel'
-      required:
-      - quantum_program
-      - options
-      title: Executor v0.2 input
-      type: object
-    ChunkSpan:
-      description: "Timing information about a single chunk of execution.\n\n.. note::\n\n    This span may include some amount of non-circuit time."
-      properties:
-        start:
-          description: The start time of the execution chunk in UTC.
-          format: date-time
-          title: Start
-          type: string
-        stop:
-          description: The stop time of the execution chunk in UTC.
-          format: date-time
-          title: Stop
-          type: string
-        parts:
-          description: A description of which parts of a quantum program are contained in this chunk.
-          items:
-            $ref: '#/components/schemas/ChunkPart'
-          title: Parts
-          type: array
-      required:
-      - start
-      - stop
-      - parts
-      title: ChunkSpan
-      type: object
-    ExecutorV02QuantumProgramModel:
-      description: Model to store a quantum program.
-      properties:
-        shots:
-          description: The number of shots for each individually bound circuit.
-          minimum: 1
-          title: Shots
-          type: integer
-        items:
-          description: Items of the program.
-          items:
-            discriminator:
-              mapping:
-                circuit: '#/components/schemas/ExecutorV02CircuitItemModel'
-                samplex: '#/components/schemas/ExecutorV02SamplexItemModel'
-              propertyName: item_type
-            oneOf:
-            - $ref: '#/components/schemas/ExecutorV02CircuitItemModel'
-            - $ref: '#/components/schemas/ExecutorV02SamplexItemModel'
-          title: Items
-          type: array
-        meas_level:
-          default: classified
-          description: "The level at which to return all classical register measurement results.\n\nThis option sets the return type of all classical registers in all quantum program items and\ndetermines whether the raw complex data from low-level measurement devices is discriminated\ninto bits or not.\n\n - \"classified\": Classical register data is returned as boolean arrays with the intrinsic shape\n     ``(num_shots, creg_size)``.\n - \"kerneled\": Classical register data is returned as a complex array with the intrinsic shape\n     ``(num_shots, creg_size)``, where each entry represents an IQ data point (resulting from\n     kerneling the measurement trace) in arbitrary units.\n - \"avg_kerneled\": Classical register data is returned as a complex array with the intrinsic\n     shape ``(creg_size,)``, where data is equivalent to \"kerneled\" except additionally averaged\n     over shots."
-          enum:
-          - classified
-          - kerneled
-          - avg_kerneled
-          title: Meas Level
-          type: string
-        passthrough_data:
-          $ref: '#/components/schemas/DataTree'
-      required:
-      - shots
-      - items
-      title: QuantumProgramModel
-      type: object
+    JobResults:
+      description: Result output for all programs.
+      oneOf:
+      - $ref: '#/components/schemas/ExecutorV01QuantumProgramResultModel'
+      - $ref: '#/components/schemas/ExecutorV02QuantumProgramResultModel'
+      - $ref: '#/components/schemas/NoiseLearnerV3V01NoiseLearnerV3ResultsModel'
+      - $ref: '#/components/schemas/NoiseLearnerV3V02NoiseLearnerV3ResultsModel'
+      - type: string
+        description: Job final result.
+        title: LegacyJobResults
     NoiseLearnerV3V02TREXResultPostSelectionMetadataModel:
       description: The post selection metadata of a single TREX result of a noise learner v3 job.
       properties:
@@ -2054,65 +2193,27 @@ components:
       - success_rates
       title: TREXResultPostSelectionMetadataModel
       type: object
-    NoiseLearnerV3V02ParamsModel:
-      description: Schema version 1 of the inner parameters.
+    SchedulerTimingModel:
+      description: 'Describes the timing of a scheduled circuit.
+
+
+        All timing information is expressed in terms of multiples of the quantity ``dt``, time step
+
+        duration of the control electronics, which can be queried in backend and target properties.'
       properties:
-        schema_version:
-          enum:
-          - v0.2
-          default: v0.2
-          title: Schema Version
+        timing:
+          description: A description of circuit timing in a comma-separated text format.
+          title: Timing
           type: string
-        instructions:
-          $ref: '#/components/schemas/QpyModelV13ToV17'
-        options:
-          $ref: '#/components/schemas/NoiseLearnerV3V02OptionsModel'
+        circuit_duration:
+          description: The duration of the circuit in ``dt`` steps.
+          title: Circuit Duration
+          type: integer
       required:
-      - instructions
-      - options
-      title: NoiseLearnerV3 v0.2 input
+      - timing
+      - circuit_duration
+      title: SchedulerTimingModel
       type: object
-    ExecutorV01ParamsModel:
-      description: Schema version 1 of the inner parameters.
-      properties:
-        schema_version:
-          enum:
-          - v0.1
-          default: v0.1
-          title: Schema Version
-          type: string
-        quantum_program:
-          $ref: '#/components/schemas/ExecutorV01QuantumProgramModel'
-        options:
-          $ref: '#/components/schemas/ExecutorV01OptionsModel'
-      required:
-      - quantum_program
-      - options
-      title: Executor v0.1 input
-      type: object
-    RemoteStorage:
-      allOf:
-      - allOf:
-        - $ref: '#/components/schemas/RemoteStorageOption'
-        - description: Default remote storage option for where input data is stored and where output data should be stored
-      - title: RemoteStorage
-        description: "(Only enabled for Qiskit Runtime instances with the Channel Partner plan) Metadata and connection information on where job params are stored remotely\nand/or where to store results, logs, transpiled circuits, etc. Omitted properties\nin field specific objects will be inherited from the default remote storage option.\nAs an example, the following two objects are equivalent:\n\n```\n{\n    \"type\": \"ibmcloud_cos\",\n    \"region\": \"us-east\",\n    \"region_type\": \"regional\",\n    \"bucket_crn\": \"crn\",\n    \"job_params\": {\n      \"object_name\": \"my-object\"\n    }\n}\n```\n\n```\n{\n    \"type\": \"ibmcloud_cos\",\n    \"region\": \"us-east\",\n    \"region_type\": \"regional\",\n    \"bucket_crn\": \"crn\",\n    \"job_params\": {\n      \"type\": \"ibmcloud_cos\",\n      \"region\": \"us-east\",\n      \"region_type\": \"regional\",\n      \"bucket_crn\": \"crn\",\n      \"object_name\": \"my-object\"\n    }\n}\n```\n"
-        properties:
-          job_params:
-            allOf:
-            - $ref: '#/components/schemas/RemoteStorageOption'
-            - description: Location for where user supplied job params (omitted properties will will be inherited from default remote storage option)
-          results:
-            allOf:
-            - $ref: '#/components/schemas/RemoteStorageOption'
-            - description: Location for where job results will be stored (omitted properties will will be inherited from default remote storage option)
-          logs:
-            allOf:
-            - $ref: '#/components/schemas/RemoteStorageOption'
-            - description: Location for where job logs will be stored (omitted properties will will be inherited from default remote storage option)
-        required:
-        - job_params
-        - results
     ExecutorV02SamplexItemModel:
       description: Execution specifications for a single quantum circuit.
       properties:
@@ -2174,26 +2275,7 @@ components:
       - shape
       title: SamplexItemModel
       type: object
-    JobMetricsResponse:
-      title: JobMetrics
-      type: object
-      description: Various metrics about the execution of a job
-      properties:
-        caller:
-          type: string
-          description: This value is derived from the 'x-qx-client-application' request header and follows the format `qiskit/<version>/<optional-client>` that represents the client specified when present.
-          pattern: ^.*$
-        timestamps:
-          $ref: '#/components/schemas/Timestamps'
-        usage:
-          $ref: '#/components/schemas/UsageV3'
-        circuits_execution_time_ns:
-          type: number
-          description: The amount of time, in nanoseconds, the job spent on the QPU.
-          minimum: 0
-        qiskit_version:
-          $ref: '#/components/schemas/QiskitVersion'
-    ExecutorV01QuantumProgramModel:
+    ExecutorV02QuantumProgramModel:
       description: Model to store a quantum program.
       properties:
         shots:
@@ -2206,117 +2288,121 @@ components:
           items:
             discriminator:
               mapping:
-                circuit: '#/components/schemas/ExecutorV01CircuitItemModel'
-                samplex: '#/components/schemas/ExecutorV01SamplexItemModel'
+                circuit: '#/components/schemas/ExecutorV02CircuitItemModel'
+                samplex: '#/components/schemas/ExecutorV02SamplexItemModel'
               propertyName: item_type
             oneOf:
-            - $ref: '#/components/schemas/ExecutorV01CircuitItemModel'
-            - $ref: '#/components/schemas/ExecutorV01SamplexItemModel'
+            - $ref: '#/components/schemas/ExecutorV02CircuitItemModel'
+            - $ref: '#/components/schemas/ExecutorV02SamplexItemModel'
           title: Items
           type: array
+        meas_level:
+          default: classified
+          description: "The level at which to return all classical register measurement results.\n\nThis option sets the return type of all classical registers in all quantum program items and\ndetermines whether the raw complex data from low-level measurement devices is discriminated\ninto bits or not.\n\n - \"classified\": Classical register data is returned as boolean arrays with the intrinsic shape\n     ``(num_shots, creg_size)``.\n - \"kerneled\": Classical register data is returned as a complex array with the intrinsic shape\n     ``(num_shots, creg_size)``, where each entry represents an IQ data point (resulting from\n     kerneling the measurement trace) in arbitrary units.\n - \"avg_kerneled\": Classical register data is returned as a complex array with the intrinsic\n     shape ``(creg_size,)``, where data is equivalent to \"kerneled\" except additionally averaged\n     over shots."
+          enum:
+          - classified
+          - kerneled
+          - avg_kerneled
+          title: Meas Level
+          type: string
+        passthrough_data:
+          $ref: '#/components/schemas/DataTree'
       required:
       - shots
       - items
       title: QuantumProgramModel
       type: object
-    ExecutorV01CircuitItemModel:
-      description: Execution specifications for a single quantum circuit.
+    BillingStatus:
+      title: BillingStatus
+      type: string
+      description: Status of billing data completeness
+      enum:
+      - pending
+      - complete
+    ExecutorV02OptionsModel:
+      description: Runtime options.
       properties:
-        item_type:
-          enum:
-          - circuit
-          default: circuit
-          description: The type of quantum program item.
-          title: Item Type
-          type: string
-        circuit:
-          $ref: '#/components/schemas/QpyModelV13ToV16'
-        circuit_arguments:
-          $ref: '#/components/schemas/F64TensorModel'
-        chunk_size:
-          anyOf:
-          - minimum: 1
-            type: integer
-          - enum:
-            - auto
-            type: string
-          default: auto
-          description: 'The maximum number circuit arguments to bind to the circuit per shot loop.
+        init_qubits:
+          default: true
+          description: Whether to reset the qubits to the ground state for each shot.
+          title: Init Qubits
+          type: boolean
+        rep_delay:
+          type:
+          - number
+          - 'null'
+          default: null
+          description: 'The repetition delay.
 
 
-            When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
+            This is the delay between the end of one circuit and the start of the next within a shot loop.
 
-            execution speed. A quantum program must have items where either all chunk sizes are
+            This is only supported on backends that have ``backend.dynamic_reprate_enabled=True``. It must
 
-            integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
+            be from the range supplied by ``backend.rep_delay_range``. When this value is ``None``, the
 
-            session exection mode.'
-          title: Chunk Size
-      required:
-      - circuit
-      - circuit_arguments
-      title: CircuitItemModel
-      type: object
-    TensorModel:
-      description: Model of tensor data.
-      properties:
-        data:
-          description: 'Base-64-encoded data in litte endian format.
+            default value ``backend.default_rep_delay`` is used.'
+          title: Rep Delay
+        scheduler_timing:
+          default: false
+          description: 'Whether to return circuit schedule timing of each provided quantum circuit.
 
 
-            Bool arrays are bitpacked, other types are IEEE753. Everything is little-endian.
+            Setting this value to true will cause corresponding metadata of every program item to be
 
-            Tensors are C-ordering.'
-          title: Data
-          type: string
-        shape:
-          description: The shape of the tensor.
-          items:
-            type: integer
-          title: Shape
-          type: array
-        dtype:
-          description: The data type of the tensor.
-          enum:
-          - f64
-          - bool
-          - u8
-          - c128
-          title: Dtype
-          type: string
-      required:
-      - data
-      - shape
-      - dtype
-      title: TensorModel
-      type: object
-    NoiseLearnerV3V02LinbdbladResultPostSelectionMetadataModel:
-      description: The post selection metadata of a single Linbdblad result of a noise learner v3 job.
-      properties:
-        fraction_kept:
+            populated in the returned data.'
+          title: Scheduler Timing
+          type: boolean
+        stretch_values:
+          default: false
+          description: 'Whether to return numeric resolutions of stretches for each provided quantum circuit.
+
+
+            Setting this value to true will cause corresponding metadata of every program item to be
+
+            populated in the returned data.'
+          title: Stretch Values
+          type: boolean
+        experimental:
           additionalProperties:
-            maximum: 1
-            minimum: 0
-            type: number
-          description: The fraction of shots kept for each layer pair depth.
-          title: Fraction Kept
-          type: object
-        success_rates:
-          additionalProperties:
-            additionalProperties:
-              maximum: 1
-              minimum: 0
-              type: number
-            type: object
-          description: 'The fraction of shots in which post selection successfully flipped each qubit, for
+            $ref: '#/components/schemas/JsonValue'
+          default: {}
+          description: 'Experimental options.
 
-            each layer pair depth.'
-          title: Success Rates
+
+            These options are not guaranteed to be stable and may change or be removed without notice.'
+          title: Experimental
           type: object
-      required:
-      - fraction_kept
-      - success_rates
-      title: LinbdbladResultPostSelectionMetadataModel
+      title: OptionsModel
+      type: object
+    PostSelectionOptionsModel:
+      description: Runtime options for post selection.
+      properties:
+        enable:
+          default: false
+          description: 'Whether to enable Post Selection when performing learning experiments.
+
+
+            If ``False``, all the other Post Selection options are ignored.'
+          title: Enable
+          type: boolean
+        x_pulse_type:
+          default: xslow
+          description: The type of the X-pulse used for the post selection measurements.
+          enum:
+          - xslow
+          - rx
+          title: X Pulse Type
+          type: string
+        strategy:
+          default: node
+          description: The strategy used to decide if a shot should be kept or discarded.
+          enum:
+          - node
+          - edge
+          title: Strategy
+          type: string
+      title: PostSelectionOptionsModel
       type: object
     JobRunParamsNoiseLearner:
       title: NoiseLearner input
@@ -2418,293 +2504,7 @@ components:
           - 2
       additionalProperties: false
       x-version: 1.0.0
-    JobRunParamsSampler:
-      title: SamplerV2 input
-      description: The input for an SamplerV2 API call
-      type: object
-      required:
-      - pubs
-      properties:
-        pubs:
-          type: array
-          description: Primitive Unit Blocs of data. Each PUB is of the form (Circuit, Parameters, Shots) where the circuit is required, parameters should be passed only for parametrized circuits, and shots is optional
-          items:
-            anyOf:
-            - type: array
-              minItems: 1
-              items: {}
-              x-prefixItems:
-              - description: The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.
-              - description: A dictionary of the parameter values. The keys are the names of the parameters, and the values are the actual parameter values.
-              - description: The number of shots to use in this PUB
-                type:
-                - integer
-                - 'null'
-            - description: The quantum circuit in QASM string or base64-encoded QPY format. See https://docs.quantum.ibm.com/api/qiskit/qpy for more details on QPY.
-              not:
-                type: array
-                items: {}
-        options:
-          type: object
-          description: Options for V2 Sampler
-          properties:
-            default_shots:
-              description: The default number of shots to use if none are specified in the PUBs
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 2147483647
-            dynamical_decoupling:
-              description: Suboptions for dynamical decoupling
-              type: object
-              properties:
-                enable:
-                  description: Whether to enable DD as specified by the other options in this class
-                  type: boolean
-                sequence_type:
-                  description: Which dynamical decoupling sequence to use
-                  type: string
-                  enum:
-                  - XX
-                  - XpXm
-                  - XY4
-                extra_slack_distribution:
-                  description: Where to put extra timing delays due to rounding issues
-                  type: string
-                  enum:
-                  - middle
-                  - edges
-                scheduling_method:
-                  description: Whether to schedule gates as soon as ('asap') or as late as ('alap') possible
-                  type: string
-                  enum:
-                  - alap
-                  - asap
-                skip_reset_qubits:
-                  description: Whether to insert DD on idle periods that immediately follow initialized/reset qubits.
-                  type: boolean
-            execution:
-              description: Execution options
-              type: object
-              properties:
-                init_qubits:
-                  description: Whether to reset the qubits to the ground state for each shot
-                  type: boolean
-                rep_delay:
-                  description: The delay between a measurement and the subsequent quantum circuit
-                  type: number
-                meas_type:
-                  description: How to process and return measurement results
-                  enum:
-                  - classified
-                  - kerneled
-                  - avg_kerneled
-            twirling:
-              description: Twirling options
-              type: object
-              properties:
-                enable_gates:
-                  description: Whether to apply 2-qubit gate twirling
-                  type: boolean
-                enable_measure:
-                  description: Whether to apply measurement twirling
-                  type: boolean
-                num_randomizations:
-                  description: The number of random samples to use when twirling or performing sampled mitigation
-                  oneOf:
-                  - type: integer
-                    format: int32
-                    minimum: 1
-                    maximum: 2147483647
-                  - enum:
-                    - auto
-                shots_per_randomization:
-                  description: The number of shots to run for each random sample
-                  oneOf:
-                  - type: integer
-                    format: int32
-                    minimum: 1
-                    maximum: 2147483647
-                  - enum:
-                    - auto
-                strategy:
-                  description: The strategy of twirling qubits in identified layers of 2-qubit twirled gates
-                  type: string
-                  enum:
-                  - active
-                  - active-circuit
-                  - active-accum
-                  - all
-            simulator:
-              description: Simulator options
-              type: object
-              properties:
-                noise_model:
-                  description: Noise model for the simulator.
-                  type:
-                  - object
-                  - 'null'
-                seed_simulator:
-                  description: Random seed to control sampling.
-                  type:
-                  - integer
-                  - 'null'
-                  format: int32
-                  minimum: 0
-                  maximum: 2147483647
-                coupling_map:
-                  description: Directed coupling map to target in mapping.
-                  type:
-                  - array
-                  - 'null'
-                  items: {}
-                basis_gates:
-                  description: List of basis gate names to unroll to.
-                  type: array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-              additionalProperties: false
-            experimental:
-              description: Experimental options.
-              type: object
-          additionalProperties: false
-        shots:
-          description: Default number of shots which applies to all PUBs without shots. This overrides default_shots specified in options.
-          type:
-          - integer
-          - 'null'
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-        support_qiskit:
-          description: If True, returns a Qiskit-style output, meant to be parsed using the runtime result decoder, or resort to returning pure JSON results (resulting in larger objects)
-          type: boolean
-        version:
-          description: For SamplerV2, version should always be 2
-          enum:
-          - 2
-      additionalProperties: false
-      x-version: 1.0.0
-    ExecutorV01QuantumProgramResultItemModel:
-      description: Results for a single quantum program item.
-      properties:
-        results:
-          additionalProperties:
-            $ref: '#/components/schemas/TensorModel'
-          description: A map from results to their tensor values.
-          title: Results
-          type: object
-        metadata:
-          description: Metadata pertaining to the execution of this particular quantum program item.
-          title: Metadata
-      required:
-      - results
-      - metadata
-      title: QuantumProgramResultItemModel
-      type: object
-    Program:
-      type: object
-      description: Program associated with the job
-      properties:
-        id:
-          type: string
-          description: Identifier from the executed program
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 1000000
-      required:
-      - id
-    JobResponseV3:
-      title: JobResponse
-      type: object
-      description: A job
-      properties:
-        id:
-          type: string
-          description: Identifier assigned to the job
-          pattern: ^[A-Za-z0-9_-]+$
-        backend:
-          type: string
-          description: '&ast;&ast;Warning:&ast;&ast; While this parameter is not currently required for requests, specifying it is strongly encouraged. Running an ISA circuit on a backend that has a different instruction set will result in an error. The backend parameter will be required in a future release.
-
-
-            The backend on which to run the program.  If no backend is specified, the job is sent to the backend with the shortest queue that you have access to.
-
-            '
-          pattern: ^.*$
-        state:
-          $ref: '#/components/schemas/JobState'
-        status:
-          $ref: '#/components/schemas/JobStatus'
-        params:
-          $ref: '#/components/schemas/Params'
-        program:
-          $ref: '#/components/schemas/Program'
-        created:
-          type: string
-          description: UTC timestamp for when the job was created
-          format: date-time
-          pattern: ^[0-9TZt:\-+./*]+$
-        runtime:
-          type: string
-          description: Name and tag of the image to use when running a program (IBM Quantum channel users only)
-        cost:
-          $ref: '#/components/schemas/JobCost'
-        tags:
-          $ref: '#/components/schemas/Tags'
-        remote_storage:
-          $ref: '#/components/schemas/RemoteStorage'
-        session_id:
-          type: string
-          description: Identifier of the session that the job is a part of
-        user_id:
-          type: string
-          description: The id of the user submitted the job
-        usage:
-          $ref: '#/components/schemas/UsageV3'
-        private:
-          $ref: '#/components/schemas/Private'
-        estimated_running_time_seconds:
-          type: number
-          format: double
-          description: Estimated usage in seconds
-        calibration_id:
-          type: string
-          description: The ID of the calibration used for the job
-      required:
-      - id
-      - created
-      - program
-      - state
-      - status
-      - cost
-    JobCreateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Job ID
-        backend:
-          type: string
-          description: Backend selected to run job
-        session_id:
-          type: string
-          description: Id of the session associated with the job
-        private:
-          $ref: '#/components/schemas/Private'
-        calibration_id:
-          type: string
-          description: The ID of the calibration used for the job
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 100
-      description: Response when creating a job
-      required:
-      - id
-      - backend
-    NoiseLearnerV3V01LinbdbladResultPostSelectionMetadataModel:
+    NoiseLearnerV3V02LinbdbladResultPostSelectionMetadataModel:
       description: The post selection metadata of a single Linbdblad result of a noise learner v3 job.
       properties:
         fraction_kept:
@@ -2715,82 +2515,205 @@ components:
           description: The fraction of shots kept for each layer pair depth.
           title: Fraction Kept
           type: object
+        success_rates:
+          additionalProperties:
+            additionalProperties:
+              maximum: 1
+              minimum: 0
+              type: number
+            type: object
+          description: 'The fraction of shots in which post selection successfully flipped each qubit, for
+
+            each layer pair depth.'
+          title: Success Rates
+          type: object
       required:
       - fraction_kept
+      - success_rates
       title: LinbdbladResultPostSelectionMetadataModel
       type: object
-    JobRunParamsBase:
-      title: ProgramParams
-      type: object
-      description: Parameters used to run a job
+    NoiseLearnerV3V01TREXResultMetadataModel:
+      description: The metadata of a single TREX result of a noise learner v3 job.
       properties:
-        program_id:
-          type: string
-          description: ID of the program to be executed
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 10000
-        backend:
-          type: string
-          description: Name that identifies the backend on which to run the program.
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 10000
-        runtime:
-          type: string
-          description: Name and tag of the image to use when running a program (IBM Quantum channel users only). Should follow the pattern "name:tag".
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 10000
-        tags:
-          $ref: '#/components/schemas/Tags'
-        log_level:
-          type: string
-          description: Logging level of the program
+        learning_protocol:
           enum:
-          - critical
-          - error
-          - warning
-          - info
-          - debug
-        cost:
-          $ref: '#/components/schemas/JobCost'
-        session_id:
+          - trex
+          default: trex
+          description: The learning protocol used to obtain this result.
+          title: Learning Protocol
           type: string
-          description: Identifier of the session that the job is a part of
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 36
-        calibration_id:
-          type: string
-          description: The ID of the calibration used for the job
-          pattern: ^.*$
-          minLength: 1
-          maxLength: 100
+        post_selection:
+          $ref: '#/components/schemas/NoiseLearnerV3V01TREXResultPostSelectionMetadataModel'
       required:
-      - program_id
-      - backend
-    QpyModelV13ToV17:
-      description: QPY encoded circuits with restricted version range.
-      properties:
-        circuit_b64:
-          description: Base-64 encoded data of the QPY serialization of a single quantum circuit.
-          title: Circuit B64
-          type: string
-        qpy_version:
-          maximum: 17
-          minimum: 13
-          title: Qpy Version
-          type: integer
-      required:
-      - circuit_b64
-      - qpy_version
-      title: QpyModelV13ToV17
+      - post_selection
+      title: TREXResultMetadataModel
       type: object
+    ExecutorV02CircuitItemModel:
+      description: Execution specifications for a single quantum circuit.
+      properties:
+        item_type:
+          enum:
+          - circuit
+          default: circuit
+          description: The type of quantum program item.
+          title: Item Type
+          type: string
+        circuit:
+          $ref: '#/components/schemas/QpyModelV13ToV17'
+        circuit_arguments:
+          $ref: '#/components/schemas/F64TensorModel'
+        chunk_size:
+          anyOf:
+          - minimum: 1
+            type: integer
+          - enum:
+            - auto
+            type: string
+          default: auto
+          description: 'The maximum number circuit arguments to bind to the circuit per shot loop.
+
+
+            When ``"auto"``, the number is chosen server-side with heuristics designed to optimize
+
+            execution speed. A quantum program must have items where either all chunk sizes are
+
+            integer-valued, or all chunk sizes are ``"auto"``. Integer values are only allowed inside of
+
+            session exection mode.'
+          title: Chunk Size
+      required:
+      - circuit
+      - circuit_arguments
+      title: CircuitItemModel
+      type: object
+    NoiseLearnerV3V01LinbdbladResultMetadataModel:
+      description: The metadata of a single Lindblad result of a noise learner v3 job.
+      properties:
+        learning_protocol:
+          enum:
+          - lindblad
+          default: lindblad
+          description: The learning protocol used to obtain this result.
+          title: Learning Protocol
+          type: string
+        post_selection:
+          $ref: '#/components/schemas/NoiseLearnerV3V01LinbdbladResultPostSelectionMetadataModel'
+      required:
+      - post_selection
+      title: LinbdbladResultMetadataModel
+      type: object
+    JsonValue: {}
     Params:
       type: object
       additionalProperties: true
       description: Parameters used to execute the job
+    NoiseLearnerV3V01NoiseLearnerV3ResultsModel:
+      description: Result from executing a noise learner v3 job.
+      properties:
+        schema_version:
+          enum:
+          - v0.1
+          default: v0.1
+          description: Schema version of the result type.
+          title: Schema Version
+          type: string
+        data:
+          description: Resulting data for each item.
+          items:
+            $ref: '#/components/schemas/NoiseLearnerV3V01NoiseLearnerV3ResultModel'
+          title: Data
+          type: array
+      required:
+      - data
+      title: NoiseLearnerV3 v0.1 NoiseLearnerV3ResultsModel
+      type: object
+    Private:
+      type: boolean
+      description: When set to true, input parameters are not returned, and the results can only be read once. After the job is completed, input parameters are deleted from the service. After the results are read, they are deleted from the service. When set to false, the input parameters and results follow the standard retention behavior of the API. Only returned in the response if the value is true, otherwise it is omitted.
+    ChunkPart:
+      description: A description of the contents of a single part of an execution chunk.
+      properties:
+        idx_item:
+          description: The index of an item in a quantum program.
+          title: Idx Item
+          type: integer
+        size:
+          description: 'The number of elements from the quantum program item that were executed.
+
+
+            For example, if a quantum program item has shape ``(10, 5)``, then it has a total of ``50``
+
+            elements, so that if this ``size`` is ``10``, it constitutes 20% of the total work for the item.'
+          title: Size
+          type: integer
+      required:
+      - idx_item
+      - size
+      title: ChunkPart
+      type: object
+    DataTree:
+      anyOf:
+      - items:
+          $ref: '#/components/schemas/DataTree'
+        type: array
+      - $ref: '#/components/schemas/TensorModel'
+      - additionalProperties:
+          $ref: '#/components/schemas/DataTree'
+        type: object
+      - type: string
+      - type: number
+      - type: integer
+      - type: boolean
+    SamplexModelSSV1ToSSV2:
+      description: A samplex model constrained to use samplex serialization versions (SSV) 1 or 2.
+      properties:
+        ssv:
+          maximum: 2
+          minimum: 1
+          title: Ssv
+          type: integer
+        samplex_json:
+          description: A JSON string representing the samplex.
+          title: Samplex Json
+          type: string
+      required:
+      - ssv
+      - samplex_json
+      title: SamplexModelSSV1ToSSV2
+      type: object
+    RemoteStorage:
+      allOf:
+      - allOf:
+        - $ref: '#/components/schemas/RemoteStorageOption'
+        - description: Default remote storage option for where input data is stored and where output data should be stored
+      - title: RemoteStorage
+        description: "(Only enabled for Qiskit Runtime instances with the Channel Partner plan) Metadata and connection information on where job params are stored remotely\nand/or where to store results, logs, transpiled circuits, etc. Omitted properties\nin field specific objects will be inherited from the default remote storage option.\nAs an example, the following two objects are equivalent:\n\n```\n{\n    \"type\": \"ibmcloud_cos\",\n    \"region\": \"us-east\",\n    \"region_type\": \"regional\",\n    \"bucket_crn\": \"crn\",\n    \"job_params\": {\n      \"object_name\": \"my-object\"\n    }\n}\n```\n\n```\n{\n    \"type\": \"ibmcloud_cos\",\n    \"region\": \"us-east\",\n    \"region_type\": \"regional\",\n    \"bucket_crn\": \"crn\",\n    \"job_params\": {\n      \"type\": \"ibmcloud_cos\",\n      \"region\": \"us-east\",\n      \"region_type\": \"regional\",\n      \"bucket_crn\": \"crn\",\n      \"object_name\": \"my-object\"\n    }\n}\n```\n"
+        properties:
+          job_params:
+            allOf:
+            - $ref: '#/components/schemas/RemoteStorageOption'
+            - description: Location for where user supplied job params (omitted properties will will be inherited from default remote storage option)
+          results:
+            allOf:
+            - $ref: '#/components/schemas/RemoteStorageOption'
+            - description: Location for where job results will be stored (omitted properties will will be inherited from default remote storage option)
+          logs:
+            allOf:
+            - $ref: '#/components/schemas/RemoteStorageOption'
+            - description: Location for where job logs will be stored (omitted properties will will be inherited from default remote storage option)
+        required:
+        - job_params
+        - results
+    JobRunParamsChannelPartner:
+      allOf:
+      - $ref: '#/components/schemas/JobRunParamsBase'
+      - title: ProgramParamsChannelPartner
+        description: Program run params for Qiskit Runtime instances with the Channel Partner plan
+        properties:
+          remote_storage:
+            $ref: '#/components/schemas/RemoteStorage'
+        required:
+        - remote_storage
     StretchValueModel:
       description: 'Describes circuit stretch value resolutions.
 
@@ -2831,16 +2754,93 @@ components:
       - expanded_values
       title: StretchValueModel
       type: object
-    JobResults:
-      description: Result output for all programs.
-      oneOf:
-      - $ref: '#/components/schemas/ExecutorV01QuantumProgramResultModel'
-      - $ref: '#/components/schemas/ExecutorV02QuantumProgramResultModel'
-      - $ref: '#/components/schemas/NoiseLearnerV3V01NoiseLearnerV3ResultsModel'
-      - $ref: '#/components/schemas/NoiseLearnerV3V02NoiseLearnerV3ResultsModel'
-      - type: string
-        description: Job final result.
-        title: LegacyJobResults
+    NoiseLearnerV3V02TREXResultMetadataModel:
+      description: The metadata of a single TREX result of a noise learner v3 job.
+      properties:
+        learning_protocol:
+          enum:
+          - trex
+          default: trex
+          description: The learning protocol used to obtain this result.
+          title: Learning Protocol
+          type: string
+        post_selection:
+          $ref: '#/components/schemas/NoiseLearnerV3V02TREXResultPostSelectionMetadataModel'
+      required:
+      - post_selection
+      title: TREXResultMetadataModel
+      type: object
+    NoiseLearnerV3V01LinbdbladResultPostSelectionMetadataModel:
+      description: The post selection metadata of a single Linbdblad result of a noise learner v3 job.
+      properties:
+        fraction_kept:
+          additionalProperties:
+            maximum: 1
+            minimum: 0
+            type: number
+          description: The fraction of shots kept for each layer pair depth.
+          title: Fraction Kept
+          type: object
+      required:
+      - fraction_kept
+      title: LinbdbladResultPostSelectionMetadataModel
+      type: object
+    ExecutorV02QuantumProgramResultItemModel:
+      description: Results for a single quantum program item.
+      properties:
+        results:
+          additionalProperties:
+            $ref: '#/components/schemas/TensorModel'
+          description: A map from results to their tensor values.
+          title: Results
+          type: object
+        metadata:
+          $ref: '#/components/schemas/ItemMetadataModel'
+      required:
+      - results
+      - metadata
+      title: QuantumProgramResultItemModel
+      type: object
+    QiskitVersion:
+      type: string
+      description: Qiskit version used during execution of the job
+      pattern: ^v?(\d+(\.\d+)*|\.\d+(\.\d+)*)$
+      maxLength: 100
+    Program:
+      type: object
+      description: Program associated with the job
+      properties:
+        id:
+          type: string
+          description: Identifier from the executed program
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 1000000
+      required:
+      - id
+    ExecutorV01QuantumProgramResultModel:
+      description: Result from executing a quantum program.
+      properties:
+        schema_version:
+          enum:
+          - v0.1
+          default: v0.1
+          description: Schema version of the result type.
+          title: Schema Version
+          type: string
+        data:
+          description: Resulting data for each quantum program item.
+          items:
+            $ref: '#/components/schemas/ExecutorV01QuantumProgramResultItemModel'
+          title: Data
+          type: array
+        metadata:
+          $ref: '#/components/schemas/ExecutorV01MetadataModel'
+      required:
+      - data
+      - metadata
+      title: ExecutorV01QuantumProgramResultModel
+      type: object
   securitySchemes:
     BearerAuth:
       type: http

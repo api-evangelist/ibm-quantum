@@ -95,70 +95,6 @@ paths:
         - name: quantum-computing.account-configuration.read
 components:
   schemas:
-    FunctionConfig:
-      type: object
-      description: A function available to an account plan.
-      properties:
-        provider:
-          type: string
-          description: The function provider name.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: ibm
-        name:
-          type: string
-          description: The function name, unique within a provider.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: circuit-function
-        business_model:
-          type: string
-          description: The business model under which the function is offered.
-          enum:
-          - trial
-          - subsidized
-          - consumption
-        permissions:
-          type: array
-          description: IAM-style actions granted for this function.
-          items:
-            type: string
-            pattern: ^.+$
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 2147483647
-          example:
-          - function.run
-      required:
-      - provider
-      - name
-      - business_model
-      - permissions
-    ErrorContainer:
-      description: Error response
-      type: object
-      properties:
-        trace:
-          type: string
-          description: A request identifier
-        errors:
-          type: array
-          description: A list of errors
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Error type identifier
-              message:
-                description: Explanation of the problem
-                type: string
-              more_info:
-                description: URL where information about the error can be read in a web browser
-                type: string
     ExpandedPlanConfiguration:
       allOf:
       - $ref: '#/components/schemas/PlanConfiguration'
@@ -266,6 +202,70 @@ components:
           maxItems: 20
       required:
       - plans
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    FunctionConfig:
+      type: object
+      description: A function available to an account plan.
+      properties:
+        provider:
+          type: string
+          description: The function provider name.
+          pattern: ^.+$
+          minLength: 1
+          maxLength: 256
+          example: ibm
+        name:
+          type: string
+          description: The function name, unique within a provider.
+          pattern: ^.+$
+          minLength: 1
+          maxLength: 256
+          example: circuit-function
+        business_model:
+          type: string
+          description: The business model under which the function is offered.
+          enum:
+          - trial
+          - subsidized
+          - consumption
+        permissions:
+          type: array
+          description: IAM-style actions granted for this function.
+          items:
+            type: string
+            pattern: ^.+$
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 2147483647
+          example:
+          - function.run
+      required:
+      - provider
+      - name
+      - business_model
+      - permissions
   securitySchemes:
     BearerAuth:
       type: http

@@ -38,12 +38,6 @@ paths:
       - Versions
 components:
   schemas:
-    VersionStatus:
-      type: string
-      enum:
-      - live
-      - deprecated
-      description: The support status of the API version.
     VersionResponse:
       type: object
       properties:
@@ -71,6 +65,12 @@ components:
             $ref: '#/components/schemas/VersionMetadata'
       required:
       - versions
+    VersionStatus:
+      type: string
+      enum:
+      - live
+      - deprecated
+      description: The support status of the API version.
     VersionMetadata:
       type: object
       properties:
