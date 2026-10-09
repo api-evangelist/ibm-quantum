@@ -1,3 +1,8 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (dated 2026-05-25 by the file itself), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
+generated: '2026-05-25'
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
@@ -151,3 +156,58 @@ plans:
       - name: IBM-managed installation and maintenance
       - name: Full data sovereignty
       - name: Tailored hardware roadmap
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  - negotiated
+  - prepaid
+  - subscription
+  units:
+  - compute
+  - money
+  plans:
+  - name: Open Plan
+    access: free
+    model: metered
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - other
+    - year
+  - name: Pay-As-You-Go
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - compute
+    periods:
+    - per-use
+  - name: Flex Plan
+    access: other
+    model: prepaid
+    model_how: stated
+    units:
+    - compute
+    - money
+    periods:
+    - year
+  - name: Premium Plan
+    access: other
+    model: subscription
+    model_how: stated
+    units:
+    - compute
+    periods:
+    - per-use
+    - year
+  - name: On-Premises
+    access: enterprise
+    model: negotiated
+    model_how: derived
+    units:
+    - other
+    periods:
+    - term
