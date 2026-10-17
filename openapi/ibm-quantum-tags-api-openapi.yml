@@ -88,11 +88,17 @@ paths:
         - name: quantum-computing.job.read
 components:
   schemas:
-    ListTagsResponse:
-      type: object
-      properties:
-        tags:
-          $ref: '#/components/schemas/Tags'
+    Tags:
+      title: Tags
+      description: List of job or program tags
+      type: array
+      minItems: 0
+      maxItems: 8
+      items:
+        type: string
+        pattern: ^.*$
+        minLength: 0
+        maxLength: 86
     ErrorContainer:
       description: Error response
       type: object
@@ -115,17 +121,11 @@ components:
               more_info:
                 description: URL where information about the error can be read in a web browser
                 type: string
-    Tags:
-      title: Tags
-      description: List of job or program tags
-      type: array
-      minItems: 0
-      maxItems: 8
-      items:
-        type: string
-        pattern: ^.*$
-        minLength: 0
-        maxLength: 86
+    ListTagsResponse:
+      type: object
+      properties:
+        tags:
+          $ref: '#/components/schemas/Tags'
   securitySchemes:
     BearerAuth:
       type: http
