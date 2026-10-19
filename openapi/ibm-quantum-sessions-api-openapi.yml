@@ -1,23 +1,12 @@
 openapi: 3.2.0
 info:
   title: Qiskit Runtime Sessions API
-  version: 0.45.3
-  description: Create, inspect, update, and close Qiskit Runtime sessions for grouping primitive jobs together with priority access to a target backend.
-  contact:
-    name: IBM Quantum
-    url: https://quantum.cloud.ibm.com
-  license:
-    name: IBM
-    url: https://www.ibm.com/legal
+  description: The Qiskit Runtime API description
+  version: 0.56.3
+  contact: {}
+  x-ibm-changelog: '- `GET /api/v1/jobs/:id/metrics` and `GET /api/v1/jobs` return usage data using a different response format. The APIs no longer return the response properties `usage.circuits_execution_time_ns`. Now `GET /api/v1/jobs/:id/metrics` will return `circuits_execution_time_ns` at response root level.'
 servers:
-- url: https://quantum.cloud.ibm.com/api
-  description: Global region
-- url: https://eu-de.quantum.cloud.ibm.com/api
-  description: EU-DE region
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []
+- url: /api
 tags:
 - name: Sessions
 paths:
@@ -27,8 +16,7 @@ paths:
     post:
       tags:
       - Sessions
-      summary: Create a Session
-      description: Create a session
+      summary: Create a session
       operationId: create_session
       requestBody:
         content:
@@ -82,8 +70,7 @@ paths:
     get:
       tags:
       - Sessions
-      summary: Get a Session
-      description: Get a session
+      summary: Get a session
       operationId: get_session
       responses:
         '200':
@@ -123,8 +110,7 @@ paths:
     patch:
       tags:
       - Sessions
-      summary: Update a Session
-      description: Update a session
+      summary: Update a session
       operationId: update_session
       requestBody:
         content:
@@ -168,7 +154,7 @@ paths:
     delete:
       tags:
       - Sessions
-      summary: Close Job Session
+      summary: Close job session
       operationId: delete_session_close
       parameters:
       - schema:
@@ -198,6 +184,124 @@ paths:
         - name: quantum-computing.session.update
 components:
   schemas:
+    SessionTimestamp:
+      type: object
+      description: Contains information about the time a specific status transition happened
+      properties:
+        status:
+          $ref: '#/components/schemas/SessionState'
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of when the session transitioned into the given status
+      required:
+      - status
+      - timestamp
+    SessionState:
+      type: string
+      enum:
+      - open
+      - active
+      - inactive
+      - closed
+      description: 'The state of the session.
+
+        - open: The session is waiting to run jobs.
+
+        - active: The session has priority to run jobs on the backend and is running jobs or is waiting for more jobs to run.
+
+        - inactive: The session does not have priority and is not running any jobs.
+
+        - closed: The session is not running any jobs and will not accept/run new jobs.
+
+        '
+    CreateSessionRequestCloud:
+      allOf:
+      - $ref: '#/components/schemas/BaseCreateSessionRequest'
+      - description: Request to create a session. Only for use with IBM Cloud Channel.
+      example:
+        mode: dedicated
+        max_ttl: 28800
+        backend: ibm_backend
+    UsageDetailMetric:
+      title: UsageDetailMetric
+      description: Identifies the metric definition from which a usage detail was calculated.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The identifier of the metric definition from which this usage was calculated.
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          minLength: 36
+          maxLength: 36
+        value:
+          type: number
+          description: The amount of usage for this metric, in seconds.
+          minimum: 0
+      required:
+      - id
+      - value
+    ExecutionMode:
+      type: string
+      description: Execution mode to run the session in
+      enum:
+      - batch
+      - dedicated
+    CreateSessionRequestChannelPartner:
+      allOf:
+      - $ref: '#/components/schemas/BaseCreateSessionRequest'
+      type: object
+      description: Request to create a session. Only for use by channel partner.
+      properties:
+        interactive_ttl:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The maximum time (in seconds) between jobs to keep the session active. Must be less than or equal to `active_ttl`.
+        active_ttl:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The remaining time (in seconds) for the session to be in the active state while jobs are running. Must be less than or equal to `max_ttl`. Defaults to `max_ttl`.
+      required:
+      - interactive_ttl
+      example:
+        interactive_ttl: 1
+        max_ttl: 28800
+        active_ttl: 28800
+        mode: batch
+        backend: ibm_backend
+    SessionUsage:
+      title: Usage
+      description: The usage for the session split into billable metrics if there are multiple.
+      type: object
+      properties:
+        value:
+          type: number
+          format: float
+          description: The amount of usage for this metric, in resource units.
+          minimum: 0
+        unit:
+          type: string
+          description: The unit of the value field.
+          enum:
+          - resource_units
+        details:
+          type: array
+          description: A breakdown of the usage by metric.
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/UsageDetail'
+      required:
+      - value
+      - unit
+      - details
+    SessionStateReason:
+      type: string
+      description: The reason for the state change.
     ErrorContainer:
       description: Error response
       type: object
@@ -288,40 +392,48 @@ components:
         elapsed_time:
           type: number
           description: Usage in seconds. Can be null for ongoing sessions.
-          example: 1.432
+          example: 2
+        usage:
+          $ref: '#/components/schemas/SessionUsage'
       required:
       - id
       - backend_name
       - mode
-    SessionStateReason:
-      type: string
-      description: The reason for the state change.
-    CreateSessionRequestChannelPartner:
-      allOf:
-      - $ref: '#/components/schemas/BaseCreateSessionRequest'
+    UsageDetail:
+      title: UsageDetail
+      description: A single billable metric contributing to a job's overall usage.
       type: object
-      description: Request to create a session. Only for use by channel partner.
       properties:
-        interactive_ttl:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 2147483647
-          description: The maximum time (in seconds) between jobs to keep the session active. Must be less than or equal to `active_ttl`.
-        active_ttl:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 2147483647
-          description: The remaining time (in seconds) for the session to be in the active state while jobs are running. Must be less than or equal to `max_ttl`. Defaults to `max_ttl`.
+        value:
+          type: number
+          format: float
+          description: The amount of usage for this metric, in resource units.
+          minimum: 0
+        unit:
+          type: string
+          description: The unit of the value field.
+          enum:
+          - resource_units
+        metric:
+          $ref: '#/components/schemas/UsageDetailMetric'
       required:
-      - interactive_ttl
-      example:
-        interactive_ttl: 1
-        max_ttl: 28800
-        active_ttl: 28800
-        mode: batch
-        backend: ibm_backend
+      - value
+      - unit
+      - metric
+    CreateSessionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateSessionRequestCloud'
+      - $ref: '#/components/schemas/CreateSessionRequestChannelPartner'
+    UpdateSessionRequest:
+      type: object
+      properties:
+        accepting_jobs:
+          $ref: '#/components/schemas/AcceptingJobs'
+      required:
+      - accepting_jobs
+    AcceptingJobs:
+      type: boolean
+      description: If true, the session is actively accepting new jobs to be queued. If false, jobs will be rejected on create and the session will be immediately closed when there are no more jobs to run in the session.
     BaseCreateSessionRequest:
       type: object
       description: Base request schema to create a session.
@@ -343,77 +455,32 @@ components:
           description: Backend name (fallback)
       required:
       - mode
-    UpdateSessionRequest:
-      type: object
-      properties:
-        accepting_jobs:
-          $ref: '#/components/schemas/AcceptingJobs'
-      required:
-      - accepting_jobs
-    ExecutionMode:
-      type: string
-      description: Execution mode to run the session in
-      enum:
-      - batch
-      - dedicated
-    CreateSessionRequestCloud:
-      allOf:
-      - $ref: '#/components/schemas/BaseCreateSessionRequest'
-      - description: Request to create a session. Only for use with IBM Cloud Channel.
-      example:
-        mode: dedicated
-        max_ttl: 28800
-        backend: ibm_backend
-    CreateSessionRequest:
-      oneOf:
-      - $ref: '#/components/schemas/CreateSessionRequestCloud'
-      - $ref: '#/components/schemas/CreateSessionRequestChannelPartner'
-    SessionState:
-      type: string
-      enum:
-      - open
-      - active
-      - inactive
-      - closed
-      description: 'The state of the session.
-
-        - open: The session is waiting to run jobs.
-
-        - active: The session has priority to run jobs on the backend and is running jobs or is waiting for more jobs to run.
-
-        - inactive: The session does not have priority and is not running any jobs.
-
-        - closed: The session is not running any jobs and will not accept/run new jobs.
-
-        '
-    SessionTimestamp:
-      type: object
-      description: Contains information about the time a specific status transition happened
-      properties:
-        status:
-          $ref: '#/components/schemas/SessionState'
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp of when the session transitioned into the given status
-      required:
-      - status
-      - timestamp
-    AcceptingJobs:
-      type: boolean
-      description: If true, the session is actively accepting new jobs to be queued. If false, jobs will be rejected on create and the session will be immediately closed when there are no more jobs to run in the session.
+  parameters:
+    IBM-API-Version:
+      in: header
+      name: IBM-API-Version
+      required: true
+      description: API version to use
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+        pattern: ^\d{4}-\d{2}-\d{2}$
+        default: '2024-01-01'
+        example: '2026-04-15'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: IBM Cloud IAM bearer token
+    IBMCloudAPIKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: IBM Cloud Identity and Access Management (IAM) API key. In the format 'apikey &lt;IBM Cloud API Key&gt;'.
     ServiceCRN:
       type: apiKey
       in: header
       name: Service-CRN
-      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
-    ApiVersion:
-      type: apiKey
-      in: header
-      name: IBM-API-Version
-      description: API version, e.g. 2026-03-15
+      description: The Cloud Resource Name (CRN) of your Qiskit Runtime service instance
+    IBMCloudAuth:
+      scheme: bearer
+      bearerFormat: jwt
+      type: http
+      description: IBM Cloud Identity and Access Management (IAM) access token

@@ -1,23 +1,12 @@
 openapi: 3.2.0
 info:
-  title: Qiskit Runtime Instances Accounts API
-  version: 0.45.3
-  description: Inspect the current Qiskit Runtime instance, view instance configuration and limits, and read per-account configuration on IBM Quantum Platform.
-  contact:
-    name: IBM Quantum
-    url: https://quantum.cloud.ibm.com
-  license:
-    name: IBM
-    url: https://www.ibm.com/legal
+  title: Qiskit Runtime Accounts API
+  description: The Qiskit Runtime API description
+  version: 0.56.3
+  contact: {}
+  x-ibm-changelog: '- `GET /api/v1/jobs/:id/metrics` and `GET /api/v1/jobs` return usage data using a different response format. The APIs no longer return the response properties `usage.circuits_execution_time_ns`. Now `GET /api/v1/jobs/:id/metrics` will return `circuits_execution_time_ns` at response root level.'
 servers:
-- url: https://quantum.cloud.ibm.com/api
-  description: Global region
-- url: https://eu-de.quantum.cloud.ibm.com/api
-  description: EU-DE region
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []
+- url: /api
 tags:
 - name: Accounts
 paths:
@@ -35,7 +24,7 @@ paths:
     - $ref: '#/components/parameters/IBM-API-Version'
     get:
       operationId: get_account
-      summary: Get Account Configuration
+      summary: Get account configuration
       description: Get the current account information. If no account information is found, returns the default configuration.
       parameters:
       - schema:
@@ -94,95 +83,45 @@ paths:
         actions:
         - name: quantum-computing.account-configuration.read
 components:
-  schemas:
-    ErrorContainer:
-      description: Error response
-      type: object
-      properties:
-        trace:
-          type: string
-          description: A request identifier
-        errors:
-          type: array
-          description: A list of errors
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Error type identifier
-              message:
-                description: Explanation of the problem
-                type: string
-              more_info:
-                description: URL where information about the error can be read in a web browser
-                type: string
-    FunctionConfig:
-      type: object
-      description: A function available to an account plan.
-      properties:
-        provider:
-          type: string
-          description: The function provider name.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: ibm
-        name:
-          type: string
-          description: The function name, unique within a provider.
-          pattern: ^.+$
-          minLength: 1
-          maxLength: 256
-          example: circuit-function
-        business_model:
-          type: string
-          description: The business model under which the function is offered.
-          enum:
-          - trial
-          - subsidized
-          - consumption
-        permissions:
-          type: array
-          description: IAM-style actions granted for this function.
-          items:
-            type: string
-            pattern: ^.+$
-            minLength: 1
-            maxLength: 256
-          minItems: 1
-          maxItems: 2147483647
-          example:
-          - function.run
-      required:
-      - provider
-      - name
-      - business_model
-      - permissions
-    ExpandedPlanConfiguration:
-      allOf:
-      - $ref: '#/components/schemas/PlanConfiguration'
-      - type: object
-        properties:
-          unallocated_usage_seconds:
-            type: integer
-            format: int32
-            minimum: 0
-            maximum: 2147483647
-            description: The remaining usage allocation that can still be allocated to instances.
-    ExpandedAccountConfiguration:
-      type: object
-      description: Configuration for an account managed by the IBM Qiskit Runtime service.
-      properties:
+  examples:
+    expandedAccountConfigurationExample:
+      value:
         plans:
-          description: The list of configurations for the account per plan
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpandedPlanConfiguration'
-          minItems: 0
-          maxItems: 20
-      required:
-      - plans
+        - plan_id: flex-plan-id-1
+          subscription_id: 53bde9d3-cdbb-46f5-a98f-60ebcadf7260
+          subscription_name: flex
+          usage_allocation_seconds: 200
+          usage_allocation_ru: 3.5
+          usage_limit_seconds: 200
+          usage_limit_ru: 3.5
+          unallocated_usage_seconds: 200
+          unallocated_usage_ru: 3.5
+          backends:
+          - ibm_backend
+          max_ttl: 28800
+          active_ttl: 28800
+          interactive_ttl: 60
+          start_time: '2025-05-17T00:00:00Z'
+          end_time: '2026-05-17T00:00:00Z'
+        - plan_id: plan-id-2
+          subscription_id: 52fde9d3-cdbb-46f5-a98f-60ebchdf7260
+          subscription_name: open
+          usage_allocation_seconds: 150
+          usage_allocation_ru: 2.5
+          usage_limit_seconds: 300
+          usage_limit_ru: 5
+          unallocated_usage_seconds: 10
+          unallocated_usage_ru: 0.1667
+          backends:
+          - backend1
+          - backend2
+        - plan_id: plan-id-3
+          subscription_id: 91b2c828-2952-4f05-aed8-bedf92c6c480
+          subscription_name: internal
+          backends:
+          - backend1
+          - backend2
+  schemas:
     PlanConfiguration:
       type: object
       properties:
@@ -209,13 +148,25 @@ components:
           format: int32
           minimum: 0
           maximum: 2147483647
-          description: The maximum sum of allowable usage allocation across all instances in the account. Mandatory when plan_id is about flex plan.
+          description: The maximum sum of allowable usage allocation in seconds across all instances in the account. Mandatory when plan_id is about flex plan.
+        usage_allocation_ru:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9007199254740991
+          description: The maximum sum of allowable usage allocation in resource units across all instances in the account. Mandatory when plan_id is about flex plan.
         usage_limit_seconds:
           type: integer
           format: int32
           minimum: 0
           maximum: 2147483647
-          description: The maximum amount of time workloads can run accross all instances in the account for the specified plan. Mandatory when plan_id is about flex plan.
+          description: The maximum amount of time workloads can run across all instances in the account for the specified plan in seconds. Mandatory when plan_id is about flex plan.
+        usage_limit_ru:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9007199254740991
+          description: The maximum amount of time workloads can run across all instances in the account for the specified plan in resource units. Mandatory when plan_id is about flex plan.
         backends:
           type: array
           description: List of backends to allow the account to assign for instances.
@@ -261,23 +212,153 @@ components:
             $ref: '#/components/schemas/FunctionConfig'
           minItems: 0
           maxItems: 2147483647
+        custom_functions:
+          $ref: '#/components/schemas/AccountCustomFunctions'
       required:
       - backends
       - plan_id
       - subscription_id
       - subscription_name
+    AccountCustomFunctions:
+      type: object
+      description: Custom functions entitlement configured on an account plan.
+      properties:
+        permissions:
+          type: array
+          description: Actions granted for custom functions.
+          items:
+            type: string
+            pattern: ^.+$
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 2147483647
+          example:
+          - function-custom.run
+      required:
+      - permissions
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    ExpandedAccountConfiguration:
+      type: object
+      description: Configuration for an account managed by the IBM Qiskit Runtime service.
+      properties:
+        plans:
+          description: The list of configurations for the account per plan
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpandedPlanConfiguration'
+          minItems: 0
+          maxItems: 20
+      required:
+      - plans
+    ExpandedPlanConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/PlanConfiguration'
+      - type: object
+        properties:
+          unallocated_usage_seconds:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 2147483647
+            description: The remaining usage allocation in seconds that can still be allocated to instances.
+      - type: object
+        properties:
+          unallocated_usage_ru:
+            type: number
+            format: float
+            minimum: 0
+            maximum: 9007199254740991
+            description: The remaining usage allocation in resource units that can still be allocated to instances.
+    FunctionConfig:
+      type: object
+      description: A function available to an account plan.
+      properties:
+        provider:
+          type: string
+          description: The function provider name.
+          pattern: ^.+$
+          minLength: 1
+          maxLength: 256
+          example: ibm
+        name:
+          type: string
+          description: The function name, unique within a provider.
+          pattern: ^.+$
+          minLength: 1
+          maxLength: 256
+          example: circuit-function
+        business_model:
+          type: string
+          description: The business model under which the function is offered.
+          enum:
+          - trial
+          - subsidized
+          - consumption
+        permissions:
+          type: array
+          description: IAM-style actions granted for this function.
+          items:
+            type: string
+            pattern: ^.+$
+            minLength: 1
+            maxLength: 256
+          minItems: 1
+          maxItems: 2147483647
+          example:
+          - function.run
+      required:
+      - provider
+      - name
+      - business_model
+      - permissions
+  parameters:
+    IBM-API-Version:
+      in: header
+      name: IBM-API-Version
+      required: true
+      description: API version to use
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+        pattern: ^\d{4}-\d{2}-\d{2}$
+        default: '2024-01-01'
+        example: '2026-04-15'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: IBM Cloud IAM bearer token
+    IBMCloudAPIKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: IBM Cloud Identity and Access Management (IAM) API key. In the format 'apikey &lt;IBM Cloud API Key&gt;'.
     ServiceCRN:
       type: apiKey
       in: header
       name: Service-CRN
-      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
-    ApiVersion:
-      type: apiKey
-      in: header
-      name: IBM-API-Version
-      description: API version, e.g. 2026-03-15
+      description: The Cloud Resource Name (CRN) of your Qiskit Runtime service instance
+    IBMCloudAuth:
+      scheme: bearer
+      bearerFormat: jwt
+      type: http
+      description: IBM Cloud Identity and Access Management (IAM) access token

@@ -1,0 +1,12 @@
+{
+ "url": "https://quantum.cloud.ibm.com/api/openapi.json",
+ "final": "https://quantum.cloud.ibm.com/api/openapi.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 281686,
+ "sha256": "fde7d3859a5a5547d4d6a89bb66756c1f1b321b1b2e65545022d453a2ef5ca11",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

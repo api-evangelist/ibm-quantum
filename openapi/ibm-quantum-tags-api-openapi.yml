@@ -1,23 +1,12 @@
 openapi: 3.2.0
 info:
-  title: Qiskit Runtime Jobs Tags API
-  version: 0.45.3
-  description: Submit, list, inspect, cancel, delete, and tag Qiskit Runtime quantum primitive jobs (Sampler and Estimator) executed on IBM Quantum hardware. Retrieve job results, logs, metrics and manage job tags.
-  contact:
-    name: IBM Quantum
-    url: https://quantum.cloud.ibm.com
-  license:
-    name: IBM
-    url: https://www.ibm.com/legal
+  title: Qiskit Runtime Tags API
+  description: The Qiskit Runtime API description
+  version: 0.56.3
+  contact: {}
+  x-ibm-changelog: '- `GET /api/v1/jobs/:id/metrics` and `GET /api/v1/jobs` return usage data using a different response format. The APIs no longer return the response properties `usage.circuits_execution_time_ns`. Now `GET /api/v1/jobs/:id/metrics` will return `circuits_execution_time_ns` at response root level.'
 servers:
-- url: https://quantum.cloud.ibm.com/api
-  description: Global region
-- url: https://eu-de.quantum.cloud.ibm.com/api
-  description: EU-DE region
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []
+- url: /api
 tags:
 - name: Tags
 paths:
@@ -47,7 +36,7 @@ paths:
       description: Search and list the tags of jobs.
       tags:
       - Tags
-      summary: List Tags
+      summary: List tags
       responses:
         '200':
           description: OK
@@ -87,18 +76,15 @@ paths:
         actions:
         - name: quantum-computing.job.read
 components:
+  examples:
+    listTagsExample:
+      value:
+        tags:
+        - tag1
+        - tag2
+        - tag3
+        - tag4
   schemas:
-    Tags:
-      title: Tags
-      description: List of job or program tags
-      type: array
-      minItems: 0
-      maxItems: 8
-      items:
-        type: string
-        pattern: ^.*$
-        minLength: 0
-        maxLength: 86
     ErrorContainer:
       description: Error response
       type: object
@@ -126,18 +112,43 @@ components:
       properties:
         tags:
           $ref: '#/components/schemas/Tags'
+    Tags:
+      title: Tags
+      description: List of job or program tags
+      type: array
+      minItems: 0
+      maxItems: 8
+      items:
+        type: string
+        pattern: ^.*$
+        minLength: 0
+        maxLength: 86
+  parameters:
+    IBM-API-Version:
+      in: header
+      name: IBM-API-Version
+      required: true
+      description: API version to use
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+        pattern: ^\d{4}-\d{2}-\d{2}$
+        default: '2024-01-01'
+        example: '2026-04-15'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: IBM Cloud IAM bearer token
+    IBMCloudAPIKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: IBM Cloud Identity and Access Management (IAM) API key. In the format 'apikey &lt;IBM Cloud API Key&gt;'.
     ServiceCRN:
       type: apiKey
       in: header
       name: Service-CRN
-      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
-    ApiVersion:
-      type: apiKey
-      in: header
-      name: IBM-API-Version
-      description: API version, e.g. 2026-03-15
+      description: The Cloud Resource Name (CRN) of your Qiskit Runtime service instance
+    IBMCloudAuth:
+      scheme: bearer
+      bearerFormat: jwt
+      type: http
+      description: IBM Cloud Identity and Access Management (IAM) access token

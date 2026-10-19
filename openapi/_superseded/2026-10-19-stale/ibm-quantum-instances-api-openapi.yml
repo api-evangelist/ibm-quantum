@@ -1,0 +1,377 @@
+openapi: 3.2.0
+info:
+  title: Qiskit Runtime Instances API
+  version: 0.45.3
+  description: Inspect the current Qiskit Runtime instance, view instance configuration and limits, and read per-account configuration on IBM Quantum Platform.
+  contact:
+    name: IBM Quantum
+    url: https://quantum.cloud.ibm.com
+  license:
+    name: IBM
+    url: https://www.ibm.com/legal
+servers:
+- url: https://quantum.cloud.ibm.com/api
+  description: Global region
+- url: https://eu-de.quantum.cloud.ibm.com/api
+  description: EU-DE region
+security:
+- BearerAuth: []
+  ServiceCRN: []
+  ApiVersion: []
+tags:
+- name: Instances
+paths:
+  /v1/instance:
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+    get:
+      tags:
+      - Instances
+      summary: Get Current Instance Details
+      description: Returns the details of the current logged in instance, using CRN from the request header.
+      operationId: get_instance
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instance'
+              example:
+                backends:
+                - ibm_backend
+                instance_limit: 60.7
+                instance_limit_seconds: '61'
+                plan_id: flex-plan-id-1
+                usage_allocation_seconds: '200'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.instance.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.instance.read
+  /v1/instances/configuration:
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+    get:
+      tags:
+      - Instances
+      summary: Get Instance Configuration
+      description: Returns the configuration for the specified instance e.g. instance limit in seconds, using CRN from the request header.
+      operationId: get_instance_configuration
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceConfiguration'
+              examples:
+                sampleInstanceConfigurationResponse:
+                  $ref: '#/components/examples/sampleInstanceConfigurationResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.instance.configuration.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.instance.configuration.read
+    put:
+      x-codegen-request-body-name: instance_update
+      tags:
+      - Instances
+      summary: Update Instance Configuration
+      operationId: replace_instance_configuration
+      description: Update the configuration for the specified instance e.g. instance limit in seconds, using CRN from context params of the request.
+      responses:
+        '204':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+        '409':
+          description: Usage exceeds instance limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorContainer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceConfigurationUpdate'
+        description: Request body for updating a specified instance configuration.
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.instance.configuration.update
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.instance.configuration.update
+  /v1/instances/usage:
+    parameters:
+    - $ref: '#/components/parameters/IBM-API-Version'
+    get:
+      description: Get instance usage
+      operationId: get_usage
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsageResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorDto'
+      summary: Get Instance Usage
+      tags:
+      - Instances
+      security:
+      - IBMCloudAPIKey: []
+      - ServiceCRN: []
+      - IBMCloudAuth: []
+      x-ibm-events:
+        events:
+        - name: quantum-computing.instance-usage.read
+      x-ibm-permissions:
+        actions:
+        - name: quantum-computing.instance-usage.read
+components:
+  schemas:
+    ErrorContainer:
+      description: Error response
+      type: object
+      properties:
+        trace:
+          type: string
+          description: A request identifier
+        errors:
+          type: array
+          description: A list of errors
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Error type identifier
+              message:
+                description: Explanation of the problem
+                type: string
+              more_info:
+                description: URL where information about the error can be read in a web browser
+                type: string
+    GetUsageResponse:
+      type: object
+      properties:
+        instance_id:
+          type: string
+        plan_id:
+          type: string
+        usage_period:
+          description: Start and end time of the usage period
+          allOf:
+          - $ref: '#/components/schemas/UsagePeriod'
+        usage_consumed_seconds:
+          type: number
+          example: 12
+          description: Usage consumed in the current usage period
+        usage_limit_seconds:
+          type: number
+          example: 60
+          description: The usage limit in seconds during the usage period
+        usage_allocation_seconds:
+          type: number
+          example: 120
+          description: The seconds that are allocated for the instance during the usage period
+        usage_limit_reached:
+          type: boolean
+          example: false
+          description: true if the usage limit is reached. false if not reached. undefined if usage limits do not apply to this instance.
+      required:
+      - instance_id
+      - plan_id
+      - usage_consumed_seconds
+    InstanceConfiguration:
+      type: object
+      description: Instance configuration
+      properties:
+        instance_limit:
+          type: number
+          format: double
+          description: Instance usage limit in seconds
+    Instance:
+      type: object
+      description: Instance
+      properties:
+        backends:
+          type: array
+          description: List of backend systems or clusters associated with the service instance
+          items:
+            type: string
+            pattern: ^.*$
+            minLength: 1
+            maxLength: 128
+          minItems: 0
+          maxItems: 100
+        instance_limit:
+          type: number
+          format: double
+          description: Represents the instance limits in seconds; will be replaced by instance_limit_seconds
+          deprecated: true
+        instance_limit_seconds:
+          type: string
+          description: Specifies the maximum number of resources time that can run on this instance
+        plan_id:
+          type: string
+          description: Identifier for the service plan associated with the instance as defined in Global Catalog
+          pattern: ^.*$
+          minLength: 1
+          maxLength: 128
+        usage_allocation_seconds:
+          type: string
+          description: The maximum sum of allowable usage allocation on the instance.
+    InstanceConfigurationUpdate:
+      type: object
+      description: instance configuration update
+      properties:
+        instance_limit:
+          type: integer
+          format: int32
+          description: This field can be null or an integer. Use null to reset/remove the instance limit.
+          minimum: 1
+          maximum: 2147483647
+    GenericError:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 1000
+        message:
+          type: string
+          example: message
+        solution:
+          type: string
+          example: This is a possible solution
+        more_info:
+          type: string
+      required:
+      - code
+      - message
+      - solution
+      - more_info
+    UsagePeriod:
+      type: object
+      properties:
+        start_time:
+          format: date-time
+          type: string
+          description: The start time of the usage
+        end_time:
+          format: date-time
+          type: string
+          description: The end time of the usage
+    GenericErrorDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
+          type: string
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
+      required:
+      - errors
+      - trace
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: IBM Cloud IAM bearer token
+    ServiceCRN:
+      type: apiKey
+      in: header
+      name: Service-CRN
+      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
+    ApiVersion:
+      type: apiKey
+      in: header
+      name: IBM-API-Version
+      description: API version, e.g. 2026-03-15

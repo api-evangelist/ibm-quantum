@@ -1,23 +1,12 @@
 openapi: 3.2.0
 info:
   title: Qiskit Runtime Analytics API
-  version: 0.45.3
-  description: Read usage analytics and active workloads for a Qiskit Runtime instance, including by-time-window aggregations used to track Open / Pay-as-you-go / Flex / Premium minute consumption.
-  contact:
-    name: IBM Quantum
-    url: https://quantum.cloud.ibm.com
-  license:
-    name: IBM
-    url: https://www.ibm.com/legal
+  description: The Qiskit Runtime API description
+  version: 0.56.3
+  contact: {}
+  x-ibm-changelog: '- `GET /api/v1/jobs/:id/metrics` and `GET /api/v1/jobs` return usage data using a different response format. The APIs no longer return the response properties `usage.circuits_execution_time_ns`. Now `GET /api/v1/jobs/:id/metrics` will return `circuits_execution_time_ns` at response root level.'
 servers:
-- url: https://quantum.cloud.ibm.com/api
-  description: Global region
-- url: https://eu-de.quantum.cloud.ibm.com/api
-  description: EU-DE region
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []
+- url: /api
 tags:
 - name: Analytics
 paths:
@@ -25,7 +14,6 @@ paths:
     parameters:
     - $ref: '#/components/parameters/IBM-API-Version'
     get:
-      description: Get usage analytics
       operationId: analytics_usage
       parameters:
       - name: instance
@@ -129,7 +117,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericErrorDto'
-      summary: Get Usage Analytics
+      summary: Get usage analytics
       tags:
       - Analytics
       security:
@@ -146,7 +134,6 @@ paths:
     parameters:
     - $ref: '#/components/parameters/IBM-API-Version'
     get:
-      description: Get usage analytics grouped
       operationId: get_usage_analytics_grouped
       parameters:
       - name: group_by
@@ -269,7 +256,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericErrorDto'
-      summary: Get Usage Analytics Grouped
+      summary: Get usage analytics grouped
       tags:
       - Analytics
       security:
@@ -286,7 +273,6 @@ paths:
     parameters:
     - $ref: '#/components/parameters/IBM-API-Version'
     get:
-      description: Get usage analytics grouped by date
       operationId: get_usage_analytics_grouped_by_date
       parameters:
       - name: group_by
@@ -408,7 +394,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericErrorDto'
-      summary: Get Usage Analytics Grouped by Date
+      summary: Get usage analytics grouped by date
       tags:
       - Analytics
       security:
@@ -425,7 +411,6 @@ paths:
     parameters:
     - $ref: '#/components/parameters/IBM-API-Version'
     get:
-      description: Get analytics filters
       operationId: analytics_filters
       parameters:
       - name: instance
@@ -467,7 +452,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericErrorDto'
-      summary: Get Analytics Filters
+      summary: Get analytics filters
       tags:
       - Analytics
       security:
@@ -482,35 +467,6 @@ paths:
         - name: quantum-computing.account-analytics-filters.read
 components:
   schemas:
-    GetAnalyticsFiltersResponse:
-      type: object
-      properties:
-        backends:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendFilter'
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/InstanceFilter'
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserFilter'
-        plans:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlanFilter'
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionFilter'
-      required:
-      - backends
-      - instances
-      - users
-      - plans
-      - subscriptions
     GetAnalyticsUsageGroupedResponse:
       type: object
       properties:
@@ -521,141 +477,6 @@ components:
             $ref: '#/components/schemas/GetAnalyticsUsageGroupedResponseData'
       required:
       - data
-    InstanceFilter:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 'crn:v1:staging:public:quantum-computing:region:a/account:'
-        deleted:
-          type: boolean
-      required:
-      - id
-      - deleted
-    GetAnalyticsUsageGroupedByDateResponseData:
-      type: object
-      properties:
-        key:
-          type: string
-          example: ibm-q/open/main
-          description: Group key. Depends on the groupBy query params.
-        interval_start:
-          type: string
-          example: '2024-01-01T00:00:00.000Z'
-          description: Interval start
-        interval_end:
-          type: string
-          example: '2024-01-01T00:00:00.000Z'
-          description: Interval end
-        usage:
-          type: number
-          example: 10
-          description: Total usage (in milliseconds)
-        jobs:
-          type: number
-          example: 10
-          description: Total number of jobs
-        sessions:
-          type: number
-          example: 10
-          description: Total number of sessions
-        sessions_usage:
-          type: number
-          example: 10
-          description: Total sessions usage (in milliseconds)
-        avg_sessions_usage:
-          type: number
-          example: 10
-          description: Average sessions usage (in milliseconds)
-        max_sessions_usage:
-          type: number
-          example: 10
-          description: Max sessions usage (in milliseconds)
-        batch_sessions:
-          type: number
-          example: 10
-          description: Total number of batch sessions
-        batch_sessions_usage:
-          type: number
-          example: 10
-          description: Total batch sessions usage (in milliseconds)
-        avg_batch_sessions_usage:
-          type: number
-          example: 10
-          description: Average batch sessions usage (in milliseconds)
-        max_batch_sessions_usage:
-          type: number
-          example: 10
-          description: Max batch sessions usage (in milliseconds)
-        dedicated_sessions:
-          type: number
-          example: 10
-          description: Total number of dedicated sessions
-        dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Total dedicated sessions usage (in milliseconds)
-        avg_dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Average dedicated sessions usage (in milliseconds)
-        max_dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Max dedicated sessions usage (in milliseconds)
-        individual_jobs:
-          type: number
-          example: 10
-          description: Total number of individual jobs
-        individual_jobs_usage:
-          type: number
-          example: 10
-          description: Total individual jobs usage  (in milliseconds)
-        avg_individual_jobs_usage:
-          type: number
-          example: 10
-          description: Average individual jobs usage  (in milliseconds)
-        max_individual_jobs_usage:
-          type: number
-          example: 10
-          description: Max individual jobs usage (in milliseconds)
-        queue_time:
-          type: number
-          example: 10
-          description: Total queue time (in milliseconds)
-        avg_queue_time:
-          type: number
-          example: 10
-          description: Average queue time (in milliseconds)
-        max_queue_time:
-          type: number
-          example: 10
-          description: Max queue time  (in milliseconds)
-      required:
-      - key
-      - interval_start
-      - interval_end
-      - usage
-      - jobs
-      - sessions
-      - sessions_usage
-      - avg_sessions_usage
-      - max_sessions_usage
-      - batch_sessions
-      - batch_sessions_usage
-      - avg_batch_sessions_usage
-      - max_batch_sessions_usage
-      - dedicated_sessions
-      - dedicated_sessions_usage
-      - avg_dedicated_sessions_usage
-      - max_dedicated_sessions_usage
-      - individual_jobs
-      - individual_jobs_usage
-      - avg_individual_jobs_usage
-      - max_individual_jobs_usage
-      - queue_time
-      - avg_queue_time
-      - max_queue_time
     SubscriptionFilter:
       type: object
       properties:
@@ -668,22 +489,35 @@ components:
       required:
       - id
       - name
-    BackendFilter:
+    GenericErrorDto:
       type: object
       properties:
-        name:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericError'
+        trace:
           type: string
-          example: simulator
+          description: Transaction ID for tracing the request
+          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
+          pattern: ^.*$
+          format: uuid
+          minLength: 1
+          maxLength: 100
       required:
-      - name
-    UserFilter:
+      - errors
+      - trace
+    InstanceFilter:
       type: object
       properties:
         id:
           type: string
-          example: '123'
+          example: 'crn:v1:staging:public:quantum-computing:region:a/account:'
+        deleted:
+          type: boolean
       required:
       - id
+      - deleted
     GetAnalyticsUsageGroupedByDateResponse:
       type: object
       properties:
@@ -731,6 +565,440 @@ components:
       - message
       - solution
       - more_info
+    UserFilter:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+      required:
+      - id
+    BackendFilter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: simulator
+      required:
+      - name
+    GetAnalyticsUsageGroupedByDateResponseData:
+      type: object
+      properties:
+        key:
+          type: string
+          example: ibm-q/open/main
+          description: Group key. Depends on the groupBy query params.
+        interval_start:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval start
+        interval_end:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          description: Interval end
+        usage:
+          type: number
+          example: 10
+          description: Total usage (in milliseconds)
+        usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total usage (in resource units)
+        jobs:
+          type: number
+          example: 10
+          description: Total number of jobs
+        sessions:
+          type: number
+          example: 10
+          description: Total number of sessions
+        sessions_usage:
+          type: number
+          example: 10
+          description: Total sessions usage (in milliseconds)
+        sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total sessions usage (in resource units)
+        avg_sessions_usage:
+          type: number
+          example: 10
+          description: Average sessions usage (in milliseconds)
+        avg_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average sessions usage (in resource units)
+        max_sessions_usage:
+          type: number
+          example: 10
+          description: Max sessions usage (in milliseconds)
+        max_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max sessions usage (in resource units)
+        batch_sessions:
+          type: number
+          example: 10
+          description: Total number of batch sessions
+        batch_sessions_usage:
+          type: number
+          example: 10
+          description: Total batch sessions usage (in milliseconds)
+        batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total batch sessions usage (in resource units)
+        avg_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Average batch sessions usage (in milliseconds)
+        avg_batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average batch sessions usage (in resource units)
+        max_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Max batch sessions usage (in milliseconds)
+        max_batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max batch sessions usage (in resource units)
+        dedicated_sessions:
+          type: number
+          example: 10
+          description: Total number of dedicated sessions
+        dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Total dedicated sessions usage (in milliseconds)
+        dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total dedicated sessions usage (in resource units)
+        avg_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Average dedicated sessions usage (in milliseconds)
+        avg_dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average dedicated sessions usage (in resource units)
+        max_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Max dedicated sessions usage (in milliseconds)
+        max_dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max dedicated sessions usage (in resource units)
+        individual_jobs:
+          type: number
+          example: 10
+          description: Total number of individual jobs
+        individual_jobs_usage:
+          type: number
+          example: 10
+          description: Total individual jobs usage  (in milliseconds)
+        individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total individual jobs usage  (in resource units)
+        avg_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Average individual jobs usage  (in milliseconds)
+        avg_individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average individual jobs usage  (in resource units)
+        max_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Max individual jobs usage (in milliseconds)
+        max_individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max individual jobs usage (in resource units)
+        queue_time:
+          type: number
+          example: 10
+          description: Total queue time (in milliseconds)
+        avg_queue_time:
+          type: number
+          example: 10
+          description: Average queue time (in milliseconds)
+        max_queue_time:
+          type: number
+          example: 10
+          description: Max queue time  (in milliseconds)
+      required:
+      - key
+      - interval_start
+      - interval_end
+      - usage
+      - usage_ru
+      - jobs
+      - sessions
+      - sessions_usage
+      - sessions_usage_ru
+      - avg_sessions_usage
+      - avg_sessions_usage_ru
+      - max_sessions_usage
+      - max_sessions_usage_ru
+      - batch_sessions
+      - batch_sessions_usage
+      - batch_sessions_usage_ru
+      - avg_batch_sessions_usage
+      - avg_batch_sessions_usage_ru
+      - max_batch_sessions_usage
+      - max_batch_sessions_usage_ru
+      - dedicated_sessions
+      - dedicated_sessions_usage
+      - dedicated_sessions_usage_ru
+      - avg_dedicated_sessions_usage
+      - avg_dedicated_sessions_usage_ru
+      - max_dedicated_sessions_usage
+      - max_dedicated_sessions_usage_ru
+      - individual_jobs
+      - individual_jobs_usage
+      - individual_jobs_usage_ru
+      - avg_individual_jobs_usage
+      - avg_individual_jobs_usage_ru
+      - max_individual_jobs_usage
+      - max_individual_jobs_usage_ru
+      - queue_time
+      - avg_queue_time
+      - max_queue_time
+    GetAnalyticsFiltersResponse:
+      type: object
+      properties:
+        backends:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendFilter'
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceFilter'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserFilter'
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanFilter'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionFilter'
+      required:
+      - backends
+      - instances
+      - users
+      - plans
+      - subscriptions
+    GetAnalyticsUsageResponse:
+      type: object
+      properties:
+        usage:
+          type: number
+          example: 10
+          description: Total usage (in milliseconds)
+        usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total usage (in resource units)
+        jobs:
+          type: number
+          example: 10
+          description: Total number of jobs
+        sessions:
+          type: number
+          example: 10
+          description: Total number of sessions
+        sessions_usage:
+          type: number
+          example: 10
+          description: Total sessions usage (in milliseconds)
+        sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total sessions usage (in resource units)
+        avg_sessions_usage:
+          type: number
+          example: 10
+          description: Average sessions usage (in milliseconds)
+        avg_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average sessions usage (in resource units)
+        max_sessions_usage:
+          type: number
+          example: 10
+          description: Max sessions usage (in milliseconds)
+        max_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max sessions usage (in resource units)
+        batch_sessions:
+          type: number
+          example: 10
+          description: Total number of batch sessions
+        batch_sessions_usage:
+          type: number
+          example: 10
+          description: Total batch sessions usage (in milliseconds)
+        batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total batch sessions usage (in resource units)
+        avg_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Average batch sessions usage (in milliseconds)
+        avg_batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average batch sessions usage (in resource units)
+        max_batch_sessions_usage:
+          type: number
+          example: 10
+          description: Max batch sessions usage (in milliseconds)
+        max_batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max batch sessions usage (in resource units)
+        dedicated_sessions:
+          type: number
+          example: 10
+          description: Total number of dedicated sessions
+        dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Total dedicated sessions usage (in milliseconds)
+        dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total dedicated sessions usage (in resource units)
+        avg_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Average dedicated sessions usage (in milliseconds)
+        avg_dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average dedicated sessions usage (in resource units)
+        max_dedicated_sessions_usage:
+          type: number
+          example: 10
+          description: Max dedicated sessions usage (in milliseconds)
+        max_dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max dedicated sessions usage (in resource units)
+        individual_jobs:
+          type: number
+          example: 10
+          description: Total number of individual jobs
+        individual_jobs_usage:
+          type: number
+          example: 10
+          description: Total individual jobs usage  (in milliseconds)
+        individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total individual jobs usage  (in resource units)
+        avg_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Average individual jobs usage  (in milliseconds)
+        avg_individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average individual jobs usage  (in resource units)
+        max_individual_jobs_usage:
+          type: number
+          example: 10
+          description: Max individual jobs usage (in milliseconds)
+        max_individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max individual jobs usage (in resource units)
+        queue_time:
+          type: number
+          example: 10
+          description: Total queue time (in milliseconds)
+        avg_queue_time:
+          type: number
+          example: 10
+          description: Average queue time (in milliseconds)
+        max_queue_time:
+          type: number
+          example: 10
+          description: Max queue time  (in milliseconds)
+      required:
+      - usage
+      - usage_ru
+      - jobs
+      - sessions
+      - sessions_usage
+      - sessions_usage_ru
+      - avg_sessions_usage
+      - avg_sessions_usage_ru
+      - max_sessions_usage
+      - max_sessions_usage_ru
+      - batch_sessions
+      - batch_sessions_usage
+      - batch_sessions_usage_ru
+      - avg_batch_sessions_usage
+      - avg_batch_sessions_usage_ru
+      - max_batch_sessions_usage
+      - max_batch_sessions_usage_ru
+      - dedicated_sessions
+      - dedicated_sessions_usage
+      - dedicated_sessions_usage_ru
+      - avg_dedicated_sessions_usage
+      - avg_dedicated_sessions_usage_ru
+      - max_dedicated_sessions_usage
+      - max_dedicated_sessions_usage_ru
+      - individual_jobs
+      - individual_jobs_usage
+      - individual_jobs_usage_ru
+      - avg_individual_jobs_usage
+      - avg_individual_jobs_usage_ru
+      - max_individual_jobs_usage
+      - max_individual_jobs_usage_ru
+      - queue_time
+      - avg_queue_time
+      - max_queue_time
     GetAnalyticsUsageGroupedResponseData:
       type: object
       properties:
@@ -744,6 +1012,11 @@ components:
           type: number
           example: 10
           description: Total usage (in milliseconds)
+        usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total usage (in resource units)
         jobs:
           type: number
           example: 10
@@ -756,14 +1029,29 @@ components:
           type: number
           example: 10
           description: Total sessions usage (in milliseconds)
+        sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total sessions usage (in resource units)
         avg_sessions_usage:
           type: number
           example: 10
           description: Average sessions usage (in milliseconds)
+        avg_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average sessions usage (in resource units)
         max_sessions_usage:
           type: number
           example: 10
           description: Max sessions usage (in milliseconds)
+        max_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max sessions usage (in resource units)
         batch_sessions:
           type: number
           example: 10
@@ -772,14 +1060,29 @@ components:
           type: number
           example: 10
           description: Total batch sessions usage (in milliseconds)
+        batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total batch sessions usage (in resource units)
         avg_batch_sessions_usage:
           type: number
           example: 10
           description: Average batch sessions usage (in milliseconds)
+        avg_batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average batch sessions usage (in resource units)
         max_batch_sessions_usage:
           type: number
           example: 10
           description: Max batch sessions usage (in milliseconds)
+        max_batch_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max batch sessions usage (in resource units)
         dedicated_sessions:
           type: number
           example: 10
@@ -788,14 +1091,29 @@ components:
           type: number
           example: 10
           description: Total dedicated sessions usage (in milliseconds)
+        dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total dedicated sessions usage (in resource units)
         avg_dedicated_sessions_usage:
           type: number
           example: 10
           description: Average dedicated sessions usage (in milliseconds)
+        avg_dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average dedicated sessions usage (in resource units)
         max_dedicated_sessions_usage:
           type: number
           example: 10
           description: Max dedicated sessions usage (in milliseconds)
+        max_dedicated_sessions_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max dedicated sessions usage (in resource units)
         individual_jobs:
           type: number
           example: 10
@@ -804,14 +1122,29 @@ components:
           type: number
           example: 10
           description: Total individual jobs usage  (in milliseconds)
+        individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Total individual jobs usage  (in resource units)
         avg_individual_jobs_usage:
           type: number
           example: 10
           description: Average individual jobs usage  (in milliseconds)
+        avg_individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Average individual jobs usage  (in resource units)
         max_individual_jobs_usage:
           type: number
           example: 10
           description: Max individual jobs usage (in milliseconds)
+        max_individual_jobs_usage_ru:
+          type: number
+          example: 0.0002
+          format: float
+          description: Max individual jobs usage (in resource units)
         queue_time:
           type: number
           example: 10
@@ -827,165 +1160,65 @@ components:
       required:
       - key
       - usage
+      - usage_ru
       - jobs
       - sessions
       - sessions_usage
+      - sessions_usage_ru
       - avg_sessions_usage
+      - avg_sessions_usage_ru
       - max_sessions_usage
+      - max_sessions_usage_ru
       - batch_sessions
       - batch_sessions_usage
+      - batch_sessions_usage_ru
       - avg_batch_sessions_usage
+      - avg_batch_sessions_usage_ru
       - max_batch_sessions_usage
+      - max_batch_sessions_usage_ru
       - dedicated_sessions
       - dedicated_sessions_usage
+      - dedicated_sessions_usage_ru
       - avg_dedicated_sessions_usage
+      - avg_dedicated_sessions_usage_ru
       - max_dedicated_sessions_usage
+      - max_dedicated_sessions_usage_ru
       - individual_jobs
       - individual_jobs_usage
+      - individual_jobs_usage_ru
       - avg_individual_jobs_usage
+      - avg_individual_jobs_usage_ru
       - max_individual_jobs_usage
+      - max_individual_jobs_usage_ru
       - queue_time
       - avg_queue_time
       - max_queue_time
-    GetAnalyticsUsageResponse:
-      type: object
-      properties:
-        usage:
-          type: number
-          example: 10
-          description: Total usage (in milliseconds)
-        jobs:
-          type: number
-          example: 10
-          description: Total number of jobs
-        sessions:
-          type: number
-          example: 10
-          description: Total number of sessions
-        sessions_usage:
-          type: number
-          example: 10
-          description: Total sessions usage (in milliseconds)
-        avg_sessions_usage:
-          type: number
-          example: 10
-          description: Average sessions usage (in milliseconds)
-        max_sessions_usage:
-          type: number
-          example: 10
-          description: Max sessions usage (in milliseconds)
-        batch_sessions:
-          type: number
-          example: 10
-          description: Total number of batch sessions
-        batch_sessions_usage:
-          type: number
-          example: 10
-          description: Total batch sessions usage (in milliseconds)
-        avg_batch_sessions_usage:
-          type: number
-          example: 10
-          description: Average batch sessions usage (in milliseconds)
-        max_batch_sessions_usage:
-          type: number
-          example: 10
-          description: Max batch sessions usage (in milliseconds)
-        dedicated_sessions:
-          type: number
-          example: 10
-          description: Total number of dedicated sessions
-        dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Total dedicated sessions usage (in milliseconds)
-        avg_dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Average dedicated sessions usage (in milliseconds)
-        max_dedicated_sessions_usage:
-          type: number
-          example: 10
-          description: Max dedicated sessions usage (in milliseconds)
-        individual_jobs:
-          type: number
-          example: 10
-          description: Total number of individual jobs
-        individual_jobs_usage:
-          type: number
-          example: 10
-          description: Total individual jobs usage  (in milliseconds)
-        avg_individual_jobs_usage:
-          type: number
-          example: 10
-          description: Average individual jobs usage  (in milliseconds)
-        max_individual_jobs_usage:
-          type: number
-          example: 10
-          description: Max individual jobs usage (in milliseconds)
-        queue_time:
-          type: number
-          example: 10
-          description: Total queue time (in milliseconds)
-        avg_queue_time:
-          type: number
-          example: 10
-          description: Average queue time (in milliseconds)
-        max_queue_time:
-          type: number
-          example: 10
-          description: Max queue time  (in milliseconds)
-      required:
-      - usage
-      - jobs
-      - sessions
-      - sessions_usage
-      - avg_sessions_usage
-      - max_sessions_usage
-      - batch_sessions
-      - batch_sessions_usage
-      - avg_batch_sessions_usage
-      - max_batch_sessions_usage
-      - dedicated_sessions
-      - dedicated_sessions_usage
-      - avg_dedicated_sessions_usage
-      - max_dedicated_sessions_usage
-      - individual_jobs
-      - individual_jobs_usage
-      - avg_individual_jobs_usage
-      - max_individual_jobs_usage
-      - queue_time
-      - avg_queue_time
-      - max_queue_time
-    GenericErrorDto:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericError'
-        trace:
-          type: string
-          description: Transaction ID for tracing the request
-          example: fdda765f-fc57-4d3c-9a2f-5d8b8b9e6e8a
-          pattern: ^.*$
-          format: uuid
-          minLength: 1
-          maxLength: 100
-      required:
-      - errors
-      - trace
+  parameters:
+    IBM-API-Version:
+      in: header
+      name: IBM-API-Version
+      required: true
+      description: API version to use
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+        pattern: ^\d{4}-\d{2}-\d{2}$
+        default: '2024-01-01'
+        example: '2026-04-15'
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: IBM Cloud IAM bearer token
+    IBMCloudAPIKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: IBM Cloud Identity and Access Management (IAM) API key. In the format 'apikey &lt;IBM Cloud API Key&gt;'.
     ServiceCRN:
       type: apiKey
       in: header
       name: Service-CRN
-      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
-    ApiVersion:
-      type: apiKey
-      in: header
-      name: IBM-API-Version
-      description: API version, e.g. 2026-03-15
+      description: The Cloud Resource Name (CRN) of your Qiskit Runtime service instance
+    IBMCloudAuth:
+      scheme: bearer
+      bearerFormat: jwt
+      type: http
+      description: IBM Cloud Identity and Access Management (IAM) access token

@@ -1,23 +1,12 @@
 openapi: 3.2.0
 info:
   title: Qiskit Runtime Backends API
-  version: 0.45.3
-  description: Discover and inspect available IBM Quantum backends (QPUs and simulators). Returns backend list, properties (calibrations), configuration, defaults, and live status.
-  contact:
-    name: IBM Quantum
-    url: https://quantum.cloud.ibm.com
-  license:
-    name: IBM
-    url: https://www.ibm.com/legal
+  description: The Qiskit Runtime API description
+  version: 0.56.3
+  contact: {}
+  x-ibm-changelog: '- `GET /api/v1/jobs/:id/metrics` and `GET /api/v1/jobs` return usage data using a different response format. The APIs no longer return the response properties `usage.circuits_execution_time_ns`. Now `GET /api/v1/jobs/:id/metrics` will return `circuits_execution_time_ns` at response root level.'
 servers:
-- url: https://quantum.cloud.ibm.com/api
-  description: Global region
-- url: https://eu-de.quantum.cloud.ibm.com/api
-  description: EU-DE region
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []
+- url: /api
 tags:
 - name: Backends
 paths:
@@ -27,7 +16,7 @@ paths:
     get:
       tags:
       - Backends
-      summary: List Your Backends
+      summary: List your backends
       operationId: list_backends
       parameters:
       - in: query
@@ -66,7 +55,7 @@ paths:
     get:
       tags:
       - Backends
-      summary: Get Backend Properties
+      summary: Get backend properties
       operationId: get_backend_properties
       parameters:
       - schema:
@@ -123,7 +112,7 @@ paths:
     get:
       tags:
       - Backends
-      summary: Get Backend Configuration
+      summary: Get backend configuration
       operationId: get_backend_configuration
       parameters:
       - schema:
@@ -171,7 +160,7 @@ paths:
     get:
       tags:
       - Backends
-      summary: Get Backend Status
+      summary: Get backend status
       operationId: get_backend_status
       parameters:
       - schema:
@@ -210,7 +199,7 @@ paths:
     get:
       tags:
       - Backends
-      summary: Get Backend Default Settings
+      summary: Get backend default settings
       operationId: get_backend_defaults
       parameters:
       - schema:
@@ -244,47 +233,5025 @@ paths:
         actions:
         - name: quantum-computing.device.read
 components:
+  examples:
+    sampleBackendStatusResponse:
+      value:
+        state: true
+        status: active
+        message: available
+        length_queue: 14
+        backend_version: 1.3.24
+    backendsResponseExample:
+      value:
+        devices:
+        - name: ibmq_armonk
+          status:
+            name: offline
+          is_simulator: false
+          qubits: 20
+          clops: null
+          processor_type:
+            family: null
+            revision: null
+            segment: null
+          queue_length: 0
+        - name: ibmq_nazca
+          status:
+            name: paused
+            reason: Maintenance
+          is_simulator: false
+          qubits: 16
+          clops:
+            type: hardware
+            value: 80
+          processor_type:
+            family: Quantum
+            revision: RevB
+            segment: Segment2
+          queue_length: 20
+    sampleBackendConfigurationResponse:
+      value:
+        acquisition_latency: []
+        allow_q_object: true
+        backend_name: test_rome
+        backend_version: 1.3.24
+        basis_gates:
+        - cx
+        - id
+        - rz
+        - sx
+        - x
+        channels:
+          acquire0:
+            operates:
+              qubits:
+              - 0
+            purpose: acquire
+            type: acquire
+          acquire1:
+            operates:
+              qubits:
+              - 1
+            purpose: acquire
+            type: acquire
+          acquire2:
+            operates:
+              qubits:
+              - 2
+            purpose: acquire
+            type: acquire
+          acquire3:
+            operates:
+              qubits:
+              - 3
+            purpose: acquire
+            type: acquire
+          acquire4:
+            operates:
+              qubits:
+              - 4
+            purpose: acquire
+            type: acquire
+          d0:
+            operates:
+              qubits:
+              - 0
+            purpose: drive
+            type: drive
+          d1:
+            operates:
+              qubits:
+              - 1
+            purpose: drive
+            type: drive
+          d2:
+            operates:
+              qubits:
+              - 2
+            purpose: drive
+            type: drive
+          d3:
+            operates:
+              qubits:
+              - 3
+            purpose: drive
+            type: drive
+          d4:
+            operates:
+              qubits:
+              - 4
+            purpose: drive
+            type: drive
+          m0:
+            operates:
+              qubits:
+              - 0
+            purpose: measure
+            type: measure
+          m1:
+            operates:
+              qubits:
+              - 1
+            purpose: measure
+            type: measure
+          m2:
+            operates:
+              qubits:
+              - 2
+            purpose: measure
+            type: measure
+          m3:
+            operates:
+              qubits:
+              - 3
+            purpose: measure
+            type: measure
+          m4:
+            operates:
+              qubits:
+              - 4
+            purpose: measure
+            type: measure
+          u0:
+            operates:
+              qubits:
+              - 0
+              - 1
+            purpose: cross-resonance
+            type: control
+          u1:
+            operates:
+              qubits:
+              - 1
+              - 0
+            purpose: cross-resonance
+            type: control
+          u2:
+            operates:
+              qubits:
+              - 1
+              - 2
+            purpose: cross-resonance
+            type: control
+          u3:
+            operates:
+              qubits:
+              - 2
+              - 1
+            purpose: cross-resonance
+            type: control
+          u4:
+            operates:
+              qubits:
+              - 2
+              - 3
+            purpose: cross-resonance
+            type: control
+          u5:
+            operates:
+              qubits:
+              - 3
+              - 2
+            purpose: cross-resonance
+            type: control
+          u6:
+            operates:
+              qubits:
+              - 3
+              - 4
+            purpose: cross-resonance
+            type: control
+          u7:
+            operates:
+              qubits:
+              - 4
+              - 3
+            purpose: cross-resonance
+            type: control
+        conditional: false
+        conditional_latency: []
+        coupling_map:
+        - - 0
+          - 1
+        - - 1
+          - 0
+        - - 1
+          - 2
+        - - 2
+          - 1
+        - - 2
+          - 3
+        - - 3
+          - 2
+        - - 3
+          - 4
+        - - 4
+          - 3
+        coords:
+        - - 1
+          - 1
+        - - 1
+          - 2
+        - - 2
+          - 1
+        - - 2
+          - 2
+        - - 3
+          - 1
+        credits_required: true
+        default_rep_delay: 250
+        description: 5 qubit device
+        discriminators:
+        - quadratic_discriminator
+        - linear_discriminator
+        - hw_qmfk
+        dt: 0.2222222222222222
+        dtm: 0.2222222222222222
+        dynamic_reprate_enabled: true
+        gates:
+        - coupling_map:
+          - - 0
+          - - 1
+          - - 2
+          - - 3
+          - - 4
+          name: id
+          parameters: []
+          qasm_def: gate id q { U(0, 0, 0) q; }
+        - coupling_map:
+          - - 0
+          - - 1
+          - - 2
+          - - 3
+          - - 4
+          name: rz
+          parameters:
+          - theta
+          qasm_def: gate rz(theta) q { U(0, 0, theta) q; }
+        - coupling_map:
+          - - 0
+          - - 1
+          - - 2
+          - - 3
+          - - 4
+          name: sx
+          parameters: []
+          qasm_def: gate sx q { U(pi/2, 3*pi/2, pi/2) q; }
+        - coupling_map:
+          - - 0
+          - - 1
+          - - 2
+          - - 3
+          - - 4
+          name: x
+          parameters: []
+          qasm_def: gate x q { U(pi, 0, pi) q; }
+        - coupling_map:
+          - - 0
+            - 1
+          - - 1
+            - 0
+          - - 1
+            - 2
+          - - 2
+            - 1
+          - - 2
+            - 3
+          - - 3
+            - 2
+          - - 3
+            - 4
+          - - 4
+            - 3
+          name: cx
+          parameters: []
+          qasm_def: gate cx q0, q1 { CX q0, q1; }
+        - coupling_map: []
+          name: reset
+          parameters: null
+          qasm_def: null
+        hamiltonian:
+          description: 'Qubits are modeled as Duffing oscillators. In this case, the system includes higher energy states, i.e. not just |0> and |1>. The Pauli operators are generalized via the following set of transformations:
+
+
+            $(\mathbb{I}-\sigma_{i}^z)/2 \rightarrow O_i \equiv b^\dagger_{i} b_{i}$,
+
+
+            $\sigma_{+} \rightarrow b^\dagger$,
+
+
+            $\sigma_{-} \rightarrow b$,
+
+
+            $\sigma_{i}^X \rightarrow b^\dagger_{i} + b_{i}$.
+
+
+            Qubits are coupled through resonator buses. The provided Hamiltonian has been projected into the zero excitation subspace of the resonator buses leading to an effective qubit-qubit flip-flop interaction. The qubit resonance frequencies in the Hamiltonian are the cavity dressed frequencies and not exactly what is returned by the backend defaults, which also includes the dressing due to the qubit-qubit interactions.
+
+
+            Quantities are returned in angular frequencies, with units 2*pi*Hz.
+
+
+            WARNING: Currently not all system Hamiltonian information is available to the public, missing values have been replaced with 0.
+
+            '
+          h_latex: \begin{align} \mathcal{H}/\hbar = & \sum_{i=0}^{4}\left(\frac{\omega_{q,i}}{2}(\mathbb{I}-\sigma_i^{z})+\frac{\Delta_{i}}{2}(O_i^2-O_i)+\Omega_{d,i}D_i(t)\sigma_i^{X}\right) \\ & + J_{0,1}(\sigma_{0}^{+}\sigma_{1}^{-}+\sigma_{0}^{-}\sigma_{1}^{+}) + J_{1,2}(\sigma_{1}^{+}\sigma_{2}^{-}+\sigma_{1}^{-}\sigma_{2}^{+}) + J_{2,3}(\sigma_{2}^{+}\sigma_{3}^{-}+\sigma_{2}^{-}\sigma_{3}^{+}) + J_{3,4}(\sigma_{3}^{+}\sigma_{4}^{-}+\sigma_{3}^{-}\sigma_{4}^{+}) \\ & + \Omega_{d,0}(U_{0}^{(0,1)}(t))\sigma_{0}^{X} + \Omega_{d,1}(U_{1}^{(1,0)}(t)+U_{2}^{(1,2)}(t))\sigma_{1}^{X} \\ & + \Omega_{d,2}(U_{3}^{(2,1)}(t)+U_{4}^{(2,3)}(t))\sigma_{2}^{X} + \Omega_{d,3}(U_{6}^{(3,4)}(t)+U_{5}^{(3,2)}(t))\sigma_{3}^{X} \\ & + \Omega_{d,4}(U_{7}^{(4,3)}(t))\sigma_{4}^{X} \\ \end{align}
+          h_str:
+          - _SUM[i,0,4,wq{i}/2*(I{i}-Z{i})]
+          - _SUM[i,0,4,delta{i}/2*O{i}*O{i}]
+          - _SUM[i,0,4,-delta{i}/2*O{i}]
+          - _SUM[i,0,4,omegad{i}*X{i}||D{i}]
+          - jq0q1*Sp0*Sm1
+          - jq0q1*Sm0*Sp1
+          - jq1q2*Sp1*Sm2
+          - jq1q2*Sm1*Sp2
+          - jq2q3*Sp2*Sm3
+          - jq2q3*Sm2*Sp3
+          - jq3q4*Sp3*Sm4
+          - jq3q4*Sm3*Sp4
+          - omegad1*X0||U0
+          - omegad0*X1||U1
+          - omegad2*X1||U2
+          - omegad1*X2||U3
+          - omegad3*X2||U4
+          - omegad4*X3||U6
+          - omegad2*X3||U5
+          - omegad3*X4||U7
+          osc: {}
+          qub:
+            '0': 3
+            '1': 3
+            '2': 3
+            '3': 3
+            '4': 3
+          vars:
+            delta0: -2.121376713496892
+            delta1: -2.0572320855686512
+            delta2: -2.1219857492779215
+            delta3: -2.091175183242651
+            delta4: -2.1322677360148967
+            jq0q1: 0.008401931549453526
+            jq1q2: 0.00827615700717255
+            jq2q3: 0.01043348816290951
+            jq3q4: 0.009434356217567021
+            omegad0: 1.1180899684563905
+            omegad1: 1.5965937469694844
+            omegad2: 0.9313930823895185
+            omegad3: 1.02359978967771
+            omegad4: 0.9199181427404678
+            wq0: 31.219269899115847
+            wq1: 29.97144547517013
+            wq2: 31.511197534723212
+            wq3: 33.04500189654535
+            wq4: 31.400533734888114
+        local: false
+        max_experiments: 900
+        max_shots: 8192
+        meas_kernels:
+        - hw_qmfk
+        meas_levels:
+        - 1
+        - 2
+        meas_lo_range:
+        - - 6.923525326
+          - 7.923525326
+        - - 6.667956078
+          - 7.667956078
+        - - 6.816091357
+          - 7.816091357
+        - - 6.884056996
+          - 7.884056996
+        - - 6.747308081
+          - 7.747308081
+        meas_map:
+        - - 0
+          - 1
+          - 2
+          - 3
+          - 4
+        measure_esp_enabled: false
+        memory: true
+        multi_meas_enabled: true
+        n_qubits: 5
+        n_registers: 1
+        n_uchannels: 8
+        online_date: '2020-03-23T04:00:00Z'
+        open_pulse: true
+        parametric_pulses:
+        - gaussian
+        - gaussian_square
+        - drag
+        - constant
+        processor_type:
+          family: Falcon
+          revision: 4
+          segment: L
+        quantum_volume: 32
+        qubit_channel_mapping:
+        - - u0
+          - d0
+          - u1
+          - m0
+        - - u1
+          - m1
+          - u0
+          - u3
+          - u2
+          - d1
+        - - u5
+          - u3
+          - u2
+          - m2
+          - d2
+          - u4
+        - - u5
+          - u7
+          - m3
+          - u4
+          - u6
+          - d3
+        - - m4
+          - u7
+          - u6
+          - d4
+        qubit_lo_range:
+        - - 4.468701124164304
+          - 5.468701124164304
+        - - 4.270103698982546
+          - 5.270103698982546
+        - - 4.5151628503963455
+          - 5.5151628503963455
+        - - 4.759275396316249
+          - 5.759275396316249
+        - - 4.497550159631257
+          - 5.497550159631257
+        real_qubits: false
+        rep_delay_range:
+        - 0
+        - 500
+        rep_times:
+        - 1000
+        sample_name: 'family: Falcon, revision: 4, segment: L'
+        simulator: false
+        supported_instructions:
+        - measure
+        - u1
+        - reset
+        - rz
+        - u3
+        - x
+        - acquire
+        - u2
+        - id
+        - play
+        - sx
+        - shiftf
+        - setf
+        - delay
+        - cx
+        u_channel_lo:
+        - - q: 1
+            scale:
+            - 1
+            - 0
+        - - q: 0
+            scale:
+            - 1
+            - 0
+        - - q: 2
+            scale:
+            - 1
+            - 0
+        - - q: 1
+            scale:
+            - 1
+            - 0
+        - - q: 3
+            scale:
+            - 1
+            - 0
+        - - q: 2
+            scale:
+            - 1
+            - 0
+        - - q: 4
+            scale:
+            - 1
+            - 0
+        - - q: 3
+            scale:
+            - 1
+            - 0
+        uchannels_enabled: true
+        url: None
+    sampleBackendDefaultsResponse:
+      value:
+        buffer: 0
+        cmd_def:
+        - name: cx
+          qubits:
+          - 0
+          - 1
+          sequence:
+          - ch: d0
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+          - ch: d0
+            label: Ym_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -3.1140747235331546e-17
+              - -0.16952233224585217
+              beta: -0.5674696838555093
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d0
+            label: Xp_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.16952233224585217
+              - 0
+              beta: -0.5674696838555093
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 720
+          - ch: d1
+            label: X90p_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.059382748314504706
+              - 0.0024457355228724932
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d1
+            label: CR90p_d1_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.04032804952407305
+              - 0.002308863263836048
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d1
+            label: CR90m_d1_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.04032804952407305
+              - -0.0023088632638360433
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 880
+          - ch: u0
+            label: CR90p_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.16404838638752248
+              - 0.447984379626925
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u0
+            label: CR90m_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.16404838638752242
+              - -0.447984379626925
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 880
+          - ch: u1
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+        - name: cx
+          qubits:
+          - 1
+          - 0
+          sequence:
+          - ch: d0
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: d0
+            label: X90p_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.08517070544657084
+              - 0.001315475138119147
+              beta: -0.7390638896391939
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d0
+            label: Xp_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.16952233224585217
+              - 0
+              beta: -0.5674696838555093
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 720
+          - ch: d0
+            label: Y90m_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.0013154751381191001
+              - -0.08517070544657084
+              beta: -0.7390638896391939
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 1440
+          - ch: d1
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: d1
+            label: Y90p_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.002445735522872487
+              - 0.059382748314504706
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d1
+            label: CR90p_d1_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.04032804952407305
+              - 0.002308863263836048
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d1
+            label: CR90m_d1_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.04032804952407305
+              - -0.0023088632638360433
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 880
+          - ch: d1
+            name: fc
+            phase: -1.5707963267948966
+            t0: 1440
+          - ch: d1
+            label: X90p_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.059382748314504706
+              - 0.0024457355228724932
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 1440
+          - ch: u0
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: u0
+            label: CR90p_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.16404838638752248
+              - 0.447984379626925
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u0
+            label: CR90m_u0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.16404838638752242
+              - -0.447984379626925
+              duration: 560
+              sigma: 64
+              width: 304
+            pulse_shape: gaussian_square
+            t0: 880
+          - ch: u0
+            name: fc
+            phase: -1.5707963267948966
+            t0: 1440
+          - ch: u1
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: u3
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: u3
+            name: fc
+            phase: -1.5707963267948966
+            t0: 1440
+        - name: cx
+          qubits:
+          - 1
+          - 2
+          sequence:
+          - ch: d1
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+          - ch: d1
+            label: Ym_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -2.180777454747743e-17
+              - -0.1187159952984586
+              beta: -1.0471056504145406
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d1
+            label: Xp_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.1187159952984586
+              - 0
+              beta: -1.0471056504145406
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 2496
+          - ch: d2
+            label: X90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10198650862634871
+              - 0.0013394683261926034
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d2
+            label: CR90p_d2_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.013873453640614737
+              - 0.0014386033517831067
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d2
+            label: CR90m_d2_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.013873453640614737
+              - -0.001438603351783105
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 2656
+          - ch: u0
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+          - ch: u2
+            label: CR90p_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.08815065228735922
+              - -0.1970686366802925
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u2
+            label: CR90m_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.08815065228735924
+              - 0.1970686366802925
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 2656
+          - ch: u3
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+        - name: cx
+          qubits:
+          - 2
+          - 1
+          sequence:
+          - ch: d1
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: d1
+            label: X90p_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.059382748314504706
+              - 0.0024457355228724932
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d1
+            label: Xp_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.1187159952984586
+              - 0
+              beta: -1.0471056504145406
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 2496
+          - ch: d1
+            label: Y90m_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.0024457355228724932
+              - -0.059382748314504706
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 4992
+          - ch: d2
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: d2
+            label: Y90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.0013394683261925924
+              - 0.10198650862634871
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d2
+            label: CR90p_d2_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.013873453640614737
+              - 0.0014386033517831067
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d2
+            label: CR90m_d2_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.013873453640614737
+              - -0.001438603351783105
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 2656
+          - ch: d2
+            name: fc
+            phase: -1.5707963267948966
+            t0: 4992
+          - ch: d2
+            label: X90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10198650862634871
+              - 0.0013394683261926034
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 4992
+          - ch: u0
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: u2
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: u2
+            label: CR90p_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.08815065228735922
+              - -0.1970686366802925
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u2
+            label: CR90m_u2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.08815065228735924
+              - 0.1970686366802925
+              duration: 2336
+              sigma: 64
+              width: 2080
+            pulse_shape: gaussian_square
+            t0: 2656
+          - ch: u2
+            name: fc
+            phase: -1.5707963267948966
+            t0: 4992
+          - ch: u3
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: u5
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: u5
+            name: fc
+            phase: -1.5707963267948966
+            t0: 4992
+        - name: cx
+          qubits:
+          - 2
+          - 3
+          sequence:
+          - ch: d2
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: d2
+            label: Y90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.0013394683261925924
+              - 0.10198650862634871
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d2
+            label: CR90p_d2_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.06276974408273035
+              - 0.0014224518263545513
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d2
+            label: CR90m_d2_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.06276974408273035
+              - -0.0014224518263545437
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 928
+          - ch: d2
+            name: fc
+            phase: -1.5707963267948966
+            t0: 1536
+          - ch: d2
+            label: X90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10198650862634871
+              - 0.0013394683261926034
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 1536
+          - ch: d3
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: d3
+            label: X90p_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.09228885314852181
+              - 0.0014025742426091116
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d3
+            label: Xp_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.18517121372479672
+              - 0
+              beta: -1.4562294009889265
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 768
+          - ch: d3
+            label: Y90m_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.0014025742426090819
+              - -0.09228885314852181
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 1536
+          - ch: u2
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: u2
+            name: fc
+            phase: -1.5707963267948966
+            t0: 1536
+          - ch: u4
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: u5
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: u5
+            label: CR90p_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.23873583834386253
+              - -0.1601498890635595
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u5
+            label: CR90m_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.2387358383438625
+              - 0.16014988906355954
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 928
+          - ch: u5
+            name: fc
+            phase: -1.5707963267948966
+            t0: 1536
+          - ch: u7
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+        - name: cx
+          qubits:
+          - 3
+          - 2
+          sequence:
+          - ch: d2
+            label: X90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10198650862634871
+              - 0.0013394683261926034
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d2
+            label: CR90p_d2_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.06276974408273035
+              - 0.0014224518263545513
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d2
+            label: CR90m_d2_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.06276974408273035
+              - -0.0014224518263545437
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 928
+          - ch: d3
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+          - ch: d3
+            label: Ym_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -3.401540012734541e-17
+              - -0.18517121372479672
+              beta: -1.4562294009889265
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d3
+            label: Xp_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.18517121372479672
+              - 0
+              beta: -1.4562294009889265
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 768
+          - ch: u4
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+          - ch: u5
+            label: CR90p_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.23873583834386253
+              - -0.1601498890635595
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u5
+            label: CR90m_u5
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.2387358383438625
+              - 0.16014988906355954
+              duration: 608
+              sigma: 64
+              width: 352
+            pulse_shape: gaussian_square
+            t0: 928
+          - ch: u7
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+        - name: cx
+          qubits:
+          - 3
+          - 4
+          sequence:
+          - ch: d3
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+          - ch: d3
+            label: Ym_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -3.401540012734541e-17
+              - -0.18517121372479672
+              beta: -1.4562294009889265
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d3
+            label: Xp_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.18517121372479672
+              - 0
+              beta: -1.4562294009889265
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 1072
+          - ch: d4
+            label: X90p_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10297400564208449
+              - 0.0013551899851024537
+              beta: -1.8552991568863249
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d4
+            label: CR90p_d4_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.03707867423075375
+              - 0.0008398523265316366
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d4
+            label: CR90m_d4_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.03707867423075375
+              - -0.000839852326531632
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 1232
+          - ch: u4
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+          - ch: u6
+            label: CR90p_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.007010429360857565
+              - -0.15811445188422757
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u6
+            label: CR90m_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.007010429360857584
+              - 0.15811445188422757
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 1232
+          - ch: u7
+            name: fc
+            phase: 1.5707963267948966
+            t0: 0
+        - name: cx
+          qubits:
+          - 4
+          - 3
+          sequence:
+          - ch: d3
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: d3
+            label: X90p_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.09228885314852181
+              - 0.0014025742426091116
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d3
+            label: Xp_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.18517121372479672
+              - 0
+              beta: -1.4562294009889265
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 1072
+          - ch: d3
+            label: Y90m_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.0014025742426090819
+              - -0.09228885314852181
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 2144
+          - ch: d4
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: d4
+            label: Y90p_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.001355189985102449
+              - 0.10297400564208449
+              beta: -1.8552991568863249
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d4
+            label: CR90p_d4_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.03707867423075375
+              - 0.0008398523265316366
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: d4
+            label: CR90m_d4_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.03707867423075375
+              - -0.000839852326531632
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 1232
+          - ch: d4
+            name: fc
+            phase: -1.5707963267948966
+            t0: 2144
+          - ch: d4
+            label: X90p_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10297400564208449
+              - 0.0013551899851024537
+              beta: -1.8552991568863249
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 2144
+          - ch: u4
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+          - ch: u6
+            name: fc
+            phase: -3.141592653589793
+            t0: 0
+          - ch: u6
+            label: CR90p_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.007010429360857565
+              - -0.15811445188422757
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 160
+          - ch: u6
+            label: CR90m_u6
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.007010429360857584
+              - 0.15811445188422757
+              duration: 912
+              sigma: 64
+              width: 656
+            pulse_shape: gaussian_square
+            t0: 1232
+          - ch: u6
+            name: fc
+            phase: -1.5707963267948966
+            t0: 2144
+          - ch: u7
+            name: fc
+            phase: -1.5707963267948966
+            t0: 0
+        - name: id
+          qubits:
+          - 0
+          sequence:
+          - ch: d0
+            name: QId_d0
+            t0: 0
+        - name: id
+          qubits:
+          - 1
+          sequence:
+          - ch: d1
+            name: QId_d1
+            t0: 0
+        - name: id
+          qubits:
+          - 2
+          sequence:
+          - ch: d2
+            name: QId_d2
+            t0: 0
+        - name: id
+          qubits:
+          - 3
+          sequence:
+          - ch: d3
+            name: QId_d3
+            t0: 0
+        - name: id
+          qubits:
+          - 4
+          sequence:
+          - ch: d4
+            name: QId_d4
+            t0: 0
+        - name: measure
+          qubits:
+          - 0
+          sequence:
+          - ch: m0
+            label: M_m0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.0692929110515423
+              - 0.03998115153422982
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m0
+            duration: 1376
+            name: delay
+            t0: 12224
+          - duration: 12224
+            memory_slot:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            name: acquire
+            qubits:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            t0: 0
+        - name: measure
+          qubits:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          sequence:
+          - ch: m0
+            label: M_m0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.0692929110515423
+              - 0.03998115153422982
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m0
+            duration: 1376
+            name: delay
+            t0: 12224
+          - ch: m1
+            label: M_m1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.04579128497698148
+              - -0.060656064990706984
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m1
+            duration: 1376
+            name: delay
+            t0: 12224
+          - ch: m2
+            label: M_m2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.09958477403974661
+              - -0.06695425885970666
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m2
+            duration: 1376
+            name: delay
+            t0: 12224
+          - ch: m3
+            label: M_m3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.07089986443714817
+              - -0.03705683773332545
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m3
+            duration: 1376
+            name: delay
+            t0: 12224
+          - ch: m4
+            label: M_m4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.04511005940938134
+              - -0.07787863981915763
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m4
+            duration: 1376
+            name: delay
+            t0: 12224
+          - duration: 12224
+            memory_slot:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            name: acquire
+            qubits:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            t0: 0
+        - name: measure
+          qubits:
+          - 1
+          sequence:
+          - ch: m1
+            label: M_m1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.04579128497698148
+              - -0.060656064990706984
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m1
+            duration: 1376
+            name: delay
+            t0: 12224
+          - duration: 12224
+            memory_slot:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            name: acquire
+            qubits:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            t0: 0
+        - name: measure
+          qubits:
+          - 2
+          sequence:
+          - ch: m2
+            label: M_m2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.09958477403974661
+              - -0.06695425885970666
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m2
+            duration: 1376
+            name: delay
+            t0: 12224
+          - duration: 12224
+            memory_slot:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            name: acquire
+            qubits:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            t0: 0
+        - name: measure
+          qubits:
+          - 3
+          sequence:
+          - ch: m3
+            label: M_m3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.07089986443714817
+              - -0.03705683773332545
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m3
+            duration: 1376
+            name: delay
+            t0: 12224
+          - duration: 12224
+            memory_slot:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            name: acquire
+            qubits:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            t0: 0
+        - name: measure
+          qubits:
+          - 4
+          sequence:
+          - ch: m4
+            label: M_m4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.04511005940938134
+              - -0.07787863981915763
+              duration: 12224
+              sigma: 64
+              width: 11968
+            pulse_shape: gaussian_square
+            t0: 0
+          - ch: m4
+            duration: 1376
+            name: delay
+            t0: 12224
+          - duration: 12224
+            memory_slot:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            name: acquire
+            qubits:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            t0: 0
+        - name: rz
+          qubits:
+          - 0
+          sequence:
+          - ch: d0
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u1
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: rz
+          qubits:
+          - 1
+          sequence:
+          - ch: d1
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u0
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u3
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: rz
+          qubits:
+          - 2
+          sequence:
+          - ch: d2
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u2
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u5
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: rz
+          qubits:
+          - 3
+          sequence:
+          - ch: d3
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u4
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u7
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: rz
+          qubits:
+          - 4
+          sequence:
+          - ch: d4
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u6
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: sx
+          qubits:
+          - 0
+          sequence:
+          - ch: d0
+            label: X90p_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.08517070544657084
+              - 0.001315475138119147
+              beta: -0.7390638896391939
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: sx
+          qubits:
+          - 1
+          sequence:
+          - ch: d1
+            label: X90p_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.059382748314504706
+              - 0.0024457355228724932
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: sx
+          qubits:
+          - 2
+          sequence:
+          - ch: d2
+            label: X90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10198650862634871
+              - 0.0013394683261926034
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: sx
+          qubits:
+          - 3
+          sequence:
+          - ch: d3
+            label: X90p_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.09228885314852181
+              - 0.0014025742426091116
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: sx
+          qubits:
+          - 4
+          sequence:
+          - ch: d4
+            label: X90p_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10297400564208449
+              - 0.0013551899851024537
+              beta: -1.8552991568863249
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: u1
+          qubits:
+          - 0
+          sequence:
+          - ch: d0
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u1
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: u1
+          qubits:
+          - 1
+          sequence:
+          - ch: d1
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u0
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u3
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: u1
+          qubits:
+          - 2
+          sequence:
+          - ch: d2
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u2
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u5
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: u1
+          qubits:
+          - 3
+          sequence:
+          - ch: d3
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u4
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u7
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: u1
+          qubits:
+          - 4
+          sequence:
+          - ch: d4
+            name: fc
+            phase: -(P0)
+            t0: 0
+          - ch: u6
+            name: fc
+            phase: -(P0)
+            t0: 0
+        - name: u2
+          qubits:
+          - 0
+          sequence:
+          - ch: d0
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: d0
+            label: Y90p_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.0013154751381191485
+              - 0.08517070544657084
+              beta: -0.7390638896391939
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d0
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u1
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u1
+            name: fc
+            phase: -(P0)
+            t0: 160
+        - name: u2
+          qubits:
+          - 1
+          sequence:
+          - ch: d1
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: d1
+            label: Y90p_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.002445735522872487
+              - 0.059382748314504706
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d1
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u0
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u0
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u3
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u3
+            name: fc
+            phase: -(P0)
+            t0: 160
+        - name: u2
+          qubits:
+          - 2
+          sequence:
+          - ch: d2
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: d2
+            label: Y90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.0013394683261925924
+              - 0.10198650862634871
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d2
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u2
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u2
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u5
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u5
+            name: fc
+            phase: -(P0)
+            t0: 160
+        - name: u2
+          qubits:
+          - 3
+          sequence:
+          - ch: d3
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: d3
+            label: Y90p_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.0014025742426091135
+              - 0.09228885314852181
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d3
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u4
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u4
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u7
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u7
+            name: fc
+            phase: -(P0)
+            t0: 160
+        - name: u2
+          qubits:
+          - 4
+          sequence:
+          - ch: d4
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: d4
+            label: Y90p_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.001355189985102449
+              - 0.10297400564208449
+              beta: -1.8552991568863249
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d4
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u6
+            name: fc
+            phase: -(P1)
+            t0: 0
+          - ch: u6
+            name: fc
+            phase: -(P0)
+            t0: 160
+        - name: u3
+          qubits:
+          - 0
+          sequence:
+          - ch: d0
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: d0
+            label: X90p_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.08517070544657084
+              - 0.001315475138119147
+              beta: -0.7390638896391939
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d0
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: d0
+            label: X90m_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.08517070544657084
+              - -0.001315475138119143
+              beta: -0.7390638896391939
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 160
+          - ch: d0
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u1
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u1
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u1
+            name: fc
+            phase: -(P1)
+            t0: 320
+        - name: u3
+          qubits:
+          - 1
+          sequence:
+          - ch: d1
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: d1
+            label: X90p_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.059382748314504706
+              - 0.0024457355228724932
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d1
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: d1
+            label: X90m_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.059382748314504706
+              - -0.002445735522872497
+              beta: -1.237863708498682
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 160
+          - ch: d1
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u0
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u0
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u0
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u3
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u3
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u3
+            name: fc
+            phase: -(P1)
+            t0: 320
+        - name: u3
+          qubits:
+          - 2
+          sequence:
+          - ch: d2
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: d2
+            label: X90p_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10198650862634871
+              - 0.0013394683261926034
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d2
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: d2
+            label: X90m_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.10198650862634871
+              - -0.0013394683261925863
+              beta: -1.2964438429020329
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 160
+          - ch: d2
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u2
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u2
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u2
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u5
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u5
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u5
+            name: fc
+            phase: -(P1)
+            t0: 320
+        - name: u3
+          qubits:
+          - 3
+          sequence:
+          - ch: d3
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: d3
+            label: X90p_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.09228885314852181
+              - 0.0014025742426091116
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d3
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: d3
+            label: X90m_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.09228885314852181
+              - -0.0014025742426090875
+              beta: -1.7711144727110373
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 160
+          - ch: d3
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u4
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u4
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u4
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u7
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u7
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u7
+            name: fc
+            phase: -(P1)
+            t0: 320
+        - name: u3
+          qubits:
+          - 4
+          sequence:
+          - ch: d4
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: d4
+            label: X90p_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.10297400564208449
+              - 0.0013551899851024537
+              beta: -1.8552991568863249
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+          - ch: d4
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: d4
+            label: X90m_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - -0.10297400564208449
+              - -0.00135518998510242
+              beta: -1.8552991568863249
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 160
+          - ch: d4
+            name: fc
+            phase: -(P1)
+            t0: 320
+          - ch: u6
+            name: fc
+            phase: -(P2)
+            t0: 0
+          - ch: u6
+            name: fc
+            phase: -(P0)
+            t0: 160
+          - ch: u6
+            name: fc
+            phase: -(P1)
+            t0: 320
+        - name: x
+          qubits:
+          - 0
+          sequence:
+          - ch: d0
+            label: Xp_d0
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.16952233224585217
+              - 0
+              beta: -0.5674696838555093
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: x
+          qubits:
+          - 1
+          sequence:
+          - ch: d1
+            label: Xp_d1
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.1187159952984586
+              - 0
+              beta: -1.0471056504145406
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: x
+          qubits:
+          - 2
+          sequence:
+          - ch: d2
+            label: Xp_d2
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.20350292430973976
+              - 0
+              beta: -1.097286648937289
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: x
+          qubits:
+          - 3
+          sequence:
+          - ch: d3
+            label: Xp_d3
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.18517121372479672
+              - 0
+              beta: -1.4562294009889265
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        - name: x
+          qubits:
+          - 4
+          sequence:
+          - ch: d4
+            label: Xp_d4
+            name: parametric_pulse
+            parameters:
+              amp:
+              - 0.20604140102356464
+              - 0
+              beta: -1.6459873782317966
+              duration: 160
+              sigma: 40
+            pulse_shape: drag
+            t0: 0
+        discriminator:
+          name: hw_qmfk
+          params: {}
+        meas_freq_est:
+        - 7.423525326
+        - 7.167956078
+        - 7.316091357
+        - 7.384056996
+        - 7.247308081
+        meas_kernel:
+          name: hw_qmfk
+          params: {}
+        pulse_library:
+        - name: QId_d0
+          samples:
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+        - name: QId_d1
+          samples:
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+        - name: QId_d2
+          samples:
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+        - name: QId_d3
+          samples:
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+        - name: QId_d4
+          samples:
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+          - - 0
+            - 0
+        qubit_freq_est:
+        - 4.968701124164304
+        - 4.770103698982546
+        - 5.0151628503963455
+        - 5.259275396316249
+        - 4.997550159631257
+    sampleBackendPropertiesResponse:
+      value:
+        backend_name: test_rome
+        backend_version: 1.3.24
+        gates:
+        - gate: id
+          name: id0
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0002448508047161394
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 0
+        - gate: id
+          name: id1
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.00027210394592247896
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 1
+        - gate: id
+          name: id2
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0003387889648653272
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 2
+        - gate: id
+          name: id3
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0002798062785893913
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 3
+        - gate: id
+          name: id4
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0007014941280759136
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 4
+        - gate: rz
+          name: rz0
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_error
+            unit: ''
+            value: 0
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 0
+          qubits:
+          - 0
+        - gate: rz
+          name: rz1
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_error
+            unit: ''
+            value: 0
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 0
+          qubits:
+          - 1
+        - gate: rz
+          name: rz2
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_error
+            unit: ''
+            value: 0
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 0
+          qubits:
+          - 2
+        - gate: rz
+          name: rz3
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_error
+            unit: ''
+            value: 0
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 0
+          qubits:
+          - 3
+        - gate: rz
+          name: rz4
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_error
+            unit: ''
+            value: 0
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 0
+          qubits:
+          - 4
+        - gate: sx
+          name: sx0
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0002448508047161394
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 0
+        - gate: sx
+          name: sx1
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.00027210394592247896
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 1
+        - gate: sx
+          name: sx2
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0003387889648653272
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 2
+        - gate: sx
+          name: sx3
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0002798062785893913
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 3
+        - gate: sx
+          name: sx4
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0007014941280759136
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 4
+        - gate: x
+          name: x0
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0002448508047161394
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 0
+        - gate: x
+          name: x1
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.00027210394592247896
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 1
+        - gate: x
+          name: x2
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0003387889648653272
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 2
+        - gate: x
+          name: x3
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0002798062785893913
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 3
+        - gate: x
+          name: x4
+          parameters:
+          - date: '2021-07-05T06:44:33Z'
+            name: gate_error
+            unit: ''
+            value: 0.0007014941280759136
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 35.55555555555556
+          qubits:
+          - 4
+        - gate: cx
+          name: cx3_4
+          parameters:
+          - date: '2021-07-05T08:13:43Z'
+            name: gate_error
+            unit: ''
+            value: 0.01209269215862896
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 476.4444444444444
+          qubits:
+          - 3
+          - 4
+        - gate: cx
+          name: cx4_3
+          parameters:
+          - date: '2021-07-05T08:13:43Z'
+            name: gate_error
+            unit: ''
+            value: 0.01209269215862896
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 512
+          qubits:
+          - 4
+          - 3
+        - gate: cx
+          name: cx3_2
+          parameters:
+          - date: '2021-07-05T08:10:30Z'
+            name: gate_error
+            unit: ''
+            value: 0.008707373154178105
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 341.3333333333333
+          qubits:
+          - 3
+          - 2
+        - gate: cx
+          name: cx2_3
+          parameters:
+          - date: '2021-07-05T08:10:30Z'
+            name: gate_error
+            unit: ''
+            value: 0.008707373154178105
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 376.88888888888886
+          qubits:
+          - 2
+          - 3
+        - gate: cx
+          name: cx1_2
+          parameters:
+          - date: '2021-07-05T08:05:34Z'
+            name: gate_error
+            unit: ''
+            value: 0.01902233362337591
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 1109.3333333333333
+          qubits:
+          - 1
+          - 2
+        - gate: cx
+          name: cx2_1
+          parameters:
+          - date: '2021-07-05T08:05:34Z'
+            name: gate_error
+            unit: ''
+            value: 0.01902233362337591
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 1144.888888888889
+          qubits:
+          - 2
+          - 1
+        - gate: cx
+          name: cx0_1
+          parameters:
+          - date: '2021-07-05T07:27:21Z'
+            name: gate_error
+            unit: ''
+            value: 0.006104727490691075
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 320
+          qubits:
+          - 0
+          - 1
+        - gate: cx
+          name: cx1_0
+          parameters:
+          - date: '2021-07-05T07:27:21Z'
+            name: gate_error
+            unit: ''
+            value: 0.006104727490691075
+          - date: '2021-07-02T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 355.55555555555554
+          qubits:
+          - 1
+          - 0
+        - gate: reset
+          name: reset0
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 3520
+          qubits:
+          - 0
+        - gate: reset
+          name: reset1
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 3520
+          qubits:
+          - 1
+        - gate: reset
+          name: reset2
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 3520
+          qubits:
+          - 2
+        - gate: reset
+          name: reset3
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 3520
+          qubits:
+          - 3
+        - gate: reset
+          name: reset4
+          parameters:
+          - date: '2021-07-05T12:18:02Z'
+            name: gate_length
+            unit: ns
+            value: 3520
+          qubits:
+          - 4
+        general:
+        - date: '2021-07-05T12:18:02Z'
+          name: jq_01
+          unit: GHz
+          value: 0.0013372089376152759
+        - date: '2021-07-05T12:18:02Z'
+          name: zz_01
+          unit: GHz
+          value: -3.637728507512319e-05
+        - date: '2021-07-05T12:18:02Z'
+          name: jq_12
+          unit: GHz
+          value: 0.0013171912974961383
+        - date: '2021-07-05T12:18:02Z'
+          name: zz_12
+          unit: GHz
+          value: -5.2536503588451545e-05
+        - date: '2021-07-05T12:18:02Z'
+          name: jq_23
+          unit: GHz
+          value: 0.0016605412148178267
+        - date: '2021-07-05T12:18:02Z'
+          name: zz_23
+          unit: GHz
+          value: -8.19573944865251e-05
+        - date: '2021-07-05T12:18:02Z'
+          name: jq_34
+          unit: GHz
+          value: 0.0015015244269155484
+        - date: '2021-07-05T12:18:02Z'
+          name: zz_34
+          unit: GHz
+          value: -8.449922279710206e-05
+        last_update_date: '2021-07-05T12:52:19Z'
+        qubits:
+        - - date: '2021-07-05T06:41:57Z'
+            name: T1
+            unit: us
+            value: 97.03598857550222
+          - date: '2021-07-05T06:05:06Z'
+            name: T2
+            unit: us
+            value: 66.65681862753586
+          - date: '2021-07-05T12:18:02Z'
+            name: frequency
+            unit: GHz
+            value: 4.968701124164304
+          - date: '2021-07-05T12:18:02Z'
+            name: anharmonicity
+            unit: GHz
+            value: -0.3376275901130698
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_error
+            unit: ''
+            value: 0.0232
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas0_prep1
+            unit: ''
+            value: 0.031399999999999983
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas1_prep0
+            unit: ''
+            value: 0.015
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_length
+            unit: ns
+            value: 3022.222222222222
+        - - date: '2021-07-05T06:50:29Z'
+            name: T1
+            unit: us
+            value: 105.20382514288175
+          - date: '2021-07-05T06:42:02Z'
+            name: T2
+            unit: us
+            value: 87.48573724157141
+          - date: '2021-07-05T12:18:02Z'
+            name: frequency
+            unit: GHz
+            value: 4.770103698982546
+          - date: '2021-07-05T12:18:02Z'
+            name: anharmonicity
+            unit: GHz
+            value: -0.32741865550549987
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_error
+            unit: ''
+            value: 0.03620000000000001
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas0_prep1
+            unit: ''
+            value: 0.040000000000000036
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas1_prep0
+            unit: ''
+            value: 0.0324
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_length
+            unit: ns
+            value: 3022.222222222222
+        - - date: '2021-07-05T06:41:57Z'
+            name: T1
+            unit: us
+            value: 64.82252288673146
+          - date: '2021-07-05T06:05:06Z'
+            name: T2
+            unit: us
+            value: 72.52724000942999
+          - date: '2021-07-05T12:18:02Z'
+            name: frequency
+            unit: GHz
+            value: 5.0151628503963455
+          - date: '2021-07-05T12:18:02Z'
+            name: anharmonicity
+            unit: GHz
+            value: -0.3377245211681405
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_error
+            unit: ''
+            value: 0.027200000000000002
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas0_prep1
+            unit: ''
+            value: 0.03620000000000001
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas1_prep0
+            unit: ''
+            value: 0.0182
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_length
+            unit: ns
+            value: 3022.222222222222
+        - - date: '2021-07-05T06:50:29Z'
+            name: T1
+            unit: us
+            value: 104.84874439033118
+          - date: '2021-07-05T06:42:02Z'
+            name: T2
+            unit: us
+            value: 129.73557126090668
+          - date: '2021-07-05T12:18:02Z'
+            name: frequency
+            unit: GHz
+            value: 5.259275396316249
+          - date: '2021-07-05T12:18:02Z'
+            name: anharmonicity
+            unit: GHz
+            value: -0.332820867284168
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_error
+            unit: ''
+            value: 0.01970000000000005
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas0_prep1
+            unit: ''
+            value: 0.02980000000000005
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas1_prep0
+            unit: ''
+            value: 0.0096
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_length
+            unit: ns
+            value: 3022.222222222222
+        - - date: '2021-07-05T06:41:57Z'
+            name: T1
+            unit: us
+            value: 64.22956352722753
+          - date: '2021-07-05T06:05:06Z'
+            name: T2
+            unit: us
+            value: 69.23261463653839
+          - date: '2021-07-05T12:18:02Z'
+            name: frequency
+            unit: GHz
+            value: 4.997550159631257
+          - date: '2021-07-05T12:18:02Z'
+            name: anharmonicity
+            unit: GHz
+            value: -0.33936095018213536
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_error
+            unit: ''
+            value: 0.023600000000000065
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas0_prep1
+            unit: ''
+            value: 0.03180000000000005
+          - date: '2021-07-05T05:29:29Z'
+            name: prob_meas1_prep0
+            unit: ''
+            value: 0.0154
+          - date: '2021-07-05T05:29:29Z'
+            name: readout_length
+            unit: ns
+            value: 3022.222222222222
+  parameters:
+    IBM-API-Version:
+      in: header
+      name: IBM-API-Version
+      required: true
+      description: API version to use
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+        pattern: ^\d{4}-\d{2}-\d{2}$
+        default: '2024-01-01'
+        example: '2026-04-15'
   schemas:
-    UChannelLOItem:
+    BackendPropertiesNduv:
       type: object
-      description: The description of a single U Channel LO in terms of qubit LO's
       properties:
-        q:
+        date:
+          format: date-time
+          type: string
+          description: Date of the parameter
+          minLength: 24
+          maxLength: 24
+        name:
+          type: string
+          description: Name of the parameter
+          minLength: 1
+          maxLength: 64
+        unit:
+          type: string
+          description: Unit of the parameter
+          minLength: 0
+          maxLength: 64
+        value:
+          type: number
+          description: Value of the parameter
+      required:
+      - date
+      - name
+      - unit
+      - value
+    BackendStatusResponse:
+      title: BackendStatusResponse
+      type: object
+      description: Backends Status Response
+      additionalProperties: false
+      required:
+      - length_queue
+      properties:
+        state:
+          type: boolean
+          description: State of the backend
+        status:
+          type: string
+          description: Status of the backend
+        message:
+          type: string
+          description: Description of the backend state
+        length_queue:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 2147483647
-          description: The qubit number
-        scale:
-          $ref: '#/components/schemas/ComplexNumber'
-      required:
-      - q
-      - scale
-    ProcessorType:
+          description: Length of the queue for the backend
+        backend_version:
+          type: string
+          description: Backend version
+    BackendPropertiesResponse:
       type: object
-      description: The processor type of this backend
-      required:
-      - family
-      - revision
       properties:
-        family:
+        backend_name:
           type: string
-          description: Processor family indicates quantum chip architecture
+          description: Backend name
+          pattern: ^[a-zA-Z0-9_]*$
           minLength: 1
           maxLength: 64
-          pattern: ^[a-zA-Z0-9]*$
-        revision:
+        backend_version:
           type: string
-          description: Revision number reflects design variants within a given processor family. Is typically a semantic versioning value without the patch value, eg., \"1.0\".
-          minLength: 1
-          maxLength: 64
-          pattern: ^[0-9]+.[0-9]+$
-        segment:
+          description: Backend version in the form X.X.X
+          pattern: ^[0-9]+.[0-9]+.[0-9]+$
+          minLength: 5
+          maxLength: 16
+        gates:
+          description: System gate parameters
+          minItems: 0
+          maxItems: 2147483647
+          type: array
+          items:
+            $ref: '#/components/schemas/GateProperties'
+        general:
+          description: General system parameters
+          minItems: 0
+          maxItems: 2147483647
+          type: array
+          items:
+            type: string
+        last_update_date:
+          format: date-time
           type: string
-          description: Segment, if indicated, is used to distinguish different subsets of the qubit fabric/chip
+          description: Last date/time that a property was updated.
+          minLength: 20
+          maxLength: 20
+        qubits:
+          type: array
+          items:
+            description: System qubit parameters
+            minItems: 1
+            maxItems: 2147483647
+            type: array
+            items:
+              $ref: '#/components/schemas/BackendPropertiesNduv'
+      required:
+      - backend_name
+      - backend_version
+      - gates
+      - general
+      - last_update_date
+      - qubits
+    TimingConstraints:
+      type: object
+      description: The timing constraints on this backend
+      properties:
+        granularity:
+          type: integer
+          format: int64
+          description: Waveform memory data chunk size
+          maximum: 9007199254740991
+          minimum: 0
+        min_length:
+          type: integer
+          format: int64
+          description: Minimum number of samples required to define a pulse
+          maximum: 9007199254740991
+          minimum: 0
+        pulse_alignment:
+          type: integer
+          format: int64
+          description: Instruction triggering time resolution of pulse channel in units of dt
+          maximum: 9007199254740991
+          minimum: 0
+        acquire_alignment:
+          type: integer
+          format: int64
+          description: Instruction triggering time resolution of acquisition channel in units of dt
+          maximum: 9007199254740991
+          minimum: 0
+    Hamiltonian:
+      type: object
+      description: Hamiltonian of the backend
+      properties:
+        h_latex:
+          type: string
+          description: The Hamiltonian in latex form
           minLength: 1
-          maxLength: 64
-          pattern: ^[a-zA-Z0-9]*$
+          maxLength: 4096
+          pattern: ^.*$
+        h_str:
+          type: array
+          description: The Hamiltonian in machine readable form
+          minItems: 1
+          maxItems: 2147483647
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            pattern: ^.*$
+          example:
+          - '"0.5 * X0 Y1"'
+          - '"1.0 * Z0"'
+        vars:
+          type: object
+          description: Variables in the h_str
+        osc:
+          type: object
+          description: Number of levels for each oscillator mode
+      required:
+      - h_latex
     ClopsType:
       type: object
       properties:
@@ -305,204 +5272,6 @@ components:
           example: 100
       required:
       - type
-      - value
-    GateProperties:
-      type: object
-      properties:
-        gate:
-          type: string
-          description: The gate name for these parameters
-          minLength: 1
-          maxLength: 64
-          pattern: ^[a-zA-Z0-9_]*$
-        parameters:
-          description: The parameters of this gate on these qubits
-          minItems: 1
-          maxItems: 2147483647
-          type: array
-          items:
-            $ref: '#/components/schemas/BackendPropertiesNduv'
-        qubits:
-          description: The qubits for these parameters
-          minItems: 1
-          maxItems: 2147483647
-          type: array
-          items:
-            type: string
-      required:
-      - gate
-      - parameters
-      - qubits
-    TwoQErrorBest:
-      type: object
-      properties:
-        value:
-          type: number
-          example: 0.1
-        gate:
-          type: string
-          example: cx
-        unit:
-          type: string
-          example: ''
-        qubits:
-          type: array
-          example:
-          - 1
-          - 2
-          items:
-            type: number
-      required:
-      - value
-      - gate
-      - qubits
-    BackendsResponse:
-      title: BackendsResponse
-      type: object
-      description: Backends Response
-      properties:
-        devices:
-          minItems: 1
-          type: array
-          description: A list of backends with their status
-          items:
-            type: object
-            required:
-            - name
-            - status
-            - queue_length
-            properties:
-              name:
-                type: string
-                description: The name of the backend device
-                minLength: 1
-                maxLength: 255
-              status:
-                type: object
-                description: The status of the backend device
-                properties:
-                  name:
-                    type: string
-                    description: The status name of the backend device
-                    enum:
-                    - online
-                    - paused
-                    - offline
-                  reason:
-                    type: string
-                    description: Optional reason for the status
-                required:
-                - name
-              is_simulator:
-                type: boolean
-                description: Indicates if the device is a simulator
-              qubits:
-                type:
-                - integer
-                - 'null'
-                format: int32
-                minimum: 0
-                maximum: 2147483647
-                description: The number of qubits in the device
-              clops:
-                type:
-                - object
-                - 'null'
-                description: Details of the CLOPS
-                properties:
-                  type:
-                    type: string
-                    enum:
-                    - virtual
-                    - hardware
-                  value:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                required:
-                - type
-                - value
-              processor_type:
-                type:
-                - object
-                - 'null'
-                description: Details of the processor type
-                properties:
-                  family:
-                    type:
-                    - string
-                    - 'null'
-                    description: The family of the processor
-                  revision:
-                    type:
-                    - string
-                    - 'null'
-                    description: The revision of the processor
-                  segment:
-                    type:
-                    - string
-                    - 'null'
-                    description: The segment of the processor
-              queue_length:
-                type: integer
-                format: int32
-                minimum: 0
-                maximum: 2147483647
-                description: The number of jobs waiting to be executed
-              performance_metrics:
-                $ref: '#/components/schemas/PerformanceMetrics'
-              wait_time_seconds:
-                type:
-                - object
-                - 'null'
-                description: Job wait times for the device (in seconds)
-                properties:
-                  average:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: Average wait time before jobs start running (in seconds)
-                  p50:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: P50 wait time before jobs start running (in seconds)
-                  p95:
-                    type: integer
-                    format: int32
-                    minimum: 0
-                    maximum: 2147483647
-                    description: P95 wait time before jobs start running (in seconds)
-                required:
-                - average
-                - p50
-                - p95
-      required:
-      - devices
-    TwoQErrorLayered:
-      type: object
-      properties:
-        value:
-          type: number
-          example: 0.1
-        unit:
-          type: string
-          example: ''
-      required:
-      - value
-    TwoQErrorMedian:
-      type: object
-      properties:
-        value:
-          type: number
-          example: 0.14123123
-        unit:
-          type: string
-          example: ''
-      required:
       - value
     GateConfig:
       type: object
@@ -572,12 +5341,293 @@ components:
           minLength: 1
           maxLength: 64
           pattern: ^[a-zA-Z0-9\s]*$
-    ReadoutErrorMedian:
+    TwoQErrorBest:
       type: object
       properties:
         value:
           type: number
-          example: 0.3442341
+          example: 0.1
+        gate:
+          type: string
+          example: cx
+        unit:
+          type: string
+          example: ''
+        qubits:
+          type: array
+          example:
+          - 1
+          - 2
+          items:
+            type: number
+      required:
+      - value
+      - gate
+      - qubits
+    BackendsResponse:
+      title: BackendsResponse
+      type: object
+      description: Backends Response
+      properties:
+        devices:
+          minItems: 1
+          type: array
+          description: A list of backends with their status
+          items:
+            type: object
+            required:
+            - name
+            - status
+            - queue_length
+            properties:
+              name:
+                type: string
+                description: The name of the backend device
+                minLength: 1
+                maxLength: 255
+              status:
+                type: object
+                description: The status of the backend device
+                properties:
+                  name:
+                    type: string
+                    description: The status name of the backend device
+                    enum:
+                    - online
+                    - paused
+                    - offline
+                  reason:
+                    type: string
+                    description: Optional reason for the status
+                required:
+                - name
+              is_simulator:
+                type: boolean
+                deprecated: true
+                description: 'Deprecated: all devices are real quantum hardware. This field will be removed in a future release.'
+              qubits:
+                type:
+                - integer
+                - 'null'
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: The number of programmable qubits in the device
+              physical_qubits:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: The number of physical qubits (programmable qubits, reset qubits, and couplers combined)
+              clops:
+                type:
+                - object
+                - 'null'
+                description: Details of the CLOPS
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - virtual
+                    - hardware
+                  value:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                required:
+                - type
+                - value
+              mcps:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: Max Circuits Per Second (MCPS)
+              processor_type:
+                type:
+                - object
+                - 'null'
+                description: Details of the processor type
+                properties:
+                  family:
+                    type:
+                    - string
+                    - 'null'
+                    description: The family of the processor
+                  revision:
+                    type:
+                    - string
+                    - 'null'
+                    description: The revision of the processor
+                  segment:
+                    type:
+                    - string
+                    - 'null'
+                    description: The segment of the processor
+              queue_length:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+                description: The number of jobs waiting to be executed
+              performance_metrics:
+                $ref: '#/components/schemas/PerformanceMetrics'
+              instances:
+                type: array
+                description: CRNs of the service instances this backend is accessible from
+                minItems: 1
+                maxItems: 1000
+                items:
+                  type: string
+                  description: The CRN of a service instance
+                  pattern: ^.*$
+                  minLength: 1
+                  maxLength: 255
+              wait_time_seconds:
+                type:
+                - object
+                - 'null'
+                description: Job wait times for the device (in seconds)
+                properties:
+                  average:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: Average wait time before jobs start running (in seconds)
+                  p50:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: P50 wait time before jobs start running (in seconds)
+                  p95:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    maximum: 2147483647
+                    description: P95 wait time before jobs start running (in seconds)
+                required:
+                - average
+                - p50
+                - p95
+      required:
+      - devices
+    TwoQErrorMedian:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 0.14123123
+        unit:
+          type: string
+          example: ''
+      required:
+      - value
+    PerformanceMetrics:
+      type: object
+      properties:
+        two_q_error_best:
+          description: 2Q error (best)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorBest'
+        two_q_error_layered:
+          description: 2Q error (layered)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorLayered'
+        two_q_error_median:
+          description: 2Q error (median)
+          allOf:
+          - $ref: '#/components/schemas/TwoQErrorMedian'
+        readout_error_median:
+          description: Readout error (median)
+          allOf:
+          - $ref: '#/components/schemas/ReadoutErrorMedian'
+    ProcessorType:
+      type: object
+      description: The processor type of this backend
+      required:
+      - family
+      - revision
+      properties:
+        family:
+          type: string
+          description: Processor family indicates quantum chip architecture
+          minLength: 1
+          maxLength: 64
+          pattern: ^[a-zA-Z0-9]*$
+        revision:
+          type: string
+          description: Revision number reflects design variants within a given processor family. Is typically a semantic versioning value without the patch value, eg., \"1.0\".
+          minLength: 1
+          maxLength: 64
+          pattern: ^[0-9]+.[0-9]+$
+        segment:
+          type: string
+          description: Segment, if indicated, is used to distinguish different subsets of the qubit fabric/chip
+          minLength: 1
+          maxLength: 64
+          pattern: ^[a-zA-Z0-9]*$
+    UChannelLOItem:
+      type: object
+      description: The description of a single U Channel LO in terms of qubit LO's
+      properties:
+        q:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2147483647
+          description: The qubit number
+        scale:
+          $ref: '#/components/schemas/ComplexNumber'
+      required:
+      - q
+      - scale
+    ComplexNumber:
+      type: object
+      properties:
+        number:
+          minItems: 2
+          maxItems: 2
+          items:
+            type: array
+          type: array
+      required:
+      - number
+    GateProperties:
+      type: object
+      properties:
+        gate:
+          type: string
+          description: The gate name for these parameters
+          minLength: 1
+          maxLength: 64
+          pattern: ^[a-zA-Z0-9_]*$
+        parameters:
+          description: The parameters of this gate on these qubits
+          minItems: 1
+          maxItems: 2147483647
+          type: array
+          items:
+            $ref: '#/components/schemas/BackendPropertiesNduv'
+        qubits:
+          description: The qubits for these parameters
+          minItems: 1
+          maxItems: 2147483647
+          type: array
+          items:
+            type: string
+      required:
+      - gate
+      - parameters
+      - qubits
+    TwoQErrorLayered:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 0.1
         unit:
           type: string
           example: ''
@@ -662,6 +5712,13 @@ components:
           - type: string
             pattern: ^.*$
           example: None
+        mcps:
+          description: Max Circuits Per Second (MCPS). Max rate at which a circuit with a Hadamard and single measurement can run.
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+          example: 4500
         conditional:
           type: boolean
           description: Backend supports conditional operations (true/false)
@@ -1004,216 +6061,35 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/UChannelLOItem'
-    BackendStatusResponse:
-      title: BackendStatusResponse
-      type: object
-      description: Backends Status Response
-      additionalProperties: false
-      required:
-      - length_queue
-      properties:
-        state:
-          type: boolean
-          description: State of the backend
-        status:
-          type: string
-          description: Status of the backend
-        message:
-          type: string
-          description: Description of the backend state
-        length_queue:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 2147483647
-          description: Length of the queue for the backend
-        backend_version:
-          type: string
-          description: Backend version
-    PerformanceMetrics:
-      type: object
-      properties:
-        two_q_error_best:
-          description: 2Q error (best)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorBest'
-        two_q_error_layered:
-          description: 2Q error (layered)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorLayered'
-        two_q_error_median:
-          description: 2Q error (median)
-          allOf:
-          - $ref: '#/components/schemas/TwoQErrorMedian'
-        readout_error_median:
-          description: Readout error (median)
-          allOf:
-          - $ref: '#/components/schemas/ReadoutErrorMedian'
-    BackendPropertiesResponse:
-      type: object
-      properties:
-        backend_name:
-          type: string
-          description: Backend name
-          pattern: ^[a-zA-Z0-9_]*$
-          minLength: 1
-          maxLength: 64
-        backend_version:
-          type: string
-          description: Backend version in the form X.X.X
-          pattern: ^[0-9]+.[0-9]+.[0-9]+$
-          minLength: 5
-          maxLength: 16
-        gates:
-          description: System gate parameters
-          minItems: 0
-          maxItems: 2147483647
-          type: array
-          items:
-            $ref: '#/components/schemas/GateProperties'
-        general:
-          description: General system parameters
-          minItems: 0
-          maxItems: 2147483647
-          type: array
-          items:
-            type: string
-        last_update_date:
-          format: date-time
-          type: string
-          description: Last date/time that a property was updated.
-          minLength: 20
-          maxLength: 20
-        qubits:
-          type: array
-          items:
-            description: System qubit parameters
-            minItems: 1
-            maxItems: 2147483647
-            type: array
-            items:
-              $ref: '#/components/schemas/BackendPropertiesNduv'
-      required:
-      - backend_name
-      - backend_version
-      - gates
-      - general
-      - last_update_date
-      - qubits
-    BackendPropertiesNduv:
-      type: object
-      properties:
-        date:
-          format: date-time
-          type: string
-          description: Date of the parameter
-          minLength: 24
-          maxLength: 24
-        name:
-          type: string
-          description: Name of the parameter
-          minLength: 1
-          maxLength: 64
-        unit:
-          type: string
-          description: Unit of the parameter
-          minLength: 0
-          maxLength: 64
-        value:
-          type: number
-          description: Value of the parameter
-      required:
-      - date
-      - name
-      - unit
-      - value
-    Hamiltonian:
-      type: object
-      description: Hamiltonian of the backend
-      properties:
-        h_latex:
-          type: string
-          description: The Hamiltonian in latex form
-          minLength: 1
-          maxLength: 4096
-          pattern: ^.*$
-        h_str:
-          type: array
-          description: The Hamiltonian in machine readable form
-          minItems: 1
-          maxItems: 2147483647
-          items:
-            type: string
-            minLength: 1
-            maxLength: 1024
-            pattern: ^.*$
-          example:
-          - '"0.5 * X0 Y1"'
-          - '"1.0 * Z0"'
-        vars:
-          type: object
-          description: Variables in the h_str
-        osc:
-          type: object
-          description: Number of levels for each oscillator mode
-      required:
-      - h_latex
-    ComplexNumber:
-      type: object
-      properties:
-        number:
-          minItems: 2
-          maxItems: 2
-          items:
-            type: array
-          type: array
-      required:
-      - number
     BackendDefaultsResponse:
       title: BackendsDefaultsResponse
       type: object
       description: Backends Defaults Response
       additionalProperties: true
-    TimingConstraints:
+    ReadoutErrorMedian:
       type: object
-      description: The timing constraints on this backend
       properties:
-        granularity:
-          type: integer
-          format: int64
-          description: Waveform memory data chunk size
-          maximum: 9007199254740991
-          minimum: 0
-        min_length:
-          type: integer
-          format: int64
-          description: Minimum number of samples required to define a pulse
-          maximum: 9007199254740991
-          minimum: 0
-        pulse_alignment:
-          type: integer
-          format: int64
-          description: Instruction triggering time resolution of pulse channel in units of dt
-          maximum: 9007199254740991
-          minimum: 0
-        acquire_alignment:
-          type: integer
-          format: int64
-          description: Instruction triggering time resolution of acquisition channel in units of dt
-          maximum: 9007199254740991
-          minimum: 0
+        value:
+          type: number
+          example: 0.3442341
+        unit:
+          type: string
+          example: ''
+      required:
+      - value
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: IBM Cloud IAM bearer token
+    IBMCloudAPIKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: IBM Cloud Identity and Access Management (IAM) API key. In the format 'apikey &lt;IBM Cloud API Key&gt;'.
     ServiceCRN:
       type: apiKey
       in: header
       name: Service-CRN
-      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
-    ApiVersion:
-      type: apiKey
-      in: header
-      name: IBM-API-Version
-      description: API version, e.g. 2026-03-15
+      description: The Cloud Resource Name (CRN) of your Qiskit Runtime service instance
+    IBMCloudAuth:
+      scheme: bearer
+      bearerFormat: jwt
+      type: http
+      description: IBM Cloud Identity and Access Management (IAM) access token

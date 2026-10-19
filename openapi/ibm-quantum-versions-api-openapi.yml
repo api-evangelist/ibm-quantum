@@ -1,23 +1,12 @@
 openapi: 3.2.0
 info:
   title: Qiskit Runtime Versions API
-  version: 0.45.3
-  description: Discover the supported versions of the Qiskit Runtime REST API and negotiate the IBM-API-Version header value.
-  contact:
-    name: IBM Quantum
-    url: https://quantum.cloud.ibm.com
-  license:
-    name: IBM
-    url: https://www.ibm.com/legal
+  description: The Qiskit Runtime API description
+  version: 0.56.3
+  contact: {}
+  x-ibm-changelog: '- `GET /api/v1/jobs/:id/metrics` and `GET /api/v1/jobs` return usage data using a different response format. The APIs no longer return the response properties `usage.circuits_execution_time_ns`. Now `GET /api/v1/jobs/:id/metrics` will return `circuits_execution_time_ns` at response root level.'
 servers:
-- url: https://quantum.cloud.ibm.com/api
-  description: Global region
-- url: https://eu-de.quantum.cloud.ibm.com/api
-  description: EU-DE region
-security:
-- BearerAuth: []
-  ServiceCRN: []
-  ApiVersion: []
+- url: /api
 tags:
 - name: Versions
 paths:
@@ -33,11 +22,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VersionResponse'
-      summary: Get Versions
+      summary: Get versions
       tags:
       - Versions
 components:
   schemas:
+    VersionResponse:
+      type: object
+      properties:
+        versions:
+          example:
+          - version: '2024-01-01'
+            sunset_date: '2027-01-01'
+            status: deprecated
+          - version: '2025-01-01'
+            sunset_date: '2027-01-01'
+            status: deprecated
+          - version: '2025-05-01'
+            sunset_date: '2027-01-01'
+            status: deprecated
+          - version: '2026-02-01'
+            sunset_date: '2027-02-01'
+            status: deprecated
+          - version: '2026-02-15'
+            sunset_date: '2027-02-15'
+            status: deprecated
+          - version: '2026-03-15'
+            sunset_date: '2027-03-15'
+            status: deprecated
+          - version: '2026-04-15'
+            status: live
+          type: array
+          items:
+            $ref: '#/components/schemas/VersionMetadata'
+      required:
+      - versions
     VersionMetadata:
       type: object
       properties:
@@ -62,33 +81,6 @@ components:
       required:
       - version
       - status
-    VersionResponse:
-      type: object
-      properties:
-        versions:
-          example:
-          - version: '2024-01-01'
-            sunset_date: '2027-01-01'
-            status: deprecated
-          - version: '2025-01-01'
-            sunset_date: '2027-01-01'
-            status: deprecated
-          - version: '2025-05-01'
-            sunset_date: '2027-01-01'
-            status: deprecated
-          - version: '2026-02-01'
-            sunset_date: '2027-02-01'
-            status: deprecated
-          - version: '2026-02-15'
-            sunset_date: '2027-02-15'
-            status: deprecated
-          - version: '2026-03-15'
-            status: live
-          type: array
-          items:
-            $ref: '#/components/schemas/VersionMetadata'
-      required:
-      - versions
     VersionStatus:
       type: string
       enum:
@@ -96,17 +88,18 @@ components:
       - deprecated
       description: The support status of the API version.
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      description: IBM Cloud IAM bearer token
+    IBMCloudAPIKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: IBM Cloud Identity and Access Management (IAM) API key. In the format 'apikey &lt;IBM Cloud API Key&gt;'.
     ServiceCRN:
       type: apiKey
       in: header
       name: Service-CRN
-      description: IBM Cloud Service CRN identifying the Qiskit Runtime instance
-    ApiVersion:
-      type: apiKey
-      in: header
-      name: IBM-API-Version
-      description: API version, e.g. 2026-03-15
+      description: The Cloud Resource Name (CRN) of your Qiskit Runtime service instance
+    IBMCloudAuth:
+      scheme: bearer
+      bearerFormat: jwt
+      type: http
+      description: IBM Cloud Identity and Access Management (IAM) access token
