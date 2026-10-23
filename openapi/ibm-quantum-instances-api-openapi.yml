@@ -406,3 +406,9 @@ components:
       bearerFormat: jwt
       type: http
       description: IBM Cloud Identity and Access Management (IAM) access token
+x-provenance:
+  method: harvested
+  publisher: IBM Quantum
+  source: https://quantum.cloud.ibm.com/api/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
