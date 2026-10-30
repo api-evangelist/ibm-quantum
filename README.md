@@ -1,4 +1,4 @@
-# ibm-quantum (ibm-quantum)
+# IBM Quantum
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,252 +66,206 @@
 
 IBM Quantum is IBM's quantum computing program — the operator of the IBM Quantum Platform (quantum.cloud.ibm.com), the publisher of the open-source Qiskit SDK, and the provider of the Qiskit Runtime REST API for submitting Sampler and Estimator primitive jobs to 100+ qubit Heron-generation QPUs and managed simulators. The platform combines an Apache-2.0 software stack (Qiskit, qiskit-ibm-runtime, qiskit-ibm-catalog, Qiskit Aer, Qiskit Serverless, Qiskit Functions) with a tiered access model (Open / Pay-As-You-Go / Flex / Premium / On-Premises) and is the longest-running commercial quantum computing API surface in the industry.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/ibm-quantum/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/ibm-quantum/refs/heads/main/apis.yml)
+**Areas:** Quantum Computing · Analytics · Job
 
-## Scope
+## IBM Quantum on APIs.io
 
-- **Position:** Producing
+Everything profiled for IBM Quantum is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ibm-quantum/](https://apis.io/providers/ibm-quantum/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (11)
 
-- **Created:** 2026-05-25
-- **Modified:** 2026-05-25
+- [Qiskit Functions Catalog API](https://apis.io/apis/ibm-quantum/qiskit-functions-catalog-api/) — Premium / Flex-tier service for discovering and invoking abstracted Qiskit Functions — pre-packaged quantum-classical workflows (e.g. circuit cutting,…
+- [Qiskit Transpiler as a Service API](https://apis.io/apis/ibm-quantum/qiskit-transpiler-as-a-service-api/) — Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates and backend topology. Bundled with Flex and Premium plans.
+- [ibm-quantum Accounts API](https://apis.io/apis/ibm-quantum/ibm-quantum-accounts-api/) — The Accounts API from ibm-quantum — 1 operation(s) for accounts.
+- [ibm-quantum Analytics API](https://apis.io/apis/ibm-quantum/ibm-quantum-analytics-api/) — The Analytics API from ibm-quantum — 4 operation(s) for analytics.
+- [ibm-quantum Backends API](https://apis.io/apis/ibm-quantum/ibm-quantum-backends-api/) — The Backends API from ibm-quantum — 5 operation(s) for backends.
+- [ibm-quantum Instances API](https://apis.io/apis/ibm-quantum/ibm-quantum-instances-api/) — The Instances API from ibm-quantum — 3 operation(s) for instances.
+- [ibm-quantum Jobs API](https://apis.io/apis/ibm-quantum/ibm-quantum-jobs-api/) — The Jobs API from ibm-quantum — 7 operation(s) for jobs.
+- [ibm-quantum Sessions API](https://apis.io/apis/ibm-quantum/ibm-quantum-sessions-api/) — The Sessions API from ibm-quantum — 3 operation(s) for sessions.
+- [ibm-quantum Tags API](https://apis.io/apis/ibm-quantum/ibm-quantum-tags-api/) — The Tags API from ibm-quantum — 1 operation(s) for tags.
+- [ibm-quantum Versions API](https://apis.io/apis/ibm-quantum/ibm-quantum-versions-api/) — The Versions API from ibm-quantum — 1 operation(s) for versions.
+- [ibm-quantum Workloads API](https://apis.io/apis/ibm-quantum/ibm-quantum-workloads-api/) — The Workloads API from ibm-quantum — 1 operation(s) for workloads.
 
-## APIs
+### Published properties
 
-### Qiskit Runtime Jobs API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Submit Qiskit Runtime primitive jobs (Sampler and Estimator) to IBM Quantum hardware over the REST API. Includes job creation, listing, retrieval, deletion, cancellation, results, logs, metrics, and tag management. Job submission is rate-limited to 5 requests per minute per IAM token.
+#### Arazzo workflows (12)
 
-- **Human URL:** [https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
+Multi-step workflows that chain operations into a business task.
 
-#### Tags
+- [IBM Quantum Audit Workloads and Drill Into Job](https://apis.io/arazzos/ibm-quantum/ibm-quantum-audit-workloads-and-drill-into-job-workflow/)
+- [IBM Quantum Backend Readiness Preflight](https://apis.io/arazzos/ibm-quantum/ibm-quantum-backend-readiness-preflight-workflow/)
+- [IBM Quantum Cancel Running Job](https://apis.io/arazzos/ibm-quantum/ibm-quantum-cancel-running-job-workflow/)
+- [IBM Quantum Job Results and Logs](https://apis.io/arazzos/ibm-quantum/ibm-quantum-job-results-and-logs-workflow/)
+- [IBM Quantum List Jobs and Inspect](https://apis.io/arazzos/ibm-quantum/ibm-quantum-list-jobs-and-inspect-workflow/)
+- [IBM Quantum Negotiate Version and List Backends](https://apis.io/arazzos/ibm-quantum/ibm-quantum-negotiate-version-and-list-backends-workflow/)
+- [IBM Quantum Pause Session and Confirm](https://apis.io/arazzos/ibm-quantum/ibm-quantum-pause-session-and-confirm-workflow/)
+- [IBM Quantum Select Backend and Submit Job](https://apis.io/arazzos/ibm-quantum/ibm-quantum-select-backend-and-submit-job-workflow/)
+- [IBM Quantum Session Run and Close](https://apis.io/arazzos/ibm-quantum/ibm-quantum-session-run-and-close-workflow/)
+- [IBM Quantum Submit Job and Poll Results](https://apis.io/arazzos/ibm-quantum/ibm-quantum-submit-job-and-poll-results-workflow/)
+- [IBM Quantum Tag Job and Verify](https://apis.io/arazzos/ibm-quantum/ibm-quantum-tag-job-and-verify-workflow/)
+- [IBM Quantum Usage-Aware Job Submission](https://apis.io/arazzos/ibm-quantum/ibm-quantum-usage-aware-job-submission-workflow/)
 
-- IBM Quantum
-- Quantum Computing
-- Qiskit Runtime
-- Jobs
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Documentation](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
-- [OpenAPI](https://quantum.cloud.ibm.com/api/openapi.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [OpenAPI](openapi/ibm-quantum-runtime-jobs-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-quantum-runtime-jobs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-jobs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/ibm-quantum-job-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON-LD](json-ld/ibm-quantum-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Example](examples/ibm-quantum-create-sampler-job-example.json)
+- [Ibm Quantum Agentic Access](https://apis.io/agentic-access/ibm-quantum/ibm-quantum-agentic-access/)
 
-### Qiskit Runtime Backends API
+#### JSON Schema (3)
 
-Discover available IBM Quantum backends (Heron, Eagle, and other QPUs plus simulators). Read backend configuration, calibrated properties, defaults, and live status for circuit transpilation and scheduling.
+The data models the API reads and writes.
 
-- **Human URL:** [https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
+- [IBM Quantum Backend](https://apis.io/schemas/ibm-quantum/ibm-quantum-backend/)
+- [IBM Quantum Runtime Job](https://apis.io/schemas/ibm-quantum/ibm-quantum-job/)
+- [IBM Quantum Runtime Session](https://apis.io/schemas/ibm-quantum/ibm-quantum-session/)
 
-#### Tags
+#### JSON-LD (1)
 
-- IBM Quantum
-- Quantum Computing
-- Qiskit Runtime
-- Backends
+Linked-data contexts for the provider's vocabulary.
 
-#### Properties
+- [Ibm Quantum Context](https://apis.io/jsonld/ibm-quantum/ibm-quantum-context/)
 
-- [Documentation](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
-- [OpenAPI](openapi/ibm-quantum-runtime-backends-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-quantum-runtime-backends.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-backends.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/ibm-quantum-backend-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [Example](examples/ibm-quantum-list-backends-example.json)
+#### Vocabulary (1)
 
-### Qiskit Runtime Sessions API
+The provider's domain terms, defined.
 
-Create, inspect, update, and close Qiskit Runtime sessions for grouping primitive jobs against a target backend with priority access. Supports dedicated and batch session modes with configurable max time and interactive timeouts.
+- [Ibm Quantum Vocabulary](https://apis.io/vocabularies/ibm-quantum/ibm-quantum-vocabulary/)
 
-- **Human URL:** [https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
+#### Examples (3)
 
-#### Tags
+Example requests and responses.
 
-- IBM Quantum
-- Quantum Computing
-- Qiskit Runtime
-- Sessions
+- [Ibm Quantum Create Sampler Job Example](https://apis.io/examples/ibm-quantum/ibm-quantum-create-sampler-job-example/)
+- [Ibm Quantum Create Session Example](https://apis.io/examples/ibm-quantum/ibm-quantum-create-session-example/)
+- [Ibm Quantum List Backends Example](https://apis.io/examples/ibm-quantum/ibm-quantum-list-backends-example/)
 
-#### Properties
+#### Collections (21)
 
-- [Documentation](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
-- [OpenAPI](openapi/ibm-quantum-runtime-sessions-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-quantum-runtime-sessions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-sessions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/ibm-quantum-session-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [Example](examples/ibm-quantum-create-session-example.json)
+Postman and Open Collection request collections.
 
-### Qiskit Runtime Instances API
+- [Qiskit Runtime Analytics Accounts API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-accounts-api/)
+- [Qiskit Runtime Accounts Analytics API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-analytics-api/)
+- [Qiskit Runtime Analytics Accounts Backends API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-backends-api/)
+- [Qiskit Runtime Analytics Accounts Instances API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-instances-api/)
+- [Qiskit Runtime Analytics Accounts Jobs API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-jobs-api/)
+- [Qiskit Runtime Analytics API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-runtime-analytics/)
+- [Qiskit Runtime Backends API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-runtime-backends/)
+- [Qiskit Runtime Instances API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-runtime-instances/)
+- [Qiskit Runtime Jobs API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-runtime-jobs/)
+- [Qiskit Runtime Sessions API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-runtime-sessions/)
+- [Qiskit Runtime Versions API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-runtime-versions/)
+- [Qiskit Runtime Analytics Accounts Sessions API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-sessions-api/)
+- [Qiskit Runtime Analytics Accounts Tags API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-tags-api/)
+- [Qiskit Runtime Analytics Accounts Versions API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-versions-api/)
+- [Qiskit Runtime Analytics Accounts Workloads API](https://apis.io/collections/ibm-quantum/open-ibm-quantum-workloads-api/)
+- [Qiskit Runtime Analytics API](https://apis.io/collections/ibm-quantum/postman-ibm-quantum-runtime-analytics/)
+- [Qiskit Runtime Backends API](https://apis.io/collections/ibm-quantum/postman-ibm-quantum-runtime-backends/)
+- [Qiskit Runtime Instances API](https://apis.io/collections/ibm-quantum/postman-ibm-quantum-runtime-instances/)
+- [Qiskit Runtime Jobs API](https://apis.io/collections/ibm-quantum/postman-ibm-quantum-runtime-jobs/)
+- [Qiskit Runtime Sessions API](https://apis.io/collections/ibm-quantum/postman-ibm-quantum-runtime-sessions/)
+- [Qiskit Runtime Versions API](https://apis.io/collections/ibm-quantum/postman-ibm-quantum-runtime-versions/)
 
-Inspect the current Qiskit Runtime instance, view instance limits and configuration, and read per-account configuration. Each Qiskit Runtime instance is identified by an IBM Cloud Service-CRN and governs plan, allocation, region, and access.
+#### Governance rules (2)
 
-- **Human URL:** [https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
+Spectral rulesets for the provider's contracts.
 
-#### Tags
+- [IBM Quantum — jsonschema rules](https://apis.io/rules/ibm-quantum/ibm-quantum-jsonschema-spectral-rules/)
+- [IBM Quantum API Rules](https://apis.io/rules/ibm-quantum/ibm-quantum-rules/)
 
-- IBM Quantum
-- Quantum Computing
-- Qiskit Runtime
-- Instances
-- Accounts
+#### Security (3)
 
-#### Properties
+Authentication, trust centre, and vulnerability disclosure.
 
-- [Documentation](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
-- [OpenAPI](openapi/ibm-quantum-runtime-instances-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-quantum-runtime-instances.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-instances.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Ibm Quantum Authentication](https://apis.io/security/ibm-quantum/ibm-quantum-authentication/)
+- [Ibm Quantum Domain Security](https://apis.io/security/ibm-quantum/ibm-quantum-domain-security/)
+- [Ibm Quantum Vulnerability Disclosure](https://apis.io/security/ibm-quantum/ibm-quantum-vulnerability-disclosure/)
 
-### Qiskit Runtime Analytics API
+#### Plans and pricing (1)
 
-Usage analytics and active-workload reporting for a Qiskit Runtime instance. Powers FinOps and plan-utilization tracking against Open, Pay-As-You-Go, Flex, and Premium minute pools.
+Published plans, tiers and prices.
 
-- **Human URL:** [https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
+- [Ibm Quantum Plans Pricing](https://apis.io/plans/ibm-quantum/ibm-quantum-plans-pricing/)
 
-#### Tags
+#### Rate limits (1)
 
-- IBM Quantum
-- Quantum Computing
-- Qiskit Runtime
-- Analytics
-- FinOps
+Published request limits.
 
-#### Properties
+- [Ibm Quantum Rate Limits](https://apis.io/rate-limits/ibm-quantum/ibm-quantum-rate-limits/)
 
-- [Documentation](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
-- [OpenAPI](openapi/ibm-quantum-runtime-analytics-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-quantum-runtime-analytics.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-analytics.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### FinOps (1)
 
-### Qiskit Runtime Versions API
+What the API costs to run, by operation.
 
-Discover supported versions of the Qiskit Runtime REST API and negotiate the date-based IBM-API-Version header value.
+- [Ibm Quantum Finops](https://apis.io/finops/ibm-quantum/ibm-quantum-finops/)
 
-- **Human URL:** [https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
+## Where to find this API
 
-#### Tags
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- IBM Quantum
-- Quantum Computing
-- Qiskit Runtime
-- Versions
-
-#### Properties
-
-- [Documentation](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
-- [OpenAPI](openapi/ibm-quantum-runtime-versions-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-quantum-runtime-versions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-versions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Qiskit Functions Catalog API
-
-Premium / Flex-tier service for discovering and invoking abstracted Qiskit Functions — pre-packaged quantum-classical workflows (e.g. circuit cutting, error-mitigation pipelines) callable through the qiskit-ibm-catalog Python client. Accessible via the QiskitFunctionsCatalog object (catalog.list / load, function.run).
-
-- **Human URL:** [https://github.com/Qiskit/qiskit-ibm-catalog](https://github.com/Qiskit/qiskit-ibm-catalog)
-
-#### Tags
-
-- IBM Quantum
-- Quantum Computing
-- Qiskit Functions
-
-#### Properties
-
-- [Documentation](https://github.com/Qiskit/qiskit-ibm-catalog)
-- [Source Code](https://github.com/Qiskit/qiskit-ibm-catalog)
-- [Postman Collection](collections/ibm-quantum-runtime-analytics.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-analytics.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-backends.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-backends.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-instances.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-instances.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-jobs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-jobs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-sessions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-sessions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-versions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-versions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Qiskit Transpiler as a Service API
-
-Cloud-hosted, AI-augmented transpilation of OpenQASM 3 circuits down to IBM Quantum native gates and backend topology. Bundled with Flex and Premium plans.
-
-- **Human URL:** [https://quantum.cloud.ibm.com/docs/](https://quantum.cloud.ibm.com/docs/)
-
-#### Tags
-
-- IBM Quantum
-- Quantum Computing
-- Qiskit Transpiler
-
-#### Properties
-
-- [Documentation](https://quantum.cloud.ibm.com/docs/)
-- [Postman Collection](collections/ibm-quantum-runtime-analytics.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-analytics.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-backends.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-backends.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-instances.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-instances.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-jobs.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-jobs.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-sessions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-sessions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-quantum-runtime-versions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-quantum-runtime-versions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Arazzo Workflows](arazzo/) — [Arazzo Specification](https://spec.openapis.org/arazzo/latest.html)
-- [Portal](https://www.ibm.com/quantum)
-- [Portal](https://quantum.cloud.ibm.com/)
+- [Website](https://www.ibm.com/)
 - [Documentation](https://quantum.cloud.ibm.com/docs)
-- [Documentation](https://quantum.cloud.ibm.com/docs/api/qiskit-runtime-rest)
-- [OpenAPI](https://quantum.cloud.ibm.com/api/openapi.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Getting started](https://docs.quantum.ibm.com/start)
 - [Pricing](https://quantum.cloud.ibm.com/docs/en/guides/plans-overview)
-- [Pricing](https://www.ibm.com/quantum/pricing)
-- [Getting Started](https://docs.quantum.ibm.com/start)
-- [Sandbox](https://quantum.cloud.ibm.com/composer)
-- [Training](https://quantum.cloud.ibm.com/learning)
-- [Community](https://www.ibm.com/quantum/network)
 - [Blog](https://www.ibm.com/quantum/blog)
-- [Research](https://research.ibm.com/quantum-computing)
-- [Status Page](https://cloud.ibm.com/status)
-- [Sign Up](https://cloud.ibm.com/registration)
-- [Authentication](https://www.ibm.com/cloud/iam)
-- [Terms of Service](https://www.ibm.com/legal)
-- [Privacy Policy](https://www.ibm.com/privacy)
-- [Trust Center](https://www.ibm.com/trust)
-- [GitHub Organization](https://github.com/Qiskit)
-- [GitHub Organization](https://github.com/qiskit-community)
-- [SDK](https://github.com/Qiskit/qiskit)
-- [SDK](https://github.com/Qiskit/qiskit-ibm-runtime)
-- [SDK](https://github.com/Qiskit/qiskit-ibm-runtime-c)
-- [SDK](https://github.com/Qiskit/qiskit-ibm-catalog)
-- [SDK](https://github.com/Qiskit/qiskit-aer)
-- [Tool](https://github.com/Qiskit/qiskit-serverless)
-- [Tool](https://github.com/Qiskit/qiskit-fermions)
-- [Code Examples](https://github.com/Qiskit/ecosystem)
-- [Documentation](https://github.com/Qiskit/documentation)
-- [Package](https://pypi.org/project/qiskit/)
-- [Package](https://pypi.org/project/qiskit-ibm-runtime/)
-- [Forum](https://qisk.it/join-slack)
-- [Forum](https://stackoverflow.com/questions/tagged/qiskit)
-- [Plans](plans/ibm-quantum-plans-pricing.yml)
-- [Rate Limits](rate-limits/ibm-quantum-rate-limits.yml)
-- [Fin Ops](finops/ibm-quantum-finops.yml)
-- [Spectral Ruleset](rules/ibm-quantum-rules.yml)
-- [Vocabulary](vocabulary/ibm-quantum-vocabulary.yml)
-- [Features](undefined)
+- [Trust centre](https://www.ibm.com/trust)
+- [Terms of service](https://www.ibm.com/legal)
+- [Privacy policy](https://www.ibm.com/privacy)
+- [GitHub](https://github.com/Qiskit)
+- [Status](https://cloud.ibm.com/status)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** info@apievangelist.com
-**URL:** https://apievangelist.com
+**Kin Score 55.5** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 48.2 |
+| Contract quality | 59.0 |
+| Contract governance | 27.3 |
+| Operational transparency | 39.5 |
+| Developer ergonomics | 65.5 |
+| Access clarity | 60.5 |
+
+**Agent readiness 28.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ibm-quantum/](https://apis.io/providers/ibm-quantum/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for IBM Quantum: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ibm-quantum/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
